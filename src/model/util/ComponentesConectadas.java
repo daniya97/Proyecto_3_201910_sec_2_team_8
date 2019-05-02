@@ -105,10 +105,5 @@ public class ComponentesConectadas<K,V> {
             throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V-1));
     }
 
-    /**
-     * Unit tests the {@code CC} data type.
-     *
-     * @param args the command-line arguments
-     */
 
 }
