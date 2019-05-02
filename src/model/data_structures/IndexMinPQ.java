@@ -13,13 +13,17 @@ public class IndexMinPQ <T extends Comparable<T>> implements Iterable<Integer>{
 
 	public IndexMinPQ(int maxN) {
 		if (maxN < 0) throw new IllegalArgumentException();
-		this.n = maxN;
+		this.maxN = maxN;
 		n = 0;
 		keys =  new ArregloDinamico<>(maxN+1);
 		cp = new ArregloDinamico<>(maxN+1);
 		pc = new ArregloDinamico<>(maxN+1);
+		
 		for(int i = 0; i<= maxN;i++){
-			pc.cambiarEnPos(i, -1);
+			pc.agregar(-1);
+			cp.agregar(-1);
+			keys.agregar(null);
+			
 		}
 	}
 
@@ -36,13 +40,15 @@ public class IndexMinPQ <T extends Comparable<T>> implements Iterable<Integer>{
 
 	public boolean contains(int i) {
 		if (i < 0 || i >= maxN) throw new IllegalArgumentException();
-		return pc.darObjeto(i) != null;
+		return pc.darObjeto(i) != -1;
 	}
 
 	public void agregar(int i, T llave) {
 
 		if (i < 0 || i >= maxN) throw new IllegalArgumentException();
-		if (contains(i)) throw new IllegalArgumentException("index is already in the priority queue");
+		if (contains(i)){
+			throw new IllegalArgumentException("index is already in the priority queue");
+		}
 		n++;
 
 		pc.cambiarEnPos(i,n);
@@ -138,7 +144,7 @@ public class IndexMinPQ <T extends Comparable<T>> implements Iterable<Integer>{
 	    * General helper functions.
 	    ***************************************************************************/
 	    private boolean greater(int i, int j) {
-	    	return keys.darObjeto(cp.darObjeto(i)).compareTo(keys.darObjeto(cp.darObjeto(j)))>0;
+	    		return keys.darObjeto(cp.darObjeto(i)).compareTo(keys.darObjeto(cp.darObjeto(j)))>0;
 	    }
 
 	    private void exch(int i, int j) {
@@ -168,6 +174,7 @@ public class IndexMinPQ <T extends Comparable<T>> implements Iterable<Integer>{
 	        while (2*k <= n) {
 	            int j = 2*k;
 	            if (j < n && greater(j, j+1)) j++;
+	            System.out.println("K:" +k +" J: "+j);
 	            if (!greater(k, j)) break;
 	            exch(k, j);
 	            k = j;

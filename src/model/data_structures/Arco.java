@@ -76,6 +76,11 @@ public class Arco<K> implements Comparable<Arco<K>> {
 		// TODO Auto-generated method stub
 		return Double.compare(this.informacion.darPesoArco(), arg0.informacion.darPesoArco());
 	}
+	
+	
+	public String toString(){
+		return "Arco entre "+v +" y "+ w;
+	}
 
 
 

@@ -3,6 +3,7 @@ package model.util;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import model.data_structures.Arco;
+import model.data_structures.ArregloDinamico;
 import model.data_structures.GrafoNDPesos;
 import model.data_structures.IndexMinPQ;
 import model.data_structures.LinkedList;
@@ -15,7 +16,7 @@ public class Prim<K,V> {
 	
 	 private static final double FLOATING_POINT_EPSILON = 1E-12;
 
-	    private Arco<K>[] edgeTo;        // edgeTo[v] = shortest edge from tree vertex to non-tree vertex
+	    private ArregloDinamico<Arco<K>> edgeTo;        // edgeTo[v] = shortest edge from tree vertex to non-tree vertex
 	    private double[] distTo;      // distTo[v] = weight of shortest such edge
 	    private boolean[] marked;     // marked[v] = true if v on tree, false otherwise
 	    private IndexMinPQ<Double> pq;
@@ -24,17 +25,23 @@ public class Prim<K,V> {
 	     * Compute a minimum spanning tree (or forest) of an edge-weighted graph.
 	     * @param G the edge-weighted graph
 	     */
-	    public Prim(GrafoNDPesos<K, V> G) {
-	        edgeTo = (Arco<K>[]) new Object[G.V()];
+		public Prim(GrafoNDPesos<K, V> G) {
+	    	edgeTo = new ArregloDinamico<>(G.V());
 	        distTo = new double[G.V()];
 	        marked = new boolean[G.V()];
 	        pq = new IndexMinPQ<Double>(G.V());
-	        for (int v = 0; v < G.V(); v++)
+	        for (int v = 0; v < G.V(); v++){
 	            distTo[v] = Double.POSITIVE_INFINITY;
+	            edgeTo.agregar(null);
+	        }
+	        
+	        
+	        System.out.println("T1:" +edgeTo.darTamano());
+	        System.out.println("T2:" +distTo.length);
+	        System.out.println("T3:" +marked.length);
 
 	        for (int v = 0; v < G.V(); v++)      // run from each vertex to find
 	            if (!marked[v]) prim(G, v);      // minimum spanning forest
-
 	    }
 
 	    // run Prim's algorithm in graph G, starting from vertex s
@@ -56,7 +63,7 @@ public class Prim<K,V> {
 	            if (marked[w]) continue;         // v-w is obsolete edge
 	            if (e.weight() < distTo[w]) {
 	                distTo[w] = e.weight();
-	                edgeTo[w] = e;
+	                edgeTo.cambiarEnPos(w, e);
 	                if (pq.contains(w)) pq.decreaseKey(w, distTo[w]);
 	                else                pq.agregar(w, distTo[w]);
 	            }
@@ -70,8 +77,8 @@ public class Prim<K,V> {
 	     */
 	    public Iterable<Arco<K>> arcos() {
 	        Queue<Arco<K>> mst = new Queue<>();
-	        for (int v = 0; v < edgeTo.length; v++) {
-	            Arco<K> e = edgeTo[v];
+	        for (int v = 0; v < edgeTo.darTamano(); v++) {
+	        	Arco<K> e = edgeTo.darObjeto(v);
 	            if (e != null) {
 	                mst.enqueue(e);
 	            }
