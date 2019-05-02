@@ -70,7 +70,7 @@ public class Manager {
 		esquemaJSON<BigInteger> auxiliar;
 		BigInteger id;
 		esquemaJSON<BigInteger>[] lista = new esquemaJSON[grafoIntersecciones.V()];
-		LinkedList<Arco> aux;
+		LinkedList<Arco<BigInteger>> aux;
 		BigInteger[] lista2;
 		double lat;
 		double lon;
@@ -84,7 +84,7 @@ public class Manager {
 			lista2 = new BigInteger[aux.darTamanoLista()];
 			
 			contador = 0;
-			for(Arco s: aux){
+			for(Arco<BigInteger> s: aux){
 				lista2[contador] = grafoIntersecciones.encontrarNodo(s.other(i));
 				contador++;
 			}

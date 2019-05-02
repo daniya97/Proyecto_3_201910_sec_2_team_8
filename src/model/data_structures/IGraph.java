@@ -72,7 +72,7 @@ public interface IGraph<K,V> extends Iterable<K> {
 	 */
 	public K encontrarNodo(int numNodo);
 	
-	public ITablaHash<Integer, LinkedList<Arco>> darRepresentacion();
+	public ITablaHash<Integer, LinkedList<Arco<K>>> darRepresentacion();
 	
 
 }

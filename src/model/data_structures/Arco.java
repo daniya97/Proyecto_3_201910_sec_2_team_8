@@ -2,11 +2,11 @@ package model.data_structures;
 
 import model.logic.infoArco;
 
-public class Arco implements Comparable<Arco> {
+public class Arco<K> implements Comparable<Arco<K>> {
 
 	private int v;
 	private int w;
-	private infoArco informacion;
+	private infoArco<K> informacion;
 	
 	 /**
 	  * @param v nodo v
@@ -14,7 +14,7 @@ public class Arco implements Comparable<Arco> {
 	  * @param pInformacion información del arco
 	  * inicializa un arco de v a w 
 	  */
-    public Arco(int v, int w, infoArco pInformacion) {
+    public Arco(int v, int w, infoArco<K> pInformacion) {
         this.v = v;
         this.w = w;
         this.informacion = pInformacion;
@@ -23,7 +23,7 @@ public class Arco implements Comparable<Arco> {
     /**
      * @return la información pertinente del arco
      */
-    public infoArco darInformacion(){
+    public infoArco<K> darInformacion(){
     	return informacion;
     }
     
@@ -31,7 +31,7 @@ public class Arco implements Comparable<Arco> {
      * Cambia la información del arco
      * @param pNuevaInformacion nueva información a ser suministrada en el arco
      */
-    public void cambiarInformacion(infoArco pNuevaInformacion){
+    public void cambiarInformacion(infoArco<K> pNuevaInformacion){
     	informacion = pNuevaInformacion;
     }
     
@@ -72,11 +72,11 @@ public class Arco implements Comparable<Arco> {
 	/**
 	 * Comparador entre arcos por su pedo
 	 */
-	@Override
-	public int compareTo(Arco arg0) {
+	public int compareTo(Arco<K> arg0) {
 		// TODO Auto-generated method stub
 		return Double.compare(this.informacion.darPesoArco(), arg0.informacion.darPesoArco());
 	}
-		
+
+
 
 }
