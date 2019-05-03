@@ -5,6 +5,7 @@ import model.data_structures.GrafoNDPeso;
 import model.data_structures.GrafoNDPesos;
 import model.data_structures.IColaPrioridad;
 import model.data_structures.MaxHeapCP;
+import model.data_structures.MinCP;
 import model.data_structures.Queue;
 import model.data_structures.UnionFind;
 import model.logic.infoArco;
@@ -22,7 +23,7 @@ public class KruskalMST<K, V> {
 	     */
 	    public KruskalMST(GrafoNDPesos<K, V> G) {
 	    	
-	        MaxHeapCP<Arco<K>> pq = new MaxHeapCP<Arco<K>>();
+	        MinCP<Arco<K>> pq = new MinCP<Arco<K>>();
 	        for (Arco<K> e : G.arcos()) {
 	            pq.agregar(e);
 	        }
