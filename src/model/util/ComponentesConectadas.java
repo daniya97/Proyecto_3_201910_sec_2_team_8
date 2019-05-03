@@ -55,7 +55,6 @@ public class ComponentesConectadas<K,V> {
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
     public int id(int v) {
-        validateVertex(v);
         return id[v];
     }
 
@@ -67,7 +66,6 @@ public class ComponentesConectadas<K,V> {
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
     public int size(int v) {
-        validateVertex(v);
         return size[id[v]];
     }
 
@@ -92,18 +90,10 @@ public class ComponentesConectadas<K,V> {
      * @throws IllegalArgumentException unless {@code 0 <= w < V}
      */
     public boolean connected(int v, int w) {
-        validateVertex(v);
-        validateVertex(w);
         return id(v) == id(w);
     }
 
 
-    // throw an IllegalArgumentException unless {@code 0 <= v < V}
-    private void validateVertex(int v) {
-        int V = marked.length;
-        if (v < 0 || v >= V)
-            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V-1));
-    }
 
 
 }

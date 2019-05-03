@@ -1,6 +1,7 @@
 package model.util;
 
 import model.data_structures.Arco;
+import model.data_structures.ArregloDinamico;
 import model.data_structures.GrafoNDPesos;
 import model.data_structures.IndexMinPQ;
 import model.data_structures.LinkedList;
@@ -10,7 +11,7 @@ public class Dijkstra<K,V> {
 
 
 	private double[] distTo;          // distTo[v] = distance  of shortest s->v path
-	private Arco<K>[] edgeTo;            // edgeTo[v] = last edge on shortest s->v path
+	private ArregloDinamico<Arco<K>> edgeTo;            // edgeTo[v] = last edge on shortest s->v path
 	private IndexMinPQ<Double> pq;    // priority queue of vertices
 
 	/**
@@ -29,7 +30,7 @@ public class Dijkstra<K,V> {
 		}
 
 		distTo = new double[G.V()];
-		edgeTo = (Arco<K>[]) new Object[G.V()];
+		edgeTo = new ArregloDinamico<>();
 
 		validateVertex(s);
 
@@ -55,7 +56,7 @@ public class Dijkstra<K,V> {
 		int w = e.other(v);
 		if (distTo[w] > distTo[v] + e.weight()) {
 			distTo[w] = distTo[v] + e.weight();
-			edgeTo[w] = e;
+			edgeTo.cambiarEnPos(w, e); 
 			if (pq.contains(w)) pq.decreaseKey(w, distTo[w]);
 			else                pq.agregar(w, distTo[w]);
 		}
@@ -102,7 +103,7 @@ public class Dijkstra<K,V> {
 		if (!hasPathTo(v)) return null;
 		Stack<Arco<K>> path = new Stack<>();
 		int x = v;
-		for (Arco<K> e = edgeTo[v]; e != null; e = edgeTo[x]) {
+		for (Arco<K> e = edgeTo.darObjeto(v); e != null; e = edgeTo.darObjeto(x)) {
 			path.push(e);
 			x = e.other(x);
 		}
@@ -124,13 +125,13 @@ public class Dijkstra<K,V> {
 		}
 
 		// check that distTo[v] and edgeTo[v] are consistent
-		if (distTo[s] != 0.0 || edgeTo[s] != null) {
+		if (distTo[s] != 0.0 || edgeTo.darObjeto(s) != null) {
 			System.err.println("distTo[s] and edgeTo[s] inconsistent");
 			return false;
 		}
 		for (int v = 0; v < G.V(); v++) {
 			if (v == s) continue;
-			if (edgeTo[v] == null && distTo[v] != Double.POSITIVE_INFINITY) {
+			if (edgeTo.darObjeto(v) == null && distTo[v] != Double.POSITIVE_INFINITY) {
 				System.err.println("distTo[] and edgeTo[] inconsistent");
 				return false;
 			}
@@ -150,8 +151,8 @@ public class Dijkstra<K,V> {
 
 		// check that all edges e = v-w on SPT satisfy distTo[w] == distTo[v] + e.weight()
 		for (int w = 0; w < G.V(); w++) {
-			if (edgeTo[w] == null) continue;
-			Arco<K> e = edgeTo[w];
+			if (edgeTo.darObjeto(w) == null) continue;
+			Arco<K> e = edgeTo.darObjeto(w);
 			if (w != e.either() && w != e.other(e.either())) return false;
 			int v = e.other(w);
 			if (distTo[v] + e.weight() != distTo[w]) {
