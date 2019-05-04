@@ -9,18 +9,36 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import junit.framework.TestCase;
-import model.logic.infoArco;
 import model.vo.esquemaJSON;
 
-public class GrafoNDPeso extends TestCase {
+public class TestGrafoNDPeso extends TestCase {
 	
-	
+	private class IdPesoArco implements InfoArco {
+
+		private int id;
+		private double peso;
+		
+		public IdPesoArco(int id, double peso) {
+			this.id = id;
+			this.peso = peso;
+		}
+
+		@Override
+		public double darPesoArco() {
+			return peso;
+		}
+		
+		public int darIdArco() {
+			return id;
+		}
+		
+	}
 	
 	/*
 	 * Atributos 
 	 */
-	private IGraph<String, String> grafo;
-	private GrafoNDPesos<String, String> grafo1;
+	private IGraph<String, String, IdPesoArco> grafo;
+	private GrafoNDPesos<String, String, IdPesoArco> grafo1;
 	
 	/*
 	 * Escenarios
@@ -32,7 +50,7 @@ public class GrafoNDPeso extends TestCase {
 		grafo.addVertex("Sebastian", "Matematicas");
 		grafo.addVertex("Camilo", "Ingenieria de Sistemas");
 		
-		infoArco<String> nuevoArco = new infoArco<String>(1, 10, "Daniel", "Sebastian");
+		IdPesoArco nuevoArco = new IdPesoArco(1, 10);
 		grafo.addEdge("Daniel", "Sebastian", nuevoArco);
 		
 	}
@@ -49,7 +67,7 @@ public class GrafoNDPeso extends TestCase {
 		grafo1.addVertex("Daniel", "Ingenieria Industrial");
 		grafo1.addVertex("Sebastian", "Matematicas");
 		grafo1.addVertex("Camilo", "Ingenieria de Sistemas");
-		infoArco<String> nuevoArco = new infoArco<String>(1, 10, "Daniel", "Sebastian");
+		IdPesoArco nuevoArco = new IdPesoArco(1, 10);
 		
 		grafo1.addEdge("Daniel", "Sebastian", nuevoArco);
 		
@@ -91,7 +109,7 @@ public class GrafoNDPeso extends TestCase {
 		//Agregar V�rtices y Nodos
 		grafo.addVertex("Maria", "Geociencias");
 		assertTrue("Deber�a tener 4 V�rtices", grafo.V() == 4);
-		infoArco<String> nuevoArco = new infoArco<String>(2, 20, "Daniel", "Maria");
+		IdPesoArco nuevoArco = new IdPesoArco(2, 20);
 		grafo.addEdge("Daniel", "Maria", nuevoArco);
 		assertTrue("No encontr� la informaci�n conrrectamente",grafo.getInfoArc("Maria", "Daniel").darIdArco() == 2);
 		

@@ -29,7 +29,7 @@ public class Manager {
 	/**
 	 * Lista donde se van a cargar los datos de los archivos
 	 */
-	private static IGraph<BigInteger, LatLonCoords> grafoIntersecciones;
+	private static IGraph<BigInteger, LatLonCoords, IdPesoArco> grafoIntersecciones;
 
 
 	/*
@@ -70,7 +70,7 @@ public class Manager {
 		esquemaJSON<BigInteger> auxiliar;
 		BigInteger id;
 		esquemaJSON<BigInteger>[] lista = new esquemaJSON[grafoIntersecciones.V()];
-		LinkedList<Arco<BigInteger>> aux;
+		LinkedList<Arco<IdPesoArco>> aux;
 		BigInteger[] lista2;
 		double lat;
 		double lon;
@@ -84,7 +84,7 @@ public class Manager {
 			lista2 = new BigInteger[aux.darTamanoLista()];
 			
 			contador = 0;
-			for(Arco<BigInteger> s: aux){
+			for(Arco<IdPesoArco> s: aux){
 				lista2[contador] = grafoIntersecciones.encontrarNodo(s.other(i));
 				contador++;
 			}
@@ -149,7 +149,7 @@ public class Manager {
 			for (BigInteger verticeArcId : verticeAct.getAdj()) {
 				if (grafoIntersecciones.getInfoArc(verticeAct.getId(), verticeArcId) == null) {
 					grafoIntersecciones.addEdge(verticeAct.getId(), verticeArcId, 
-						new infoArco<BigInteger>(-1, grafoIntersecciones.getInfoVertex(verticeArcId).haversineD(grafoIntersecciones.getInfoVertex(verticeAct.getId())), verticeAct.getId(), verticeArcId));
+						new IdPesoArco(-1, grafoIntersecciones.getInfoVertex(verticeArcId).haversineD(grafoIntersecciones.getInfoVertex(verticeAct.getId()))));
 					nArcos += 1;
 				}
 			}
@@ -199,7 +199,7 @@ public class Manager {
 	    Iterable<BigInteger> iterableAdj;
 	    BigInteger id1; LatLonCoords coords1;
 	    BigInteger id2; LatLonCoords coords2;
-	    infoArco<BigInteger> arcoAct;
+	    IdPesoArco infoArcoAct;
 	    
 	    //boolean primerEl = true;
 	    for (BigInteger id : grafoIntersecciones) {
@@ -209,15 +209,16 @@ public class Manager {
 				return grafoIntersecciones.adj(id); } };
 
 			for (BigInteger verAdj : iterableAdj) {
-				arcoAct = grafoIntersecciones.getInfoArc(id, verAdj);
+				infoArcoAct = grafoIntersecciones.getInfoArc(id, verAdj);
 				
-				id1 = arcoAct.darKEither();
-				coords1 = grafoIntersecciones.getInfoVertex(id1);
-				id2 = arcoAct.darKOther(id1);
-				coords2 = grafoIntersecciones.getInfoVertex(id2);
+				//id1 = arcoAct.darKEither();
+				coords1 = grafoIntersecciones.getInfoVertex(id);
+				//id2 = arcoAct.darKOther(id1);
+				coords2 = grafoIntersecciones.getInfoVertex(verAdj);
 				
-				if (edgesAgregados.get(new BigInteger[] {id1, id2}) != null) continue;
-				else edgesAgregados.put(new BigInteger[] {id1, id2}, true);
+				if (   edgesAgregados.get(new BigInteger[] {id, verAdj}) != null
+				    || edgesAgregados.get(new BigInteger[] {verAdj, id}) != null ) continue;
+				else edgesAgregados.put(new BigInteger[] {id, verAdj}, true);
 				
 				writer.write("var line_points = [[" + coords1.getLat() + ", " + coords1.getLon() + "] "
 											 + ",[" + coords2.getLat() + ", " + coords2.getLon() + "]];\n");

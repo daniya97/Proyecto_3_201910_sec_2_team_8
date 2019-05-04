@@ -17,7 +17,7 @@ public class LectorXML extends DefaultHandler {
 	/*
 	 * Atributos
 	 */
-	private IGraph<BigInteger, LatLonCoords> grafo;
+	private IGraph<BigInteger, LatLonCoords, IdPesoArco> grafo;
 	
 	private ITablaHash<BigInteger, LatLonCoords> verticesPosibles;
 	public boolean insideWay = false;
@@ -32,7 +32,7 @@ public class LectorXML extends DefaultHandler {
 	 * Metodos de DefaultHandler
 	 */
 	public void startDocument() throws SAXException {
-		grafo = new GrafoNDPesos<BigInteger, LatLonCoords>();
+		grafo = new GrafoNDPesos<BigInteger, LatLonCoords, IdPesoArco>();
 		verticesPosibles = new LinProbTH<BigInteger, LatLonCoords>(11);
 	}
 	
@@ -83,7 +83,7 @@ public class LectorXML extends DefaultHandler {
 				
 				// Agregar arco entre ellos si no existe
 				if (grafo.getInfoArc(anteriorK, vertexK) == null) {
-					grafo.addEdge(anteriorK, vertexK, new infoArco<BigInteger>(wayId, coordsPre.haversineD(coordsAct), anteriorK, vertexK));
+					grafo.addEdge(anteriorK, vertexK, new IdPesoArco(wayId, coordsPre.haversineD(coordsAct)));
 				}
 			}
 			
@@ -103,7 +103,7 @@ public class LectorXML extends DefaultHandler {
 	/*
 	 * Metodos para interaccion con el Manager
 	 */
-	public IGraph<BigInteger, LatLonCoords> darGrafo(){
+	public IGraph<BigInteger, LatLonCoords, IdPesoArco> darGrafo(){
 		return grafo;
 	}
 }

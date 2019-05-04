@@ -3,11 +3,12 @@ package model.util;
 import junit.framework.TestCase;
 import model.data_structures.Arco;
 import model.data_structures.GrafoNDPesos;
+import model.data_structures.PesoArco;
 import model.logic.infoArco;
 
 public class AlgorithmsTest  extends TestCase{
 
-	private GrafoNDPesos<Integer, Integer> grafo;
+	private GrafoNDPesos<Integer, Integer, PesoArco> grafo;
 
 	
 	private void setUpEscenario0() {
@@ -24,22 +25,22 @@ public class AlgorithmsTest  extends TestCase{
 		
 		
 		
-		infoArco<Integer> nuevoArco = new infoArco<Integer>(1, 0.16, 0, 7);
-		infoArco<Integer> nuevoArco1 = new infoArco<Integer>(1, 0.17, 2, 3);
-		infoArco<Integer> nuevoArco2 = new infoArco<Integer>(1, 0.19, 1, 7);
-		infoArco<Integer> nuevoArco3 = new infoArco<Integer>(1, 0.26, 0, 2);
-		infoArco<Integer> nuevoArco4 = new infoArco<Integer>(1, 0.28, 5, 7);
-		infoArco<Integer> nuevoArco5 = new infoArco<Integer>(1, 0.29, 1, 3);
-		infoArco<Integer> nuevoArco6 = new infoArco<Integer>(1, 0.32, 1, 5);
-		infoArco<Integer> nuevoArco7 = new infoArco<Integer>(1, 0.34, 2, 7);
-		infoArco<Integer> nuevoArco8 = new infoArco<Integer>(1, 0.35, 4, 5);
-		infoArco<Integer> nuevoArco9 = new infoArco<Integer>(1, 0.36, 1, 2);
-		infoArco<Integer> nuevoArco10 = new infoArco<Integer>(1, 0.37, 4, 7);
-		infoArco<Integer> nuevoArco11= new infoArco<Integer>(1, 0.38, 0, 4);
-		infoArco<Integer> nuevoArco12 = new infoArco<Integer>(1, 0.40, 6, 2);
-		infoArco<Integer> nuevoArco13 = new infoArco<Integer>(1, 0.52, 3, 6);
-		infoArco<Integer> nuevoArco14 = new infoArco<Integer>(1, 0.58, 6, 0);
-		infoArco<Integer> nuevoArco15 = new infoArco<Integer>(1, 0.93, 6, 4);
+		PesoArco nuevoArco = new PesoArco(0.16);
+		PesoArco nuevoArco1 = new PesoArco(0.17);
+		PesoArco nuevoArco2 = new PesoArco(0.19);
+		PesoArco nuevoArco3 = new PesoArco(0.26);
+		PesoArco nuevoArco4 = new PesoArco(0.28);
+		PesoArco nuevoArco5 = new PesoArco(0.30);
+		PesoArco nuevoArco6 = new PesoArco(0.32);
+		PesoArco nuevoArco7 = new PesoArco(0.34);
+		PesoArco nuevoArco8 = new PesoArco(0.35);
+		PesoArco nuevoArco9 = new PesoArco(0.36);
+		PesoArco nuevoArco10 = new PesoArco(0.37);
+		PesoArco nuevoArco11= new PesoArco(0.38);
+		PesoArco nuevoArco12 = new PesoArco(0.40);
+		PesoArco nuevoArco13 = new PesoArco(0.52);
+		PesoArco nuevoArco14 = new PesoArco(0.58);
+		PesoArco nuevoArco15 = new PesoArco(0.93);
 		
 		
 		
@@ -175,8 +176,13 @@ grafo = new GrafoNDPesos<>();
 		
 		KruskalMST<Integer, Integer> nuevo = new KruskalMST(grafo);
 		
+<<<<<<< HEAD
 		for(Arco<Integer> s: nuevo.edges()){
 			System.out.println(s);
+=======
+		for(Arco<PesoArco> s: nuevo.edges()){
+			System.out.println(s.darInformacion().darPesoArco());
+>>>>>>> c85bc2619c735a69ac9f8b1c97d0dc86fef3adea
 		}
 		
 //		
