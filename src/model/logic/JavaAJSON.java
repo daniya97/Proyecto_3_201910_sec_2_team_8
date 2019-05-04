@@ -2,10 +2,6 @@ package model.logic;
 
 
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
-
-import model.data_structures.GrafoNDPeso;
 
 
 public class JavaAJSON {

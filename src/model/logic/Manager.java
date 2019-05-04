@@ -29,7 +29,7 @@ public class Manager {
 	/**
 	 * Lista donde se van a cargar los datos de los archivos
 	 */
-	private static IGraph<BigInteger, LatLonCoords> grafoIntersecciones;
+	private static IGraph<BigInteger, LatLonCoords, IdPesoArco> grafoIntersecciones;
 
 
 	/*
@@ -70,7 +70,7 @@ public class Manager {
 		esquemaJSON<BigInteger> auxiliar;
 		BigInteger id;
 		esquemaJSON<BigInteger>[] lista = new esquemaJSON[grafoIntersecciones.V()];
-		LinkedList<Arco<BigInteger>> aux;
+		LinkedList<Arco<IdPesoArco>> aux;
 		BigInteger[] lista2;
 		double lat;
 		double lon;
@@ -84,7 +84,7 @@ public class Manager {
 			lista2 = new BigInteger[aux.darTamanoLista()];
 			
 			contador = 0;
-			for(Arco<BigInteger> s: aux){
+			for(Arco<IdPesoArco> s: aux){
 				lista2[contador] = grafoIntersecciones.encontrarNodo(s.other(i));
 				contador++;
 			}
@@ -149,7 +149,7 @@ public class Manager {
 			for (BigInteger verticeArcId : verticeAct.getAdj()) {
 				if (grafoIntersecciones.getInfoArc(verticeAct.getId(), verticeArcId) == null) {
 					grafoIntersecciones.addEdge(verticeAct.getId(), verticeArcId, 
-						new infoArco<BigInteger>(-1, grafoIntersecciones.getInfoVertex(verticeArcId).haversineD(grafoIntersecciones.getInfoVertex(verticeAct.getId())), verticeAct.getId(), verticeArcId));
+						new IdPesoArco(-1, grafoIntersecciones.getInfoVertex(verticeArcId).haversineD(grafoIntersecciones.getInfoVertex(verticeAct.getId()))));
 					nArcos += 1;
 				}
 			}
@@ -199,7 +199,7 @@ public class Manager {
 	    Iterable<BigInteger> iterableAdj;
 	    BigInteger id1; LatLonCoords coords1;
 	    BigInteger id2; LatLonCoords coords2;
-	    infoArco<BigInteger> arcoAct;
+	    Arco<IdPesoArco> arcoAct;
 	    
 	    //boolean primerEl = true;
 	    for (BigInteger id : grafoIntersecciones) {
