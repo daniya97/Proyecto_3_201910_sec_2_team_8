@@ -3,7 +3,7 @@ package model.data_structures;
 import java.util.Iterator;
 
 
-public interface IGraph<K, IV, IA extends InfoArco> extends Iterable<K> {
+public interface IGraph<K, IV, A extends IArco<K>> extends Iterable<K> {
 	
 	
 	/**
@@ -27,7 +27,7 @@ public interface IGraph<K, IV, IA extends InfoArco> extends Iterable<K> {
 	/**
 	 * Adiciona un arco no dirigido entre iD vertexIni y idVertexFin con un ID �nico. La informaci�n est� en infoArc
 	 */
-	void addEdge(K idVertexIni, K idVertexFin, IA infoArc);
+	void addEdge(K idVertexIni, K idVertexFin, A infoArc);
 	
 	
 	/**
@@ -44,12 +44,12 @@ public interface IGraph<K, IV, IA extends InfoArco> extends Iterable<K> {
 	/**
 	 * Obtiene la informaci�n acerca de un arco
 	 */
-	IA getInfoArc(K idVertexIni, K idVertexFin);
+	A getInfoArc(K idVertexIni, K idVertexFin);
 	
 	/**
 	 * Modificar la informaci�n del arco eentre los v�rtices idVertexIni e idVertexFin
 	 */
-	void setInfoArc(K idVertexIni, K idVertexFin, IA infoArc);
+	void setInfoArc(K idVertexIni, K idVertexFin, A infoArc);
 	
 	/**
 	 * Retorna los identificadores de los v�rtices adyacentes a idVertex
@@ -71,7 +71,7 @@ public interface IGraph<K, IV, IA extends InfoArco> extends Iterable<K> {
 	 */
 	public K encontrarNodo(int numNodo);
 	
-	public ITablaHash<Integer, LinkedList<Arco<IA>>> darRepresentacion();
+	public ITablaHash<Integer, LinkedList<A>> darRepresentacion();
 	
 
 }

@@ -8,14 +8,14 @@ import model.logic.infoArco;
 import model.vo.esquemaJSON;
 
 
-public class GrafoNDPesos<K, IV, IA extends InfoArco> implements IGraph<K, IV, IA> {
+public class GrafoNDPesos<K, IV, A extends IArco<K>> implements IGraph<K, IV, A> {
 
 	private int V;
 	private int E;
 	private ITablaHash<K, Integer> tablaNodoANum;
 	private IArregloDinamico<IV> informacionNodos;
 	private IArregloDinamico<K> tablaNumANodo;
-	private ITablaHash<Integer, LinkedList<Arco<IA>>> adj;
+	private ITablaHash<Integer, LinkedList<A>> adj;
 
 	
 	private static final int cte = 10;
@@ -57,7 +57,7 @@ public class GrafoNDPesos<K, IV, IA extends InfoArco> implements IGraph<K, IV, I
 	}
 
 	@Override
-	public void addEdge(K idVertexIni, K idVertexFin, IA infoArc) {
+	public void addEdge(K idVertexIni, K idVertexFin, A infoArc) {
 		// TODO Auto-generated method stub
 
 
@@ -65,10 +65,10 @@ public class GrafoNDPesos<K, IV, IA extends InfoArco> implements IGraph<K, IV, I
 		int nodoInicial = tablaNodoANum.get(idVertexIni); 
 		int nodoFinal = tablaNodoANum.get(idVertexFin); 
 
-		Arco<IA> nuevo = new Arco<IA>(nodoInicial, nodoFinal, infoArc);
+		A nuevo = new A(nodoInicial, nodoFinal, infoArc);
 		//Nodo inicial
 		if(adj.get(nodoInicial) == null){
-			LinkedList<Arco<IA>> nuevaLista = new LinkedList<Arco<IA>>(nuevo);
+			LinkedList<A> nuevaLista = new LinkedList<A>(nuevo);
 			adj.put(nodoInicial, nuevaLista);
 
 		}else{
@@ -77,7 +77,7 @@ public class GrafoNDPesos<K, IV, IA extends InfoArco> implements IGraph<K, IV, I
 
 		//Nodo Final
 		if(adj.get(nodoFinal) == null){
-			LinkedList<Arco<IA>> nuevaLista = new LinkedList<>(nuevo);
+			LinkedList<A> nuevaLista = new LinkedList<>(nuevo);
 			adj.put(nodoFinal, nuevaLista);
 
 		}else{
@@ -109,10 +109,10 @@ public class GrafoNDPesos<K, IV, IA extends InfoArco> implements IGraph<K, IV, I
 		int nodoInicial = encontrarNumNodo(idVertexIni); 
 		int nodoFinal =  encontrarNumNodo(idVertexFin); 
 		IA respuesta = null;
-		LinkedList<Arco<IA>> aux = adj.get(nodoInicial);
+		LinkedList<A> aux = adj.get(nodoInicial);
 
 		if(aux==null) return null;
-		for(Arco<IA> e: aux){
+		for(A e: aux){
 			if(e.other(nodoInicial)==nodoFinal){
 				return e.darInformacion();//.darInformacion();
 			}
@@ -127,10 +127,10 @@ public class GrafoNDPesos<K, IV, IA extends InfoArco> implements IGraph<K, IV, I
 
 		int nodoInicial = tablaNodoANum.get(idVertexIni); 
 		int nodoFinal = tablaNodoANum.get(idVertexFin); 
-		LinkedList<Arco<IA>> aux = adj.get(nodoInicial);
+		LinkedList<A> aux = adj.get(nodoInicial);
 
 		if(aux==null) return;
-		for(Arco<IA> e: aux){
+		for(A e: aux){
 			if(e.other(nodoInicial)==nodoFinal){
 				e.cambiarInformacion(infoArc);
 				return;
@@ -163,8 +163,8 @@ public class GrafoNDPesos<K, IV, IA extends InfoArco> implements IGraph<K, IV, I
 		return new Iterator<K>() {
 
 			int numNodo = tablaNodoANum.get(idVertex);
-			LinkedList<Arco<IA>> aux = adj.get(numNodo);
-			Nodo<Arco<IA>> siguiente = aux.darPrimerNodo();
+			LinkedList<A> aux = adj.get(numNodo);
+			Nodo<A> siguiente = aux.darPrimerNodo();
 
 			@Override
 			public boolean hasNext() {
@@ -204,7 +204,7 @@ public class GrafoNDPesos<K, IV, IA extends InfoArco> implements IGraph<K, IV, I
 	}
 
 	
-	public ITablaHash<Integer, LinkedList<Arco<IA>>> darRepresentacion(){
+	public ITablaHash<Integer, LinkedList<A>> darRepresentacion(){
 		return adj;
 	}
 	
