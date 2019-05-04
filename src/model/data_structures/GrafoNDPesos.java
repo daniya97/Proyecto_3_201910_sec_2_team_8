@@ -3,10 +3,6 @@ package model.data_structures;
 
 import java.util.Iterator;
 
-import model.logic.LatLonCoords;
-import model.logic.infoArco;
-import model.vo.esquemaJSON;
-
 
 public class GrafoNDPesos<K, IV, IA extends InfoArco> implements IGraph<K, IV, IA> {
 
@@ -108,13 +104,12 @@ public class GrafoNDPesos<K, IV, IA extends InfoArco> implements IGraph<K, IV, I
 	public IA getInfoArc(K idVertexIni, K idVertexFin) {
 		int nodoInicial = encontrarNumNodo(idVertexIni); 
 		int nodoFinal =  encontrarNumNodo(idVertexFin); 
-		IA respuesta = null;
 		LinkedList<Arco<IA>> aux = adj.get(nodoInicial);
 
 		if(aux==null) return null;
 		for(Arco<IA> e: aux){
 			if(e.other(nodoInicial)==nodoFinal){
-				return e.darInformacion();//.darInformacion();
+				return e.darInformacion();
 			}
 		}
 
