@@ -1,6 +1,6 @@
 package model.data_structures;
 
-public class Arco<IA extends InfoArco> implements Comparable<Arco<? extends InfoArco>> {
+public class Arco<IA extends InfoArco> implements Comparable<Arco<IA>> {
 
 	private int v;
 	private int w;
@@ -69,6 +69,6 @@ public class Arco<IA extends InfoArco> implements Comparable<Arco<? extends Info
 	 * Comparador entre arcos por su peso
 	 */
 	@Override
-	public int compareTo(Arco<? extends InfoArco> arg0) {
+	public int compareTo(Arco<IA> arg0) {
 		return Double.compare(this.informacion.darPesoArco(), arg0.informacion.darPesoArco());
 	}}
