@@ -56,7 +56,10 @@ public interface IGraph<K, IV, IA extends InfoArco> extends Iterable<K> {
 	 */
 	Iterator<K> adj(K idVertex);
 	
-	
+	/**
+	 * Permite iterar sobre los arcos
+	 */
+	Iterable<Arco<IA>> arcos();
 	
 	/**
 	 * Retorna el numero (int) del nodo dado el id

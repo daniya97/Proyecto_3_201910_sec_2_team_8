@@ -2,10 +2,12 @@ package model.logic;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.math.BigInteger;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -14,25 +16,68 @@ import org.xml.sax.*;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.opencsv.CSVReader;
 
 import model.data_structures.Arco;
 import model.data_structures.ArregloDinamico;
 import model.data_structures.GrafoNDPesos;
 import model.data_structures.IGraph;
+import model.data_structures.IQueue;
 import model.data_structures.ITablaHash;
 import model.data_structures.IdPesoArco;
 import model.data_structures.LinProbTH;
 import model.data_structures.LinkedList;
+import model.data_structures.MaxHeapCP;
+import model.data_structures.Queue;
+import model.util.Sort;
+import model.vo.Coordenadas;
+import model.vo.EstadisticasCargaInfracciones;
+import model.vo.VOMovingViolations;
 import model.vo.esquemaJSON;
 
 public class Manager {
-
+	/*
+	 ***************************************************************************************
+	 * Atributos
+	 ***************************************************************************************
+	 */
+	/**
+	 * Nombre de Json con mapa a cargar 
+	 */
+	private final String NOMBRE_MAPA_JSON = "persistenciaJsonMap.json";
+	
 	/**
 	 * Lista donde se van a cargar los datos de los archivos
 	 */
 	private static IGraph<BigInteger, LatLonCoords, IdPesoArco> grafoIntersecciones;
 
+	/**
+	 * Numero actual del semestre cargado
+	 */
+	private static int semestreCargado = -1;
 
+	/**
+	 * Numero infracciones cargadas
+	 */
+	private static int nInfraccionesCargadas = -1;
+
+	/**
+	 * X minimo de infraccion
+	 */
+	private static double xMin;
+	/**
+	 * Y minimo de infraccion
+	 */
+	private static double yMin;
+	/**
+	 * X maximo de infraccion
+	 */
+	private static double xMax;
+	/**
+	 * Y maximo de infraccion
+	 */
+	private static double yMax;
+	
 	/*
 	 * ************************************************************************************
 	 * 	Metodos
@@ -46,7 +91,11 @@ public class Manager {
 		
 
 	}
-
+	
+	/*
+	 * Carga de datos
+	 */
+	
 
 	public Integer[] loadXML(String nombreXML) throws ParserConfigurationException, SAXException, IOException {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -117,47 +166,7 @@ public class Manager {
 	}
 
 
-	public int[] cargarDeJson(String nombreJsonG) throws IOException {
-		// TODO Auto-generated method stub
-		VertexSummary verticeAct;
-		
-		Gson gson = new Gson();
-		JReader reader = new JReader(new File("data/"+nombreJsonG));
-		grafoIntersecciones = new GrafoNDPesos<>();
-		
-		int nVertices = 0;
-		// Lee linea a linea el archivo para crear las infracciones y cargarlas a la lista
-		for (String json : reader) {
-			verticeAct = gson.fromJson(json, VertexSummary.class);
-			
-			/*
-			  System.out.println(verticeAct.getId()); for (int i = 0; i <
-			  verticeAct.getAdj().length; i++) { System.out.println("Adj " + i + ": " +
-			  verticeAct.getAdj()[i]); 
-			  }
-			 */
-			if (grafoIntersecciones.getInfoVertex(verticeAct.getId()) == null) {
-				grafoIntersecciones.addVertex(verticeAct.getId(), new LatLonCoords(verticeAct.getLat(), verticeAct.getLon()));
-				nVertices += 1;
-			}
-		}
-		
-		reader = new JReader(new File("data/"+nombreJsonG));
-		int nArcos = 0;
-		for (String json : reader) {
-			verticeAct = gson.fromJson(json, VertexSummary.class);
-			
-			for (BigInteger verticeArcId : verticeAct.getAdj()) {
-				if (grafoIntersecciones.getInfoArc(verticeAct.getId(), verticeArcId) == null) {
-					grafoIntersecciones.addEdge(verticeAct.getId(), verticeArcId, 
-						new IdPesoArco(-1, grafoIntersecciones.getInfoVertex(verticeArcId).haversineD(grafoIntersecciones.getInfoVertex(verticeAct.getId()))));
-					nArcos += 1;
-				}
-			}
-		}
-		
-		return new int[] {nVertices, nArcos};
-	}
+	
 	
 	public File crearMapa(String nombreHTML) throws IOException{
 		// TODO
@@ -241,4 +250,9 @@ public class Manager {
 	    
 		return archivo;
 	}
+	
+	/*
+	 * Metodos ayudantes 
+	 */
+	
 }
