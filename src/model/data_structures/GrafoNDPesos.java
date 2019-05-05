@@ -13,7 +13,7 @@ public class GrafoNDPesos<K, IV, IA extends InfoArco> implements IGraph<K, IV, I
 	private IArregloDinamico<K> tablaNumANodo;
 	private ITablaHash<Integer, LinkedList<Arco<IA>>> adj;
 
-	
+
 	private static final int cte = 10;
 
 
@@ -198,15 +198,38 @@ public class GrafoNDPesos<K, IV, IA extends InfoArco> implements IGraph<K, IV, I
 		return tablaNumANodo.darObjeto(numNodo);
 	}
 
-	
+
 	public ITablaHash<Integer, LinkedList<Arco<IA>>> darRepresentacion(){
 		return adj;
 	}
 
 
 	public Iterable<Arco<IA>> arcos() {
-		// TODO Auto-generated method stub
-		return null;
+
+		Queue<Arco<IA>> lista = new Queue<Arco<IA>>();
+
+		for (int v = 0; v < V; v++) {
+			int selfLoops = 0;
+
+
+			if(adj.get(v)!=null){
+
+				for (Arco<IA> e : adj.get(v)) {
+					if (e.other(v) > v) {
+						lista.enqueue(e);
+					}
+					//EVITAR SELF LOOPS
+					else if (e.other(v) == v) {
+						if (selfLoops % 2 == 0) lista.enqueue(e);
+						selfLoops++;
+					}
+				}
+
+			}
+
+		}
+		return lista;
+
 	}
-	
+
 }

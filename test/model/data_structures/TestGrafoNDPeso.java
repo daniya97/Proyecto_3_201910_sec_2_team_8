@@ -127,6 +127,16 @@ public class TestGrafoNDPeso extends TestCase {
 		
 		assertTrue("El nï¿½mero de nodos conectados con Daniel no es correcto", contador == 2);
 		
+		
+		contador = 0;
+		//Iterador sobre arcos
+		for(Arco<IdPesoArco> s: grafo.arcos()){
+			contador++;
+			assertTrue("El iterador de arcos no funciona correctamete", s.weight() == 10 || s.weight() == 20);
+		}
+		
+		assertTrue("Sólo hay 2 arcos", contador == 2);
+		
 	}
 	
 	public void testEscenario1(){
