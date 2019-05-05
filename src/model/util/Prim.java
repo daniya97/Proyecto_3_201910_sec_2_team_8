@@ -6,17 +6,18 @@ import model.data_structures.Arco;
 import model.data_structures.ArregloDinamico;
 import model.data_structures.GrafoNDPesos;
 import model.data_structures.IndexMinPQ;
+import model.data_structures.InfoArco;
 import model.data_structures.LinkedList;
 import model.data_structures.Queue;
 import model.data_structures.UnionFind;
 
-public class Prim<K,V> {
+public class Prim<K,V, IA extends InfoArco> {
 	
 	//FALTA INDEXMINPQ
 	
 	 private static final double FLOATING_POINT_EPSILON = 1E-12;
 
-	    private ArregloDinamico<Arco<K>> edgeTo;        // edgeTo[v] = shortest edge from tree vertex to non-tree vertex
+	    private ArregloDinamico<Arco<IA>> edgeTo;        // edgeTo[v] = shortest edge from tree vertex to non-tree vertex
 	    private double[] distTo;      // distTo[v] = weight of shortest such edge
 	    private boolean[] marked;     // marked[v] = true if v on tree, false otherwise
 	    private IndexMinPQ<Double> pq;
@@ -25,7 +26,7 @@ public class Prim<K,V> {
 	     * Compute a minimum spanning tree (or forest) of an edge-weighted graph.
 	     * @param G the edge-weighted graph
 	     */
-		public Prim(GrafoNDPesos<K, V> G) {
+		public Prim(GrafoNDPesos<K, V, IA> G) {
 	    	edgeTo = new ArregloDinamico<>(G.V());
 	        distTo = new double[G.V()];
 	        marked = new boolean[G.V()];
@@ -45,7 +46,7 @@ public class Prim<K,V> {
 	    }
 
 	    // run Prim's algorithm in graph G, starting from vertex s
-	    private void prim(GrafoNDPesos<K, V> G, int s) {
+	    private void prim(GrafoNDPesos<K, V, IA> G, int s) {
 	        distTo[s] = 0.0;
 	        pq.agregar(s, distTo[s]);
 	        while (!pq.esVacia()) {
@@ -55,10 +56,10 @@ public class Prim<K,V> {
 	    }
 
 	    // scan vertex v
-	    private void scan(GrafoNDPesos<K, V> G, int v) {
+	    private void scan(GrafoNDPesos<K, V, IA> G, int v) {
 	        marked[v] = true;
-	        LinkedList<Arco<K>> aux = G.darRepresentacion().get(v);
-	        for (Arco<K> e : aux) {
+	        LinkedList<Arco<IA>> aux = G.darRepresentacion().get(v);
+	        for (Arco<IA> e : aux) {
 	            int w = e.other(v);
 	            if (marked[w]) continue;         // v-w is obsolete edge
 	            if (e.weight() < distTo[w]) {
@@ -75,10 +76,10 @@ public class Prim<K,V> {
 	     * @return the edges in a minimum spanning tree (or forest) as
 	     *    an iterable of edges
 	     */
-	    public Iterable<Arco<K>> arcos() {
-	        Queue<Arco<K>> mst = new Queue<>();
+	    public Iterable<Arco<IA>> arcos() {
+	        Queue<Arco<IA>> mst = new Queue<>();
 	        for (int v = 0; v < edgeTo.darTamano(); v++) {
-	        	Arco<K> e = edgeTo.darObjeto(v);
+	        	Arco<IA> e = edgeTo.darObjeto(v);
 	            if (e != null) {
 	                mst.enqueue(e);
 	            }
@@ -92,18 +93,18 @@ public class Prim<K,V> {
 	     */
 	    public double weight() {
 	        double weight = 0.0;
-	        for (Arco<K> e : arcos())
+	        for (Arco<IA> e : arcos())
 	            weight += e.weight();
 	        return weight;
 	    }
 
 
 	    // check optimality conditions (takes time proportional to E V lg* V)
-	    private boolean check(GrafoNDPesos<K, V> G) {
+	    private boolean check(GrafoNDPesos<K, V, IA> G) {
 
 	        // check weight
 	        double totalWeight = 0.0;
-	        for (Arco<K> e : G.arcos()) {
+	        for (Arco<IA> e : G.arcos()) {
 	            totalWeight += e.weight();
 	        }
 	        if (Math.abs(totalWeight - weight()) > FLOATING_POINT_EPSILON) {
@@ -113,7 +114,7 @@ public class Prim<K,V> {
 
 	        // check that it is acyclic
 	        UnionFind uf = new UnionFind(G.V());
-	        for (Arco<K> e : arcos()) {
+	        for (Arco<IA> e : arcos()) {
 	            int v = e.either(), w = e.other(v);
 	            if (uf.connected(v, w)) {
 	                System.err.println("Not a forest");
@@ -123,7 +124,7 @@ public class Prim<K,V> {
 	        }
 
 	        // check that it is a spanning forest
-	        for (Arco<K> e : G.arcos()) {
+	        for (Arco<IA> e : G.arcos()) {
 	            int v = e.either(), w = e.other(v);
 	            if (!uf.connected(v, w)) {
 	                System.err.println("Not a spanning forest");
@@ -132,17 +133,17 @@ public class Prim<K,V> {
 	        }
 
 	        // check that it is a minimal spanning forest (cut optimality conditions)
-	        for (Arco<K> e : G.arcos()) {
+	        for (Arco<IA> e : G.arcos()) {
 
 	            // all edges in MST except e
 	            uf = new UnionFind(G.V());
-	            for (Arco<K> f : arcos()) {
+	            for (Arco<IA> f : arcos()) {
 	                int x = f.either(), y = f.other(x);
 	                if (f != e) uf.union(x, y);
 	            }
 
 	            // check that e is min weight edge in crossing cut
-	            for (Arco<K> f : G.arcos()) {
+	            for (Arco<IA> f : G.arcos()) {
 	                int x = f.either(), y = f.other(x);
 	                if (!uf.connected(x, y)) {
 	                    if (f.weight() < e.weight()) {
