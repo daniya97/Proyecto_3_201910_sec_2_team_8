@@ -4,10 +4,10 @@ package model.logic;
 import com.google.gson.Gson;
 
 
-public class JavaAJSON {
+public class borrarJavaAJSON {
 	
 	
-	public JavaAJSON(){
+	public borrarJavaAJSON(){
 		
 		
 		Gson gson = new Gson();

@@ -8,7 +8,6 @@ import model.data_structures.MaxHeapCP;
 import model.data_structures.MinCP;
 import model.data_structures.Queue;
 import model.data_structures.UnionFind;
-import model.logic.infoArco;
 
 public class KruskalMST<K, V,IA extends InfoArco> {
 	

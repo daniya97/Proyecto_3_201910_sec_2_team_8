@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 import model.data_structures.Arco;
 import model.data_structures.GrafoNDPesos;
 import model.data_structures.PesoArco;
-import model.logic.infoArco;
 
 public class AlgorithmsTest  extends TestCase{
 
