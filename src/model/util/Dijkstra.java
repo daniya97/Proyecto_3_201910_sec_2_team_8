@@ -4,14 +4,15 @@ import model.data_structures.Arco;
 import model.data_structures.ArregloDinamico;
 import model.data_structures.GrafoNDPesos;
 import model.data_structures.IndexMinPQ;
+import model.data_structures.InfoArco;
 import model.data_structures.LinkedList;
 import model.data_structures.Stack;
 
-public class Dijkstra<K,V> {
+public class Dijkstra<K,V, IA extends InfoArco> {
 
 
 	private double[] distTo;          // distTo[v] = distance  of shortest s->v path
-	private ArregloDinamico<Arco<K>> edgeTo;            // edgeTo[v] = last edge on shortest s->v path
+	private ArregloDinamico<Arco<IA>> edgeTo;            // edgeTo[v] = last edge on shortest s->v path
 	private IndexMinPQ<Double> pq;    // priority queue of vertices
 
 	/**
@@ -23,8 +24,8 @@ public class Dijkstra<K,V> {
 	 * @throws IllegalArgumentException if an edge weight is negative
 	 * @throws IllegalArgumentException unless {@code 0 <= s < V}
 	 */
-	public Dijkstra(GrafoNDPesos<K, V> G, int s) {
-		for (Arco<K> e : G.arcos()) {
+	public Dijkstra(GrafoNDPesos<K, V, IA> G, int s) {
+		for (Arco<IA> e : G.arcos()) {
 			if (e.weight() < 0)
 				throw new IllegalArgumentException("edge " + e + " has negative weight");
 		}
@@ -43,8 +44,8 @@ public class Dijkstra<K,V> {
 		pq.agregar(s, distTo[s]);
 		while (!pq.esVacia()) {
 			int v = pq.delMin();
-			LinkedList<Arco<K>> aux = G.darRepresentacion().get(v);
-			for (Arco<K> e : aux) {
+			LinkedList<Arco<IA>> aux = G.darRepresentacion().get(v);
+			for (Arco<IA> e : aux) {
 				relax(e, v);
 			}
 
@@ -52,7 +53,7 @@ public class Dijkstra<K,V> {
 	}
 
 	// relax edge e and update pq if changed
-	private void relax(Arco<K> e, int v) {
+	private void relax(Arco<IA> e, int v) {
 		int w = e.other(v);
 		if (distTo[w] > distTo[v] + e.weight()) {
 			distTo[w] = distTo[v] + e.weight();
@@ -98,12 +99,12 @@ public class Dijkstra<K,V> {
 	 *         {@code null} if no such path
 	 * @throws IllegalArgumentException unless {@code 0 <= v < V}
 	 */
-	public Iterable<Arco<K>> pathTo(int v) {
+	public Iterable<Arco<IA>> pathTo(int v) {
 		validateVertex(v);
 		if (!hasPathTo(v)) return null;
-		Stack<Arco<K>> path = new Stack<>();
+		Stack<Arco<IA>> path = new Stack<>();
 		int x = v;
-		for (Arco<K> e = edgeTo.darObjeto(v); e != null; e = edgeTo.darObjeto(x)) {
+		for (Arco<IA> e = edgeTo.darObjeto(v); e != null; e = edgeTo.darObjeto(x)) {
 			path.push(e);
 			x = e.other(x);
 		}
@@ -114,10 +115,10 @@ public class Dijkstra<K,V> {
 	// check optimality conditions:
 	// (i) for all edges e = v-w:            distTo[w] <= distTo[v] + e.weight()
 	// (ii) for all edge e = v-w on the SPT: distTo[w] == distTo[v] + e.weight()
-	private boolean check(GrafoNDPesos<K, V> G, int s) {
+	private boolean check(GrafoNDPesos<K, V, IA> G, int s) {
 
 		// check that edge weights are nonnegative
-		for (Arco<K> e : G.arcos()) {
+		for (Arco<IA> e : G.arcos()) {
 			if (e.weight() < 0) {
 				System.err.println("negative edge weight detected");
 				return false;
@@ -139,8 +140,8 @@ public class Dijkstra<K,V> {
 
 		// check that all edges e = v-w satisfy distTo[w] <= distTo[v] + e.weight()
 		for (int v = 0; v < G.V(); v++) {
-			LinkedList<Arco<K>> aux = G.darRepresentacion().get(v);
-	        for (Arco<K> e : aux) {
+			LinkedList<Arco<IA>> aux = G.darRepresentacion().get(v);
+	        for (Arco<IA> e : aux) {
 				int w = e.other(v);
 				if (distTo[v] + e.weight() < distTo[w]) {
 					System.err.println("edge " + e + " not relaxed");
@@ -152,7 +153,7 @@ public class Dijkstra<K,V> {
 		// check that all edges e = v-w on SPT satisfy distTo[w] == distTo[v] + e.weight()
 		for (int w = 0; w < G.V(); w++) {
 			if (edgeTo.darObjeto(w) == null) continue;
-			Arco<K> e = edgeTo.darObjeto(w);
+			Arco<IA> e = edgeTo.darObjeto(w);
 			if (w != e.either() && w != e.other(e.either())) return false;
 			int v = e.other(w);
 			if (distTo[v] + e.weight() != distTo[w]) {

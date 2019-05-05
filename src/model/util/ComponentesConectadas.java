@@ -2,9 +2,10 @@ package model.util;
 
 import model.data_structures.Arco;
 import model.data_structures.GrafoNDPesos;
+import model.data_structures.InfoArco;
 import model.data_structures.LinkedList;
 
-public class ComponentesConectadas<K,V> {
+public class ComponentesConectadas<K, V> {
 	
 	private boolean[] marked;   // marked[v] = has vertex v been marked?
     private int[] id;           // id[v] = id of connected component containing v
@@ -18,7 +19,7 @@ public class ComponentesConectadas<K,V> {
      *
      * @param G the edge-weighted graph
      */
-    public ComponentesConectadas(GrafoNDPesos<K, V> G) {
+    public <IA extends InfoArco> ComponentesConectadas(GrafoNDPesos<K, V, IA> G) {
         marked = new boolean[G.V()];
         id = new int[G.V()];
         size = new int[G.V()];
@@ -32,13 +33,13 @@ public class ComponentesConectadas<K,V> {
 
 
     // depth-first search for an EdgeWeightedGraph
-    private void dfs(GrafoNDPesos<K, V> G, int v) {
+    private <IA extends InfoArco> void dfs(GrafoNDPesos<K, V, IA> G, int v) {
         marked[v] = true;
         id[v] = count;
         size[count]++;
         
-        LinkedList<Arco<K>> aux = G.darRepresentacion().get(v);
-        for (Arco<K> e : aux) {
+        LinkedList<Arco<IA>> aux = G.darRepresentacion().get(v);
+        for (Arco<IA> e : aux) {
             int w = e.other(v);
             if (!marked[w]) {
                 dfs(G, w);

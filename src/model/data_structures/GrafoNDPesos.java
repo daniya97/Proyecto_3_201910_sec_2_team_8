@@ -202,5 +202,11 @@ public class GrafoNDPesos<K, IV, IA extends InfoArco> implements IGraph<K, IV, I
 	public ITablaHash<Integer, LinkedList<Arco<IA>>> darRepresentacion(){
 		return adj;
 	}
+
+
+	public Iterable<Arco<IA>> arcos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
