@@ -236,7 +236,7 @@ public class AlgorithmsTest  extends TestCase{
 		
 		//Verificar el Shortest Path de 0 hasta 6
 		
-		for(Arco<PesoArco> s: nuevo.pathTo(6)){
+		for(Arco<PesoArco> s: nuevo.caminoA(6)){
 			//Vertices en la ruta
 			assertTrue("Error en el cálculo del SP", s.either()== 2 || s.either() == 6 || s.either() == 5 || s.either() == 4|| s.either() == 0  );
 		}

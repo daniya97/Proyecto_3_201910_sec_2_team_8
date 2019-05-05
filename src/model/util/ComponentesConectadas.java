@@ -7,41 +7,53 @@ import model.data_structures.LinkedList;
 
 public class ComponentesConectadas<K, V> {
 	
-	private boolean[] marked;   // marked[v] = has vertex v been marked?
-    private int[] id;           // id[v] = id of connected component containing v
-    private int[] size;         // size[id] = number of vertices in given component
-    private int count;          // number of connected components
+	/**
+     * Si el vértice ya fue marcado o no
+     */
+	private boolean[] marcado;   
+	/**
+     *ID de la componente asociada al vértice
+     */
+    private int[] id;          
+	/**
+     * Número de vértices en la componente
+     */
+    private int[] tamano;        
+	/**
+     * Número de componentes conectadas en el grafo
+     */
+    private int num;         
 
 
 
     /**
-     * Computes the connected components of the edge-weighted graph {@code G}.
-     *
-     * @param G the edge-weighted graph
+     * Obtiene las componentes conectadas dado un grafo no dirigido
      */
     public <IA extends InfoArco> ComponentesConectadas(GrafoNDPesos<K, V, IA> G) {
-        marked = new boolean[G.V()];
+        marcado = new boolean[G.V()];
         id = new int[G.V()];
-        size = new int[G.V()];
+        tamano = new int[G.V()];
         for (int v = 0; v < G.V(); v++) {
-            if (!marked[v]) {
+            if (!marcado[v]) {
                 dfs(G, v);
-                count++;
+                num++;
             }
         }
     }
 
 
-    // depth-first search for an EdgeWeightedGraph
+    /**
+     * DEPTH FIRST SEARCH  sobre el grafo 
+     */
     private <IA extends InfoArco> void dfs(GrafoNDPesos<K, V, IA> G, int v) {
-        marked[v] = true;
-        id[v] = count;
-        size[count]++;
+        marcado[v] = true;
+        id[v] = num;
+        tamano[num]++;
         
         LinkedList<Arco<IA>> aux = G.darRepresentacion().get(v);
         for (Arco<IA> e : aux) {
             int w = e.other(v);
-            if (!marked[w]) {
+            if (!marcado[w]) {
                 dfs(G, w);
             }
         }
@@ -49,52 +61,33 @@ public class ComponentesConectadas<K, V> {
 
 
     /**
-     * Returns the component id of the connected component containing vertex {@code v}.
-     *
-     * @param  v the vertex
-     * @return the component id of the connected component containing vertex {@code v}
-     * @throws IllegalArgumentException unless {@code 0 <= v < V}
+     * Retorna el id de la componente que contiene al vértice v
      */
     public int id(int v) {
         return id[v];
     }
 
     /**
-     * Returns the number of vertices in the connected component containing vertex {@code v}.
-     *
-     * @param  v the vertex
-     * @return the number of vertices in the connected component containing vertex {@code v}
-     * @throws IllegalArgumentException unless {@code 0 <= v < V}
+     * Retorna el número de vértices en la componente que contiene al vértice dado por parámetro
      */
-    public int size(int v) {
-        return size[id[v]];
+    public int tamano(int v) {
+        return tamano[id[v]];
     }
 
     /**
-     * Returns the number of connected components in the graph {@code G}.
-     *
-     * @return the number of connected components in the graph {@code G}
+     * Retorna el número de componentes conectadas en el grafo
      */
-    public int count() {
-        return count;
+    public int numComponentes() {
+        return num;
     }
 
     /**
-     * Returns true if vertices {@code v} and {@code w} are in the same
-     * connected component.
-     *
-     * @param  v one vertex
-     * @param  w the other vertex
-     * @return {@code true} if vertices {@code v} and {@code w} are in the same
-     *         connected component; {@code false} otherwise
-     * @throws IllegalArgumentException unless {@code 0 <= v < V}
-     * @throws IllegalArgumentException unless {@code 0 <= w < V}
+     * Retorna TRUE si los vértices v y w están en la misma componente conectada
+     * Verifica si dos vértices están o no conectados
      */
     public boolean connected(int v, int w) {
         return id(v) == id(w);
     }
-
-
 
 
 }
