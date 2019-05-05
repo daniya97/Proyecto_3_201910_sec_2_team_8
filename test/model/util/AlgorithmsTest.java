@@ -83,19 +83,19 @@ grafo = new GrafoNDPesos<>();
 		grafo.addVertex(11, 1);
 		grafo.addVertex(12, 1);
 		
-		infoArco<Integer> nuevoArco = new infoArco<Integer>(1, 5, 0, 1);
-		infoArco<Integer> nuevoArco1 = new infoArco<Integer>(1, 9, 0, 2);
-		infoArco<Integer> nuevoArco2 = new infoArco<Integer>(1, 8, 0, 5);
-		infoArco<Integer> nuevoArco3 = new infoArco<Integer>(1, 12, 0, 6);
-		infoArco<Integer> nuevoArco4 = new infoArco<Integer>(1, 15, 5, 3);
-		infoArco<Integer> nuevoArco5 = new infoArco<Integer>(1, 4, 5, 4);
-		infoArco<Integer> nuevoArco6 = new infoArco<Integer>(1, 3, 3, 4);
-		infoArco<Integer> nuevoArco7 = new infoArco<Integer>(1, 11,4, 6);
-		infoArco<Integer> nuevoArco8 = new infoArco<Integer>(1, 9, 7, 8);
-		infoArco<Integer> nuevoArco9 = new infoArco<Integer>(1, 4, 9, 10);
-		infoArco<Integer> nuevoArco10 = new infoArco<Integer>(1,20, 9, 11);
-		infoArco<Integer> nuevoArco11= new infoArco<Integer>(1, 5, 9, 12);
-		infoArco<Integer> nuevoArco12 = new infoArco<Integer>(1, 1, 12, 11);
+		PesoArco nuevoArco = new PesoArco(5);
+		PesoArco nuevoArco1 = new PesoArco(9);
+		PesoArco nuevoArco2 = new PesoArco(8);
+		PesoArco nuevoArco3 = new PesoArco(12);
+		PesoArco nuevoArco4 = new PesoArco(15);
+		PesoArco nuevoArco5 = new PesoArco(4);
+		PesoArco nuevoArco6 = new PesoArco(3);
+		PesoArco nuevoArco7 = new PesoArco(11);
+		PesoArco nuevoArco8 = new PesoArco(9);
+		PesoArco nuevoArco9 = new PesoArco(4);
+		PesoArco nuevoArco10 = new PesoArco(20);
+		PesoArco nuevoArco11= new PesoArco(5);
+		PesoArco nuevoArco12 = new PesoArco(1);
 		
 		grafo.addEdge(0, 1, nuevoArco);
 		grafo.addEdge(0, 2, nuevoArco1);
@@ -128,22 +128,22 @@ grafo = new GrafoNDPesos<>();
 		
 		
 		
-		infoArco<Integer> nuevoArco = new infoArco<Integer>(1, 5, 0, 1);
-		infoArco<Integer> nuevoArco1 = new infoArco<Integer>(1, 9, 0, 4);
-		infoArco<Integer> nuevoArco2 = new infoArco<Integer>(1, 8, 0, 7);
-		infoArco<Integer> nuevoArco3 = new infoArco<Integer>(1, 12, 1, 2);
-		infoArco<Integer> nuevoArco4 = new infoArco<Integer>(1, 15, 1, 3);
-		infoArco<Integer> nuevoArco5 = new infoArco<Integer>(1, 4, 1, 7);
-		infoArco<Integer> nuevoArco6 = new infoArco<Integer>(1, 3, 2, 3);
-		infoArco<Integer> nuevoArco7 = new infoArco<Integer>(1, 11,2, 6);
-		infoArco<Integer> nuevoArco8 = new infoArco<Integer>(1, 9, 3, 6);
-		infoArco<Integer> nuevoArco9 = new infoArco<Integer>(1, 4, 4, 5);
-		infoArco<Integer> nuevoArco10 = new infoArco<Integer>(1,20, 4, 6);
-		infoArco<Integer> nuevoArco11= new infoArco<Integer>(1, 5, 4, 7);
-		infoArco<Integer> nuevoArco12 = new infoArco<Integer>(1, 1, 5, 2);
-		infoArco<Integer> nuevoArco13 = new infoArco<Integer>(1, 13, 5, 6);
-		infoArco<Integer> nuevoArco14 = new infoArco<Integer>(1, 6, 7, 5);
-		infoArco<Integer> nuevoArco15 = new infoArco<Integer>(1, 7, 7, 2);
+		PesoArco nuevoArco = new PesoArco(5);
+		PesoArco nuevoArco1 = new PesoArco(9);
+		PesoArco nuevoArco2 = new PesoArco(8);
+		PesoArco nuevoArco3 = new PesoArco(12);
+		PesoArco nuevoArco4 = new PesoArco(15);
+		PesoArco nuevoArco5 = new PesoArco(4);
+		PesoArco nuevoArco6 = new PesoArco(3);
+		PesoArco nuevoArco7 = new PesoArco(11);
+		PesoArco nuevoArco8 = new PesoArco(9);
+		PesoArco nuevoArco9 = new PesoArco(4);
+		PesoArco nuevoArco10 = new PesoArco(20);
+		PesoArco nuevoArco11= new PesoArco(5);
+		PesoArco nuevoArco12 = new PesoArco(1);
+		PesoArco nuevoArco13 = new PesoArco(13);
+		PesoArco nuevoArco14 = new PesoArco(6);
+		PesoArco nuevoArco15 = new PesoArco(7);
 		
 		
 		
@@ -174,15 +174,11 @@ grafo = new GrafoNDPesos<>();
 
 		//KRUSKAL
 		
-		KruskalMST<Integer, Integer> nuevo = new KruskalMST(grafo);
+		KruskalMST<Integer, Integer, PesoArco> nuevo = new KruskalMST<>(grafo);
 		
-<<<<<<< HEAD
-		for(Arco<Integer> s: nuevo.edges()){
-			System.out.println(s);
-=======
 		for(Arco<PesoArco> s: nuevo.edges()){
 			System.out.println(s.darInformacion().darPesoArco());
->>>>>>> c85bc2619c735a69ac9f8b1c97d0dc86fef3adea
+
 		}
 		
 //		
@@ -214,7 +210,7 @@ grafo = new GrafoNDPesos<>();
 		
 	//Dijsktra
 	
-	Dijkstra<Integer, Integer> nuevo = new Dijkstra<>(grafo, 0);
+	Dijkstra<Integer, Integer, PesoArco> nuevo = new Dijkstra<>(grafo, 0);
 		
 		
 		
