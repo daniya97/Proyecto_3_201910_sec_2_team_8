@@ -2,7 +2,7 @@ package model.data_structures;
 
 public class UnionFind {
 	
-	 private int[] parent;  // parent[i] = parent of i
+	 	private int[] parent;  // parent[i] = parent of i
 	    private byte[] rank;   // rank[i] = rank of subtree rooted at i (never more than 31)
 	    private int count;     // number of components
 

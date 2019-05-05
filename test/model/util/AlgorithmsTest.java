@@ -179,10 +179,11 @@ public class AlgorithmsTest  extends TestCase{
 		KruskalMST<Integer, Integer, PesoArco> nuevo = new KruskalMST<>(grafo);
 
 		for(Arco<PesoArco> s: nuevo.edges()){
-			System.out.println(s.darInformacion().darPesoArco());
-
+			System.out.println(s.weight());
 		}
 
+		assertTrue(nuevo.weight() == 1.81);
+		
 		//		
 		//		Prim<Integer, Integer> nuevo2 = new Prim<>(grafo);
 		//		
