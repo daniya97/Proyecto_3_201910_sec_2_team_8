@@ -65,8 +65,6 @@ public class ArregloDinamico<T> implements IArregloDinamico<T> {
 	
 	public void cambiarEnPos(int i, T dato) {
 		if (i < 0 || tamanoAct <= i ){
-			System.out.println(i);
-			System.out.println(tamanoAct);
 			throw new IllegalArgumentException("No existe tal posicion en el arreglo.");
 		}
 		elementos[i] = dato;

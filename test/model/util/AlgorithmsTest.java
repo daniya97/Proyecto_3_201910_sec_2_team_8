@@ -177,20 +177,25 @@ public class AlgorithmsTest  extends TestCase{
 		//KRUSKAL
 
 		KruskalMST<Integer, Integer, PesoArco> nuevo = new KruskalMST<>(grafo);
-
+		System.out.println("MST: Kruskal");
 		for(Arco<PesoArco> s: nuevo.edges()){
-			System.out.println(s.weight());
+			int primero = s.either();
+			System.out.println(primero + " hasta "+ s.other(primero));
 		}
 
-		assertTrue(nuevo.weight() == 1.81);
-		
-		//		
-		//		Prim<Integer, Integer> nuevo2 = new Prim<>(grafo);
-		//		
-		//		for(Arco<Integer> s: nuevo2.arcos()){
-		//			System.out.println(s);
-		//		}
+		//Resultado LIBRO
+		assertTrue("Error en el algoritmo Kruskal" ,nuevo.weight() == 1.81);
 
+
+		Prim<Integer, Integer, PesoArco> nuevo1 = new Prim<>(grafo);
+		System.out.println("MST: PRIM");
+		for(Arco<PesoArco> s: nuevo1.arcos()){
+			int primero = s.either();
+			System.out.println(primero + " hasta "+ s.other(primero));
+		}
+		
+		
+		assertTrue("Error en el algoritmo PRIM" ,nuevo1.weight() > 1.80 || nuevo1.weight()<1.81);
 
 
 	}
@@ -198,7 +203,7 @@ public class AlgorithmsTest  extends TestCase{
 	public void testComponentesConectadas(){
 
 		setUpEscenario3();
-		
+
 		//VERIFICACIÓN CON EL DEMO DEL LIBRO
 
 		ComponentesConectadas<Integer,Integer> nuevo = new ComponentesConectadas<>(grafo);
@@ -224,11 +229,19 @@ public class AlgorithmsTest  extends TestCase{
 		setUpEscenario2();
 
 		//Dijsktra
-
 		Dijkstra<Integer, Integer, PesoArco> nuevo = new Dijkstra<>(grafo, 0);
-
-
-
+		assertTrue("Error en el SP",nuevo.distTo(6) == 25);
+		assertTrue("Error en el SP",nuevo.distTo(3) == 17);
+		assertTrue("Error en el SP",nuevo.distTo(5) == 13);
+		
+		//Verificar el Shortest Path de 0 hasta 6
+		
+		for(Arco<PesoArco> s: nuevo.pathTo(6)){
+			//Vertices en la ruta
+			assertTrue("Error en el cálculo del SP", s.either()== 2 || s.either() == 6 || s.either() == 5 || s.either() == 4|| s.either() == 0  );
+		}
+		
+		
 	}
 
 

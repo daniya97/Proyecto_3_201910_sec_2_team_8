@@ -35,11 +35,6 @@ public class Prim<K,V, IA extends InfoArco> {
 	            distTo[v] = Double.POSITIVE_INFINITY;
 	            edgeTo.agregar(null);
 	        }
-	        
-	        
-	        System.out.println("T1:" +edgeTo.darTamano());
-	        System.out.println("T2:" +distTo.length);
-	        System.out.println("T3:" +marked.length);
 
 	        for (int v = 0; v < G.V(); v++)      // run from each vertex to find
 	            if (!marked[v]) prim(G, v);      // minimum spanning forest
@@ -48,8 +43,8 @@ public class Prim<K,V, IA extends InfoArco> {
 	    // run Prim's algorithm in graph G, starting from vertex s
 	    private void prim(GrafoNDPesos<K, V, IA> G, int s) {
 	        distTo[s] = 0.0;
-	        pq.agregar(s, distTo[s]);
-	        while (!pq.esVacia()) {
+	        pq.insert(s, distTo[s]);
+	        while (!pq.isEmpty()) {
 	            int v = pq.delMin();
 	            scan(G, v);
 	        }
@@ -66,7 +61,7 @@ public class Prim<K,V, IA extends InfoArco> {
 	                distTo[w] = e.weight();
 	                edgeTo.cambiarEnPos(w, e);
 	                if (pq.contains(w)) pq.decreaseKey(w, distTo[w]);
-	                else                pq.agregar(w, distTo[w]);
+	                else                pq.insert(w, distTo[w]);
 	            }
 	        }
 	    }
