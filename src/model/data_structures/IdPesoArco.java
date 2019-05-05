@@ -1,6 +1,4 @@
-package model.logic;
-
-import model.data_structures.InfoArco;
+package model.data_structures;
 
 public class IdPesoArco implements InfoArco {
 

@@ -20,6 +20,7 @@ import model.data_structures.ArregloDinamico;
 import model.data_structures.GrafoNDPesos;
 import model.data_structures.IGraph;
 import model.data_structures.ITablaHash;
+import model.data_structures.IdPesoArco;
 import model.data_structures.LinProbTH;
 import model.data_structures.LinkedList;
 import model.vo.esquemaJSON;
