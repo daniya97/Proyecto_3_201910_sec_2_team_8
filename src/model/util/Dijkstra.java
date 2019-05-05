@@ -11,17 +11,17 @@ import model.data_structures.Stack;
 public class Dijkstra<K,IV, IA extends InfoArco> {
 
 	/**
-     * Guarda la Distancia mínima desde s hasta v
-     */
+	 * Guarda la Distancia mínima desde s hasta v
+	 */
 	private double[] distTo;          
 	/**
-     * Último vértices del SP de s hasta v
-     */
+	 * Último vértices del SP de s hasta v
+	 */
 	private Arco<IA>[] edgeTo;            
-	
+
 	/**
-     * Cola de prioridad con los vértices
-     */
+	 * Cola de prioridad con los vértices
+	 */
 	private IndexMinPQ<Double> pq;   
 
 	/**
@@ -39,8 +39,8 @@ public class Dijkstra<K,IV, IA extends InfoArco> {
 
 		// Relajar los vértices
 		pq = new IndexMinPQ<Double>(G.V());
-		pq.insert(s, distTo[s]);
-		while (!pq.isEmpty()) {
+		pq.agregar(s, distTo[s]);
+		while (!pq.estaVacia()) {
 			int v = pq.delMin();
 			for(Arco<IA> e: G.darRepresentacion().get(v)){
 				relax(e, v);
@@ -54,8 +54,8 @@ public class Dijkstra<K,IV, IA extends InfoArco> {
 		if (distTo[w] > distTo[v] + e.weight()) {
 			distTo[w] = distTo[v] + e.weight();
 			edgeTo[w] = e;
-			if (pq.contains(w)) pq.decreaseKey(w, distTo[w]);
-			else                pq.insert(w, distTo[w]);
+			if (pq.contains(w)) pq.decreaseK(w, distTo[w]);
+			else                pq.agregar(w, distTo[w]);
 		}
 	}
 
@@ -86,5 +86,5 @@ public class Dijkstra<K,IV, IA extends InfoArco> {
 		}
 		return camino;
 	}
-	
+
 }
