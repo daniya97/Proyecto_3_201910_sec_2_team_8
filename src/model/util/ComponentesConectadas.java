@@ -64,6 +64,7 @@ public class ComponentesConectadas<K, V> {
 	 * Retorna el id de la componente que contiene al vértice v
 	 */
 	public int id(int v) {
+		if(id == null) return 0;
 		return id[v];
 	}
 
@@ -71,6 +72,7 @@ public class ComponentesConectadas<K, V> {
 	 * Retorna el número de vértices en la componente que contiene al vértice dado por parámetro
 	 */
 	public int tamano(int v) {
+		if(tamano.length == 0) return 0;
 		return tamano[id[v]];
 	}
 
@@ -78,6 +80,7 @@ public class ComponentesConectadas<K, V> {
 	 * Retorna el número de componentes conectadas en el grafo
 	 */
 	public int numComponentes() {
+		if(id == null) return 0;
 		return num;
 	}
 
@@ -86,6 +89,9 @@ public class ComponentesConectadas<K, V> {
 	 * Verifica si dos vértices están o no conectados
 	 */
 	public boolean connected(int v, int w) {
+		
+		if(id == null|| id.length == 0) return false;
+		if(v>id.length || w >id.length) return false;
 		return id(v) == id(w);
 	}
 

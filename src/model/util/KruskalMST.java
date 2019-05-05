@@ -51,7 +51,7 @@ public class KruskalMST<K, V,IA extends InfoArco> {
 	/**
 	 * Retorna los arcos del Minnimum spanning tree
 	 */
-	public Iterable<Arco<IA>> edges() {
+	public Iterable<Arco<IA>> arcos() {
 		return mst;
 	}
 

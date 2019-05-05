@@ -30,24 +30,28 @@ public class Dijkstra<K,IV, IA extends InfoArco> {
 	 */
 	public Dijkstra(GrafoNDPesos<K, IV, IA> G, int s) {
 
-		distTo = new double[G.V()];
-		edgeTo = new Arco[G.V()];
+		if(G.V() == 0){}
+		else{
 
-		for (int v = 0; v < G.V(); v++)
-			distTo[v] = Double.POSITIVE_INFINITY;
-		distTo[s] = 0.0;
+			distTo = new double[G.V()];
+			edgeTo = new Arco[G.V()];
 
-		// Relajar los vértices
-		pq = new IndexMinPQ<Double>(G.V());
-		pq.agregar(s, distTo[s]);
-		while (!pq.estaVacia()) {
-			int v = pq.delMin();
-			for(Arco<IA> e: G.darRepresentacion().get(v)){
-				relax(e, v);
+			for (int v = 0; v < G.V(); v++)
+				distTo[v] = Double.POSITIVE_INFINITY;
+			distTo[s] = 0.0;
+
+			// Relajar los vértices
+			pq = new IndexMinPQ<Double>(G.V());
+			pq.agregar(s, distTo[s]);
+			while (!pq.estaVacia()) {
+				int v = pq.delMin();
+				for(Arco<IA> e: G.darRepresentacion().get(v)){
+					relax(e, v);
+				}
 			}
+
 		}
 	}
-
 	// Relajar el vértice y cambiar la PQ si cambia
 	private void relax(Arco<IA> e, int v) {
 		int w = e.other(v);
@@ -63,6 +67,8 @@ public class Dijkstra<K,IV, IA extends InfoArco> {
 	 * Retorna la distancia desde s hasta v
 	 */
 	public double distTo(int v) {
+		if(distTo == null) return Double.POSITIVE_INFINITY;
+		if(v>distTo.length) return Double.POSITIVE_INFINITY;
 		return distTo[v];
 	}
 
@@ -70,6 +76,8 @@ public class Dijkstra<K,IV, IA extends InfoArco> {
 	 * Retorna TRUE si existe un camino desde s hasta v
 	 */
 	public boolean existeCaminoHasta(int v) {
+		if(distTo == null) return false;
+		if(v>distTo.length) return false;
 		return distTo[v] < Double.POSITIVE_INFINITY;
 	}
 

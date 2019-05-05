@@ -167,6 +167,13 @@ public class AlgorithmsTest  extends TestCase{
 		grafo.addEdge(12, 11, nuevoArco12);
 
 	}
+	
+	
+	
+	//CASO VACIO - MANEJO DE NULL
+	private void setUpEscenario4(){
+		grafo = new GrafoNDPesos<>();
+	}
 
 
 
@@ -178,7 +185,7 @@ public class AlgorithmsTest  extends TestCase{
 
 		KruskalMST<Integer, Integer, PesoArco> nuevo = new KruskalMST<>(grafo);
 		System.out.println("MST: Kruskal");
-		for(Arco<PesoArco> s: nuevo.edges()){
+		for(Arco<PesoArco> s: nuevo.arcos()){
 			int primero = s.either();
 			System.out.println(primero + " hasta "+ s.other(primero));
 		}
@@ -186,14 +193,13 @@ public class AlgorithmsTest  extends TestCase{
 		//Resultado LIBRO
 		assertTrue("Error en el algoritmo Kruskal" ,nuevo.weight() == 1.81);
 
-
+		
 		Prim<Integer, Integer, PesoArco> nuevo1 = new Prim<>(grafo);
 		System.out.println("MST: PRIM");
 		for(Arco<PesoArco> s: nuevo1.arcos()){
 			int primero = s.either();
 			System.out.println(primero + " hasta "+ s.other(primero));
 		}
-		
 		
 		assertTrue("Error en el algoritmo PRIM" ,nuevo1.weight() > 1.80 || nuevo1.weight()<1.81);
 
@@ -208,6 +214,8 @@ public class AlgorithmsTest  extends TestCase{
 
 		ComponentesConectadas<Integer,Integer> nuevo = new ComponentesConectadas<>(grafo);
 
+		
+		// VERIFICACIÓN GENERAL
 		for (int i = 0; i < grafo.V(); i++) {
 
 			if(i<=6){
@@ -220,6 +228,14 @@ public class AlgorithmsTest  extends TestCase{
 				assertTrue("Están mal las componentes conectadas", nuevo.id(i) == 2);
 			}
 		}
+		
+		
+		// OTROS MÉTODOS IMPORTANTES
+		assertTrue("No corresponde al numero de componentes", nuevo.numComponentes() == 3);
+		assertTrue("No corresponde al numero de componentes", nuevo.tamano(0) == 7);
+		assertTrue("No corresponde al numero de componentes", nuevo.tamano(8) == 2);
+		assertTrue("No corresponde al numero de componentes", nuevo.tamano(10) == 4);
+		
 	}
 
 
@@ -227,7 +243,6 @@ public class AlgorithmsTest  extends TestCase{
 
 
 		setUpEscenario2();
-
 		//Dijsktra
 		Dijkstra<Integer, Integer, PesoArco> nuevo = new Dijkstra<>(grafo, 0);
 		assertTrue("Error en el SP",nuevo.distTo(6) == 25);
@@ -240,14 +255,39 @@ public class AlgorithmsTest  extends TestCase{
 			//Vertices en la ruta
 			assertTrue("Error en el cálculo del SP", s.either()== 2 || s.either() == 6 || s.either() == 5 || s.either() == 4|| s.either() == 0  );
 		}
+	}
+	
+	public void testCasoNull(){
+		setUpEscenario4();
+		
+		// SE UTILIZO PARA MANEJAR EL NULL 
+		Dijkstra<Integer, Integer, PesoArco> nuevo = new Dijkstra<>(grafo, 0);
+		Prim<Integer, Integer, PesoArco> nuevo1 = new Prim<>(grafo);
+		KruskalMST<Integer, Integer, PesoArco> nuevo2 = new KruskalMST<>(grafo);
+		ComponentesConectadas<Integer,Integer> nuevo3 = new ComponentesConectadas<>(grafo);
+		
+		
+		// MANEJO DE PRIM Y KRUSKAL
+		assertTrue("Es un grafo vacío ", nuevo1.arcos() !=null);
+		assertTrue("Es un grafo vacío ", nuevo2.arcos() !=null);
+		
+		//Verifiacción Dijkstra
+		for (int i = 0; i < 20; i++) {
+			assertTrue("No hay caminos", nuevo.caminoA(i) == null);
+			assertTrue("No hay caminos", nuevo.existeCaminoHasta(i) == false);
+		}
+		
+		//Verificaciones componenetes Conectadas
+		for (int i = 0; i < 100; i++) {
+			for (int j = 0; j <100; j++) {
+				assertTrue("Eror en CC" , !nuevo3.connected(i, j));
+				assertTrue("Eror en CC" , nuevo3.tamano(i) == 0);
+			}
+			
+		}
 		
 		
 	}
-
-
-
-
-
 
 
 }
