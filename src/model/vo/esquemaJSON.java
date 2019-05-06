@@ -1,7 +1,5 @@
 package model.vo;
 
-import com.sun.javafx.iio.png.PNGIDATChunkInputStream;
-
 import model.data_structures.Arco;
 import model.data_structures.ArregloDinamico;
 import model.data_structures.LinkedList;

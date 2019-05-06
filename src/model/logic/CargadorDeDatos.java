@@ -90,7 +90,7 @@ public class CargadorDeDatos {
 	 */
 	private static ITablaHash<Integer[], BigInteger> idVCorresp;
 	
-	private static final int PRECISION_COORD = 100;
+	private static final int PRECISION_COORD = 1000;
 	
 	public int[] cargarJsonMapa() throws IOException {
 		return cargarDeJson(NOMBRE_MAPA_JSON);
@@ -110,7 +110,7 @@ public class CargadorDeDatos {
 			
 			// Agrega el vertice solo si no existe ya, por si acaso
 			if (grafoIntersecciones.getInfoVertex(verticeAct.getId()) == null) {
-				grafoIntersecciones.addVertex(verticeAct.getId(), new InfoInterseccion(verticeAct.getLat(), verticeAct.getLon()));
+				grafoIntersecciones.addVertex(verticeAct.getId(), new InfoInterseccion(verticeAct.getLat(), verticeAct.getLon(), verticeAct.getNInfracciones()));
 				nVertices += 1;
 			}
 		}

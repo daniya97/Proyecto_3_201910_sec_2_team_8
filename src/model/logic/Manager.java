@@ -24,7 +24,6 @@ import model.data_structures.GrafoNDPesos;
 import model.data_structures.IGraph;
 import model.data_structures.IQueue;
 import model.data_structures.ITablaHash;
-import model.data_structures.IdPesoArco;
 import model.data_structures.LinProbTH;
 import model.data_structures.LinkedList;
 import model.data_structures.MaxHeapCP;
@@ -47,7 +46,7 @@ public class Manager {
 	/**
 	 * Lista donde se van a cargar los datos de los archivos
 	 */
-	private static IGraph<BigInteger, InfoInterseccion, IdPesoArco> grafoIntersecciones;
+	private static IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafoIntersecciones;
 
 	/**
 	 * Cargador de Json e Infracciones
@@ -150,7 +149,7 @@ public class Manager {
 		esquemaJSON<BigInteger> auxiliar;
 		BigInteger id;
 		esquemaJSON<BigInteger>[] lista = new esquemaJSON[grafoIntersecciones.V()];
-		LinkedList<Arco<IdPesoArco>> aux;
+		LinkedList<Arco<PesosDIVArco>> aux;
 		BigInteger[] lista2;
 		double lat;
 		double lon;
@@ -164,7 +163,7 @@ public class Manager {
 			lista2 = new BigInteger[aux.darTamanoLista()];
 			
 			contador = 0;
-			for(Arco<IdPesoArco> s: aux){
+			for(Arco<PesosDIVArco> s: aux){
 				lista2[contador] = grafoIntersecciones.encontrarNodo(s.other(i));
 				contador++;
 			}
@@ -244,7 +243,7 @@ public class Manager {
 	    Iterable<BigInteger> iterableAdj;
 	    BigInteger id1; LatLonCoords coords1;
 	    BigInteger id2; LatLonCoords coords2;
-	    IdPesoArco infoArcoAct;
+	    PesosDIVArco infoArcoAct;
 	    
 	    //boolean primerEl = true;
 	    for (BigInteger id : grafoIntersecciones) {

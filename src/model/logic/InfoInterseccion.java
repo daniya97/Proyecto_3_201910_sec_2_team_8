@@ -28,6 +28,12 @@ public class InfoInterseccion {
 		arregloInfracciones = new ArregloDinamico<>();
 	}
 	
+	public InfoInterseccion(double plat, double plon, int nInf) {
+		nInfracciones = nInf;
+		coords = new LatLonCoords(plat, plon);
+		arregloInfracciones = new ArregloDinamico<>();
+	}
+	
 	//public InfoInterseccion(int pnInfracciones, double plat, double plon) {
 	//	nInfracciones = pnInfracciones;
 	//	coords = new LatLonCoords(plat, plon);
