@@ -52,6 +52,10 @@ public class Manager {
 	private static IGraph<BigInteger, LatLonCoords, IdPesoArco> grafoIntersecciones;
 
 	/**
+	 * Cargador de Json e Infracciones
+	 */
+	private static CargadorDeDatos cargador;
+	/**
 	 * Numero actual del semestre cargado
 	 */
 	private static int semestreCargado = -1;
@@ -88,15 +92,17 @@ public class Manager {
 	 */
 	public Manager()
 	{
-		
-
+		cargador = new CargadorDeDatos();
 	}
 	
 	/*
 	 * Carga de datos
 	 */
 	
-
+	public EstadisticasCargaInfracciones cargarGrafoParaSemestre(int n) {
+		return cargador.loadMovingViolations(n);
+	}
+	
 	public Integer[] loadXML(String nombreXML) throws ParserConfigurationException, SAXException, IOException {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		spf.setNamespaceAware(true);

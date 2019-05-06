@@ -1,5 +1,7 @@
 package model.logic;
 
+import java.util.Comparator;
+
 public class LatLonCoords {
 
 	private double lon;

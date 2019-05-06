@@ -10,7 +10,7 @@ import com.opencsv.CSVReader;
 
 import model.data_structures.GrafoNDPesos;
 import model.data_structures.IGraph;
-import model.data_structures.IdPesoArco;
+import model.logic.PesosDIVArco;
 import model.vo.EstadisticasCargaInfracciones;
 import model.vo.VOMovingViolations;
 
@@ -24,11 +24,36 @@ public class CargadorDeDatos {
 	 * Nombre de Json con mapa a cargar 
 	 */
 	private final String NOMBRE_MAPA_JSON = "persistenciaJsonMap.json";
-	
+	/**
+	 * 
+	 */
+	public static final String[] EXPECTEDHEADERS = new String[] {"OBJECTID_1", "OBJECTID", "ROW_", "LOCATION", "ADDRESS_ID", "STREETSEGID", "XCOORD", "YCOORD", "TICKETTYPE", "FINEAMT", "TOTALPAID", "PENALTY1", "PENALTY2", "ACCIDENTINDICATOR", "AGENCYID", "TICKETISSUEDATE", "VIOLATIONCODE", "VIOLATIONDESC", "ROW_ID", "LAT", "LON"};
+	// Estos son los indice de los textos en EXPECTEDHEADERS
+		public static final int OBJECTID_1 = 0;
+		public static final int OBJECTID = 1;
+		public static final int ROW_= 2;
+		public static final int LOCATION = 3;
+		public static final int ADDRESS_ID = 4;
+		public static final int STREETSEGID = 5;
+		public static final int XCOORD = 6;
+		public static final int YCOORD = 7;
+		public static final int TICKETTYPE = 8;
+		public static final int FINEAMT = 9;
+		public static final int TOTALPAID = 10;
+		public static final int PENALTY1 = 11;
+		public static final int PENALTY2 = 12;
+		public static final int ACCIDENTINDICATOR = 13;
+		public static final int AGENCYID = 14;
+		public static final int TICKETISSUEDATE = 15;
+		public static final int VIOLATIONCODE = 16;
+		public static final int VIOLATIONDESC = 17;	
+		public static final int ROW_ID = 18;
+		public static final int LAT = 19;
+		public static final int LONG = 20;
 	/**
 	 * Lista donde se van a cargar los datos de los archivos
 	 */
-	private static IGraph<BigInteger, LatLonCoords, IdPesoArco> grafoIntersecciones;
+	private static IGraph<BigInteger, LatLonCoords, PesosDIVArco> grafoIntersecciones;
 
 	/**
 	 * Numero actual del semestre cargado
@@ -43,26 +68,26 @@ public class CargadorDeDatos {
 	/**
 	 * X minimo de infraccion
 	 */
-	private static double xMin;
+	private static Double latMin;
 	/**
 	 * Y minimo de infraccion
 	 */
-	private static double yMin;
+	private static Double lonMin;
 	/**
 	 * X maximo de infraccion
 	 */
-	private static double xMax;
+	private static Double latMax;
 	/**
 	 * Y maximo de infraccion
 	 */
-	private static double yMax;
+	private static Double lonMax;
 	
-	public int[] cargarJsonMapa() throws IOException {
-		return cargarDeJson(NOMBRE_MAPA_JSON);
+	public EstadisticasCargaInfracciones cargarJsonEInfr() throws IOException {
+		int[] jsonRes = cargarDeJson(NOMBRE_MAPA_JSON);
+		return null; //TODO
 	}
 	
-	public int[] cargarDeJson(String nombreJsonG) throws IOException {
-		// TODO Auto-generated method stub
+	private int[] cargarDeJson(String nombreJsonG) throws IOException {
 		VertexSummary verticeAct;
 		
 		Gson gson = new Gson();
@@ -74,12 +99,7 @@ public class CargadorDeDatos {
 		for (String json : reader) {
 			verticeAct = gson.fromJson(json, VertexSummary.class);
 			
-			/*
-			  System.out.println(verticeAct.getId()); for (int i = 0; i <
-			  verticeAct.getAdj().length; i++) { System.out.println("Adj " + i + ": " +
-			  verticeAct.getAdj()[i]); 
-			  }
-			 */
+			// Agrega el vertice solo si no existe ya, por si acaso
 			if (grafoIntersecciones.getInfoVertex(verticeAct.getId()) == null) {
 				grafoIntersecciones.addVertex(verticeAct.getId(), new LatLonCoords(verticeAct.getLat(), verticeAct.getLon()));
 				nVertices += 1;
@@ -94,7 +114,7 @@ public class CargadorDeDatos {
 			for (BigInteger verticeArcId : verticeAct.getAdj()) {
 				if (grafoIntersecciones.getInfoArc(verticeAct.getId(), verticeArcId) == null) {
 					grafoIntersecciones.addEdge(verticeAct.getId(), verticeArcId, 
-						new IdPesoArco(-1, grafoIntersecciones.getInfoVertex(verticeArcId).haversineD(grafoIntersecciones.getInfoVertex(verticeAct.getId()))));
+						new PesosDIVArco(grafoIntersecciones.getInfoVertex(verticeArcId).haversineD(grafoIntersecciones.getInfoVertex(verticeAct.getId()))));
 					nArcos += 1;
 				}
 			}
@@ -172,23 +192,32 @@ public class CargadorDeDatos {
 				for (int i = 0; i < VOMovingViolations.EXPECTEDHEADERS.length; i++) {
 					posiciones[i] = buscarArray(headers, VOMovingViolations.EXPECTEDHEADERS[i]);
 				}
-
+				
 				// Lee linea a linea el archivo para crear las infracciones y cargarlas a la lista
-				VOMovingViolations infraccion;
+				String campo;
+				BigInteger idMin;
+				Double distMin;
 				for (String[] row : reader) {
-					infraccion = new VOMovingViolations(posiciones, row);
-					movingVOLista.agregar(infraccion);
+					
+					// Extraer informacion relevante de la infraccion actual
+					campo = row[posiciones[STREETSEGID]];
+					
+					
 					contadorInf += 1;
-					if(xMin<=0 || yMin<=0){
-						xMin= infraccion.getXCoord();
-						yMin = infraccion.getYCoord();
+					
+					// Inicializa las coordenadas extremas si no se ha hecho
+					if(latMin == null || lonMin == null){
+						latMin = 0.;
+						lonMin = 0.;
+						latMax = 0.;
+						lonMax = 0.;
 					}
 
 					// Se actualizan las coordenadas extremas
-					xMin = Math.min(xMin, infraccion.getXCoord());
-					xMax = Math.max(xMax, infraccion.getXCoord());
-					yMin = Math.min(yMin, infraccion.getYCoord());
-					yMax = Math.max(yMax, infraccion.getYCoord());			
+					latMin = Math.min(latMin, infraccion.getXCoord());
+					latMax = Math.max(latMax, infraccion.getXCoord());
+					lonMin = Math.min(lonMin, infraccion.getYCoord());
+					lonMax = Math.max(lonMax, infraccion.getYCoord());			
 				}
 				// Se agrega el numero de infracciones cargadas en este archivo al resultado 
 				totalInf += contadorInf;
@@ -208,7 +237,7 @@ public class CargadorDeDatos {
 				}
 			}
 		}
-		return new EstadisticasCargaInfracciones(totalInf, nMeses, infPorMes, new double[] {xMin, yMin, xMax, yMax});
+		return new EstadisticasCargaInfracciones(totalInf, nMeses, infPorMes, new double[] {latMin, lonMin, latMax, lonMax});
 	}
 	
 	/**
