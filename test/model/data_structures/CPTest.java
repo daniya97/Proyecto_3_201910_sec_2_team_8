@@ -1,6 +1,5 @@
 package model.data_structures;
 
-import com.sun.xml.internal.bind.v2.runtime.Location;
 
 import junit.framework.TestCase;
 import model.vo.LocationVO;
@@ -106,7 +105,7 @@ public class CPTest extends TestCase{
 		assertEquals("El elemento mï¿½ximo de HeapCP es el nï¿½mero 3",elemento3, cp2.max());
 		assertEquals("El elemento minimo de MinCP es el nï¿½mero 1",elemento1, cp3.min());
 		assertEquals("El elemento minimo de IndexMinPQ es el nï¿½mero 1",elemento1, cp4.minK());
-		assertEquals("El índice minimo de IndexMinPQ es el nï¿½mero 30",40, cp4.minIndex());
+		assertEquals("El ï¿½ndice minimo de IndexMinPQ es el nï¿½mero 30",40, cp4.minIndex());
 		
 		
 		
@@ -128,7 +127,7 @@ public class CPTest extends TestCase{
 		assertEquals("Deberï¿½a eliminarse  IndexMinPQ el elemento 3",100, cp4.delMin());
 
 		
-		//Métodos Adicionales IndexMin
+		//Mï¿½todos Adicionales IndexMin
 		
 		cp4.agregar(40, elemento1);
 		cp4.agregar(30, elemento2);
