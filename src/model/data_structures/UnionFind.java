@@ -36,7 +36,7 @@ public class UnionFind {
      */
 	public int find(int p) {
 		while (p != padre[p]) {
-			padre[p] = padre[padre[p]];    // path compression by halving
+			padre[p] = padre[padre[p]];    
 			p = padre[p];
 		}
 		return p;
