@@ -1,14 +1,15 @@
 package model.logic;
 
 public class InfoInterseccion {
-	private int objectId;
-	private int objectId1;
 	private int nInfracciones;
 	private LatLonCoords coords;
 	
-	public InfoInterseccion(int pobjectId, int pobjectId1, int pnInfracciones, double plat, double plon) {
-		objectId = pobjectId;
-		objectId1 = pobjectId1;
+	public InfoInterseccion(double plat, double plon) {
+		nInfracciones = 0;
+		coords = new LatLonCoords(plat, plon);
+	}
+	
+	public InfoInterseccion(int pnInfracciones, double plat, double plon) {
 		nInfracciones = pnInfracciones;
 		coords = new LatLonCoords(plat, plon);
 	}
@@ -27,13 +28,6 @@ public class InfoInterseccion {
 	/*
 	 * Getters
 	 */
-	public int darObjectId() {
-		return objectId;
-	}
-	
-	public int darObjectId1() {
-		return objectId1;
-	}
 	
 	public int darNInfracciones() {
 		return nInfracciones;
@@ -49,5 +43,13 @@ public class InfoInterseccion {
 	
 	public double darLon() {
 		return coords.getLon();
+	}
+
+	public double haversineD(InfoInterseccion infoVertex) {
+		return coords.haversineD(infoVertex.darCoords());
+	}
+	
+	public double haversineD(LatLonCoords coords2) {
+		return coords.haversineD(coords2);
 	}
 }

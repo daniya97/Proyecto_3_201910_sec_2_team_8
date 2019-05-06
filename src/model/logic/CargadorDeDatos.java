@@ -49,11 +49,11 @@ public class CargadorDeDatos {
 		public static final int VIOLATIONDESC = 17;	
 		public static final int ROW_ID = 18;
 		public static final int LAT = 19;
-		public static final int LONG = 20;
+		public static final int LON = 20;
 	/**
 	 * Lista donde se van a cargar los datos de los archivos
 	 */
-	private static IGraph<BigInteger, LatLonCoords, PesosDIVArco> grafoIntersecciones;
+	private static IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafoIntersecciones;
 
 	/**
 	 * Numero actual del semestre cargado
@@ -101,7 +101,7 @@ public class CargadorDeDatos {
 			
 			// Agrega el vertice solo si no existe ya, por si acaso
 			if (grafoIntersecciones.getInfoVertex(verticeAct.getId()) == null) {
-				grafoIntersecciones.addVertex(verticeAct.getId(), new LatLonCoords(verticeAct.getLat(), verticeAct.getLon()));
+				grafoIntersecciones.addVertex(verticeAct.getId(), new InfoInterseccion(verticeAct.getLat(), verticeAct.getLon()));
 				nVertices += 1;
 			}
 		}
@@ -195,29 +195,47 @@ public class CargadorDeDatos {
 				
 				// Lee linea a linea el archivo para crear las infracciones y cargarlas a la lista
 				String campo;
-				BigInteger idMin;
-				Double distMin;
+				BigInteger idVMin = null;
+				double distMin;
+				double distAct;
+				LatLonCoords coordsAct; double latAct; double lonAct;
 				for (String[] row : reader) {
+					distMin = Double.MAX_VALUE; // Distancia minima inicial para esta infraccion
 					
 					// Extraer informacion relevante de la infraccion actual
-					campo = row[posiciones[STREETSEGID]];
+					latAct = Double.parseDouble(row[posiciones[LAT]]);
+					lonAct = Double.parseDouble(row[posiciones[LON]]);
+				
+					coordsAct = new LatLonCoords(latAct, lonAct);
 					
+					// Hallar el vertice con el que la distancia de la infraccion actual es minima
+					for (BigInteger interseccionID : grafoIntersecciones) {
+						distAct = grafoIntersecciones.getInfoVertex(interseccionID).haversineD(coordsAct);
+						
+						if (distAct < distMin) {
+							distMin = distAct;
+							idVMin = interseccionID;
+						}
+					}
 					
-					contadorInf += 1;
+					// Agregar infraccion al vertice seleccionado
+					grafoIntersecciones.getInfoVertex(idVMin).aumentarNInfracciones();
+					
+					contadorInf += 1; 
 					
 					// Inicializa las coordenadas extremas si no se ha hecho
 					if(latMin == null || lonMin == null){
-						latMin = 0.;
-						lonMin = 0.;
-						latMax = 0.;
-						lonMax = 0.;
+						latMin = latAct;
+						lonMin = lonAct;
+						latMax = latAct;
+						lonMax = lonAct;
 					}
 
 					// Se actualizan las coordenadas extremas
-					latMin = Math.min(latMin, infraccion.getXCoord());
-					latMax = Math.max(latMax, infraccion.getXCoord());
-					lonMin = Math.min(lonMin, infraccion.getYCoord());
-					lonMax = Math.max(lonMax, infraccion.getYCoord());			
+					latMin = Math.min(latMin, latAct);
+					latMax = Math.max(latMax, latAct);
+					lonMin = Math.min(lonMin, lonAct);
+					lonMax = Math.max(lonMax, lonAct);			
 				}
 				// Se agrega el numero de infracciones cargadas en este archivo al resultado 
 				totalInf += contadorInf;
