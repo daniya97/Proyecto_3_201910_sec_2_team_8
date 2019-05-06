@@ -1,19 +1,19 @@
 package model.data_structures;
 
-
 import junit.framework.TestCase;
-import model.vo.*;
+import model.vo.LocationVO;
 
 public class CPTest extends TestCase{
 
-	// Max CP
+	
 	private MaxColaPrioridad<LocationVO> cp1;
+	// Max CP
 	
 	// Max HEAP
 	private MaxHeapCP<LocationVO> cp2;
 	
 	//Min Cp
-	private MinCP<LocationVO> cp3;
+	private MinCP<LocationVO>  cp3;
 
 	//MinIndexedCP
 	private IndexMinPQ<LocationVO> cp4;
@@ -21,9 +21,9 @@ public class CPTest extends TestCase{
 	
 	//Colas Vacias
 	private void setUpEscenario0() {
-		cp1 = new MaxColaPrioridad<LocationVO>();
-		cp2 = new MaxHeapCP<LocationVO>();
-		cp3 = new MinCP<LocationVO>();
+		cp1 = new MaxColaPrioridad<> ();
+		cp2 = new MaxHeapCP<> ();
+		cp3 = new MinCP<LocationVO> ();
 		cp4 = new IndexMinPQ<>(100);
 
 	}

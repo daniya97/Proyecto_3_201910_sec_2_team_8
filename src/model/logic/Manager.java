@@ -171,6 +171,11 @@ public class Manager {
 			
 			lat = grafoIntersecciones.getInfoVertex(id).getLat();
 			lon = grafoIntersecciones.getInfoVertex(id).getLon();
+			
+			grafoIntersecciones.getInfoVertex(id)
+			
+			auxiliar = new esquemaJSON<BigInteger>(id, pAdj, pLat, pLon, pNInfracciones)
+			
 			auxiliar = new esquemaJSON<BigInteger>(id, lista2, lat, lon);
 			lista[i] = auxiliar;
 		}
