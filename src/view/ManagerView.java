@@ -2,6 +2,8 @@ package view;
 
 import java.io.File;
 
+import model.vo.EstadisticasCargaInfracciones;
+
 
 public class ManagerView 
 {
@@ -17,10 +19,8 @@ public class ManagerView
 	public void printMenu() {
 		System.out.println("---------ISIS 1206 - Estructuras de datos----------");
 		System.out.println("---------------------Proyecto 2----------------------");
-		System.out.println("0. Cargar mapa (grafo) a partir del XML");
-		System.out.println("1. Guardar grafo en JSON");
-		System.out.println("2. Cargar grafo desde JSON");
-		System.out.println("3. Crear mapa del grafo cargado");
+		System.out.println("0. Cargar mapa (grafo) a partir del Json");
+		System.out.println("1. Cargar infracciones del semestre dado al mapa");
 		
 		System.out.println("11. Salir");
 		System.out.println("Digite el numero de opcion para ejecutar la tarea, luego presione enter: (Ej., 1):");
@@ -31,35 +31,24 @@ public class ManagerView
 		System.out.println(mensaje);
 	}
 
-	public void printResumenCarga(Integer[] resultados0) {
+	public void printResumenCargaJson(int[] resultados0) {
 		System.out.println("Numero de Vertices: " + resultados0[0]);
 		System.out.println("Numero de Arcos: " + resultados0[1]);
 		
 	}
-
-	public void printReq1(boolean esSatisfactorio) {
-		if(esSatisfactorio){
-			System.out.println("Se gener� correctame el archivo JSON con la informaci�n del grafo");
-		}else{
-			System.out.println("Ocurri� un error generando el JSON");
+	
+	public void printResumenLoadMovingViolations(EstadisticasCargaInfracciones resultados) {
+		int mes = 1;
+		System.out.println("Total de Infracciones :" + resultados.darTotalInfracciones());
+		for (int infraccionesXMes : resultados.darNumeroDeInfraccionesXMes())
+		{
+			System.out.println("Infracciones mes:" + mes + " = " + infraccionesXMes);
+			mes++;
 		}
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public void printReq2(int[] infoCarga) {
-		System.out.println("Numero de Vertices: " + infoCarga[0]);
-		System.out.println("Numero de Arcos: " + infoCarga[1]);
-		
-	}
-	
-	public void printMapa() {
-		System.out.println("Archivo creado");
+		double [] minimax = resultados.darMinimax();
+		System.out.println("Min y max: [" + minimax[0] + ", " + minimax[1] + "], [" + minimax[2] + ", " + minimax[3] + "]");
 	}
 
-	public void printReq3(File htmlMapa) {
-		
-		
-	}
+	
 
 }

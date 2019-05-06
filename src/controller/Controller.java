@@ -8,6 +8,7 @@ import java.util.Scanner;
 import java.io.File;
 
 import model.logic.Manager;
+import model.vo.EstadisticasCargaInfracciones;
 import view.ManagerView;
 
 public class Controller {
@@ -66,36 +67,19 @@ public class Controller {
 				switch(option)
 				{
 				case 0:
-					view.printMessage("Ingrese el nombre del archivo (guardado en 'data') (OJO: poner .xml):");
-					String nombreXML = sc.next();
-					Integer[] resultados0 = model.loadXML("./data/"+nombreXML);
-					view.printResumenCarga(resultados0);
-					break;
-					
-				case 1:
-					
-					view.printMessage("Nombre del JSON (sin el .json): ");
-					String nombreJsonC = sc.next();
-
-					esSatisfactorio = model.guardarEnJson(nombreJsonC);
-					view.printReq1(esSatisfactorio);
-					break;
-
-				case 2:
-					view.printMessage("Nombre del JSON: (con el .json)");
+					view.printMessage("Ingrese el nombre del archivo (guardado en 'data') (OJO: escribir .json):");
 					String nombreJsonG = sc.next();
-
-					int[] infoCarga = model.cargarDeJson(nombreJsonG);
-					view.printReq2(infoCarga);
+					int[] resultados0 = model.cargarDeJson(nombreJsonG);
+					view.printResumenCargaJson(resultados0);
+					break;
+					
+				case 1:				
+					view.printMessage("Ingrese el Semestre (1 -[Enero - Junio], 2[Julio - Diciembre])");
+					int numeroSemestre = sc.nextInt();
+					EstadisticasCargaInfracciones resultados1 = model.cargarSemestreAGrafo(numeroSemestre);
+					view.printResumenLoadMovingViolations(resultados1);
 					break;
 
-				case 3:
-					view.printMessage("Nombre del archivo a crear: ");
-					String nombreHTML = sc.next();
-					File htmlMapa = model.crearMapa(nombreHTML);
-					view.printReq3(htmlMapa);
-					break;
-				
 					
 				case 11:
 					fin=true;

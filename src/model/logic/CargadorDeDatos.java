@@ -6,13 +6,15 @@ import java.io.IOException;
 import java.math.BigInteger;
 
 import com.google.gson.Gson;
+import com.opencsv.CSVParser;
+import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 
 import model.data_structures.GrafoNDPesos;
 import model.data_structures.IGraph;
 import model.logic.PesosDIVArco;
 import model.vo.EstadisticasCargaInfracciones;
-import model.vo.VOMovingViolations;
 
 public class CargadorDeDatos {
 	/*
@@ -82,12 +84,11 @@ public class CargadorDeDatos {
 	 */
 	private static Double lonMax;
 	
-	public EstadisticasCargaInfracciones cargarJsonEInfr() throws IOException {
-		int[] jsonRes = cargarDeJson(NOMBRE_MAPA_JSON);
-		return null; //TODO
+	public int[] cargarJsonMapa() throws IOException {
+		return cargarDeJson(NOMBRE_MAPA_JSON);
 	}
 	
-	private int[] cargarDeJson(String nombreJsonG) throws IOException {
+	public int[] cargarDeJson(String nombreJsonG) throws IOException {
 		VertexSummary verticeAct;
 		
 		Gson gson = new Gson();
@@ -133,23 +134,23 @@ public class CargadorDeDatos {
 		EstadisticasCargaInfracciones numeroDeCargas;
 		if(n == 1)
 		{
-			numeroDeCargas = loadMovingViolations(new String[] {"Moving_Violations_Issued_in_January_2018.csv", 
-					"Moving_Violations_Issued_in_February_2018.csv",
-										"Moving_Violations_Issued_in_March_2018.csv",
-										"Moving_Violations_Issued_in_April_2018.csv",
-										"Moving_Violations_Issued_in_May_2018.csv",
-										"Moving_Violations_Issued_in_June_2018.csv"
+			numeroDeCargas = loadMovingViolations(new String[] {"January_wgs84.csv", 
+					"February_wgs84.csv",
+										"March_wgs84.csv",
+										"April_wgs84.csv",
+										"May_wgs84.csv",
+										"June_wgs84.csv"
 			});
 			semestreCargado = 1;
 		}
 		else if(n == 2)
 		{
-			numeroDeCargas = loadMovingViolations(new String[] {"Moving_Violations_Issued_in_July_2018.csv",
-					"Moving_Violations_Issued_in_August_2018.csv",
-										"Moving_Violations_Issued_in_September_2018.csv", 
-										"Moving_Violations_Issued_in_October_2018.csv",
-										"Moving_Violations_Issued_in_November_2018.csv",
-										"Moving_Violations_Issued_in_December_2018.csv"
+			numeroDeCargas = loadMovingViolations(new String[] {"July_wgs84.csv",
+					"August_wgs84.csv",
+										"September_wgs84.csv", 
+										"October_wgs84.csv",
+										"November_wgs84.csv",
+										"December_wgs84.csv"
 			});
 			semestreCargado = 2;
 		}
@@ -182,15 +183,17 @@ public class CargadorDeDatos {
 			//movingVOLista = new ArregloDinamico<VOMovingViolations>(670000);
 
 			int nArchivoActual = 0;
+			CSVParser parser = new CSVParserBuilder().withSeparator(';').build();
 			for (String filePath : movingViolationsFilePaths) {
-				reader = new CSVReader(new FileReader("data/"+filePath));
+				reader = new CSVReaderBuilder(new FileReader("data/"+filePath)).withCSVParser(parser).build();
 
 				contadorInf = 0;
 				// Deduce las posiciones de las columnas que se reconocen de acuerdo al header
 				String[] headers = reader.readNext();
-				int[] posiciones = new int[VOMovingViolations.EXPECTEDHEADERS.length];
-				for (int i = 0; i < VOMovingViolations.EXPECTEDHEADERS.length; i++) {
-					posiciones[i] = buscarArray(headers, VOMovingViolations.EXPECTEDHEADERS[i]);
+				int[] posiciones = new int[EXPECTEDHEADERS.length];
+				System.out.println(posiciones.length);
+				for (int i = 0; i < EXPECTEDHEADERS.length; i++) {
+					posiciones[i] = buscarArray(headers, EXPECTEDHEADERS[i]);
 				}
 				
 				// Lee linea a linea el archivo para crear las infracciones y cargarlas a la lista
@@ -204,8 +207,8 @@ public class CargadorDeDatos {
 					distMin = Double.MAX_VALUE; // Distancia minima inicial para esta infraccion
 					
 					// Extraer informacion relevante de la infraccion actual
-					latAct = Double.parseDouble(row[posiciones[LAT]]);
-					lonAct = Double.parseDouble(row[posiciones[LON]]);
+					latAct = Double.parseDouble(row[posiciones[LAT]].replaceAll(",","."));
+					lonAct = Double.parseDouble(row[posiciones[LON]].replaceAll(",","."));
 				
 					coordsAct = new LatLonCoords(latAct, lonAct);
 					
@@ -269,7 +272,8 @@ public class CargadorDeDatos {
 	 */
 	private int buscarArray(String[] array, String string) {
 		int i = 0;
-
+		System.out.println(array);
+		System.out.println(string);
 		while (i < array.length) {
 			if (array[i].equalsIgnoreCase(string)) return i;
 			i += 1;

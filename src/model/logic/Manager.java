@@ -32,7 +32,6 @@ import model.data_structures.Queue;
 import model.util.Sort;
 import model.vo.Coordenadas;
 import model.vo.EstadisticasCargaInfracciones;
-import model.vo.VOMovingViolations;
 import model.vo.esquemaJSON;
 
 public class Manager {
@@ -99,7 +98,11 @@ public class Manager {
 	 * Carga de datos
 	 */
 	
-	public EstadisticasCargaInfracciones cargarGrafoParaSemestre(int n) {
+	public int[] cargarDeJson(String nombreJsonG) throws IOException {
+		return cargador.cargarDeJson(nombreJsonG);
+	}
+	
+	public EstadisticasCargaInfracciones cargarSemestreAGrafo(int n) {
 		return cargador.loadMovingViolations(n);
 	}
 	

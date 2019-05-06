@@ -19,15 +19,16 @@ public class Main extends DefaultHandler {
 	int maxWays = 5;
 
 	static public void main(String[] args) throws Exception{
-		String filename = "./data/map.osm.txt";
-		
-		SAXParserFactory spf = SAXParserFactory.newInstance();
-		spf.setNamespaceAware(true);
-		    
-		SAXParser saxParser = spf.newSAXParser();
-		XMLReader xmlReader = saxParser.getXMLReader();
-		xmlReader.setContentHandler(new Main());
-		xmlReader.parse(filename);
+		/*
+		 * String filename = "./data/map.osm.txt";
+		 * 
+		 * SAXParserFactory spf = SAXParserFactory.newInstance();
+		 * spf.setNamespaceAware(true);
+		 * 
+		 * SAXParser saxParser = spf.newSAXParser(); XMLReader xmlReader =
+		 * saxParser.getXMLReader(); xmlReader.setContentHandler(new Main());
+		 * xmlReader.parse(filename);
+		 */
 	}
 
 	
