@@ -54,10 +54,8 @@ public class CargadorDeDatos {
 		public static final int ROW_ID = 18;
 		public static final int LAT = 19;
 		public static final int LONG = 20;
-	/**
-	 * Lista donde se van a cargar los datos de los archivos
-	 */
-	private static IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafoIntersecciones;
+	
+	//private static IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafoIntersecciones;
 
 	/**
 	 * Numero actual del semestre cargado
@@ -92,16 +90,16 @@ public class CargadorDeDatos {
 	
 	private static final int PRECISION_COORD = 1000;
 	
-	public int[] cargarJsonMapa() throws IOException {
+	public IGraph<BigInteger, InfoInterseccion, PesosDIVArco> cargarJsonMapa() throws IOException {
 		return cargarDeJson(NOMBRE_MAPA_JSON);
 	}
 	
-	public int[] cargarDeJson(String nombreJsonG) throws IOException {
+	public IGraph<BigInteger, InfoInterseccion, PesosDIVArco> cargarDeJson(String nombreJsonG) throws IOException {
 		VertexSummary verticeAct;
 		
 		Gson gson = new Gson();
 		JReader reader = new JReader(new File("data/"+nombreJsonG));
-		grafoIntersecciones = new GrafoNDPesos<>(); // Inicializar tabla que indica el vertice de este grafo que es mas cercano a cada lat lon
+		IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafoIntersecciones = new GrafoNDPesos<>(); // Inicializar tabla que indica el vertice de este grafo que es mas cercano a cada lat lon
 		
 		int nVertices = 0;
 		// Lee linea a linea el archivo para crear las infracciones y cargarlas a la lista
@@ -131,7 +129,7 @@ public class CargadorDeDatos {
 		
 		idVCorresp = new LinProbTH<>(11);
 		
-		return new int[] {nVertices, nArcos};
+		return grafoIntersecciones;
 	}
 	
 	/**
@@ -139,7 +137,7 @@ public class CargadorDeDatos {
 	 * @param n Numero del semestre del anio (1 � 2)
 	 * @return Cola con el numero de datos cargados por mes del semestre
 	 */
-	public EstadisticasCargaInfracciones loadMovingViolations(int n)
+	public EstadisticasCargaInfracciones loadMovingViolations(int n, IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafoIntersecciones)
 	{
 		EstadisticasCargaInfracciones numeroDeCargas;
 		if(n == 1)
@@ -150,7 +148,7 @@ public class CargadorDeDatos {
 										"April_wgs84.csv",
 										"May_wgs84.csv",
 										"June_wgs84.csv"
-			});
+			}, grafoIntersecciones);
 			semestreCargado = 1;
 		}
 		else if(n == 2)
@@ -161,7 +159,7 @@ public class CargadorDeDatos {
 										"October_wgs84.csv",
 										"November_wgs84.csv",
 										"December_wgs84.csv"
-			});
+			}, grafoIntersecciones);
 			semestreCargado = 2;
 		}
 		else
@@ -181,7 +179,7 @@ public class CargadorDeDatos {
 	 * Dado un arreglo con los nombres de los archivos a cargar
 	 * @returns Cola con el numero de datos cargados por mes del cuatrimestre
 	 */
-	private EstadisticasCargaInfracciones loadMovingViolations(String[] movingViolationsFilePaths){
+	private EstadisticasCargaInfracciones loadMovingViolations(String[] movingViolationsFilePaths, IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafoIntersecciones){
 		CSVReader reader = null;
 
 		int totalInf = 0;

@@ -102,7 +102,8 @@ public class Manager {
 	 * @throws IOException
 	 */
 	public int[] cargarDeJson(String nombreJsonG) throws IOException {
-		return cargador.cargarDeJson(nombreJsonG);
+		grafoIntersecciones = cargador.cargarDeJson(nombreJsonG);
+		return new int[] {grafoIntersecciones.V(), grafoIntersecciones.E()};
 	}
 	
 	/**
@@ -111,7 +112,7 @@ public class Manager {
 	 * @return
 	 */
 	public EstadisticasCargaInfracciones cargarSemestreAGrafo(int n) {
-		return cargador.loadMovingViolations(n);
+		return cargador.loadMovingViolations(n, grafoIntersecciones);
 	}
 	
 	/**
