@@ -13,6 +13,8 @@ import com.opencsv.CSVReaderBuilder;
 
 import model.data_structures.GrafoNDPesos;
 import model.data_structures.IGraph;
+import model.data_structures.ITablaHash;
+import model.data_structures.LinProbTH;
 import model.logic.PesosDIVArco;
 import model.vo.EstadisticasCargaInfracciones;
 
@@ -83,6 +85,10 @@ public class CargadorDeDatos {
 	 * Y maximo de infraccion
 	 */
 	private static Double lonMax;
+	/**
+	 * Tabla donde se recordara el vertice donde se guardan las coordenadas
+	 */
+	private static ITablaHash<LatLonCoords, BigInteger> idVCorresp;
 	
 	public int[] cargarJsonMapa() throws IOException {
 		return cargarDeJson(NOMBRE_MAPA_JSON);
@@ -93,7 +99,7 @@ public class CargadorDeDatos {
 		
 		Gson gson = new Gson();
 		JReader reader = new JReader(new File("data/"+nombreJsonG));
-		grafoIntersecciones = new GrafoNDPesos<>();
+		grafoIntersecciones = new GrafoNDPesos<>(); // Inicializar tabla que indica el vertice de este grafo que es mas cercano a cada lat lon
 		
 		int nVertices = 0;
 		// Lee linea a linea el archivo para crear las infracciones y cargarlas a la lista
@@ -120,6 +126,8 @@ public class CargadorDeDatos {
 				}
 			}
 		}
+		
+		idVCorresp = new LinProbTH<>(11);
 		
 		return new int[] {nVertices, nArcos};
 	}
@@ -216,20 +224,27 @@ public class CargadorDeDatos {
 					coordsAct = new LatLonCoords(latAct, lonAct);
 					
 					// Hallar el vertice con el que la distancia de la infraccion actual es minima
-					for (BigInteger interseccionID : grafoIntersecciones) {
-						distAct = grafoIntersecciones.getInfoVertex(interseccionID).haversineD(coordsAct);
-						
-						if (distAct < distMin) {
-							distMin = distAct;
-							idVMin = interseccionID;
+					idVMin = idVCorresp.get(coordsAct);
+					
+					if (idVMin == null) { // Buscar si no esta en la tabla
+						for (BigInteger interseccionID : grafoIntersecciones) {
+							distAct = grafoIntersecciones.getInfoVertex(interseccionID).haversineD(coordsAct);
+							
+							if (distAct < distMin) {
+								distMin = distAct;
+								idVMin = interseccionID;
+							}
 						}
+						
+						idVCorresp.put(coordsAct, idVMin);
 					}
 					
 					// Agregar infraccion al vertice seleccionado
 					idInf = Integer.parseInt(row[posiciones[OBJECTID]]);
 					grafoIntersecciones.getInfoVertex(idVMin).aumentarNInfracciones(idInf);
 					
-					contadorInf += 1; 
+					contadorInf += 1;
+					System.out.println("Infracciones cargadas: " + contadorInf);
 					
 					// Inicializa las coordenadas extremas si no se ha hecho
 					if(latMin == null || lonMin == null){
@@ -275,12 +290,11 @@ public class CargadorDeDatos {
 	 */
 	private int buscarArray(String[] array, String string) {
 		int i = 0;
-		System.out.println(array.length);
 		while (i < array.length) {
 			if (array[i].equalsIgnoreCase(string)) return i;
 			i += 1;
 		}
-		System.out.println("No se encontro: " + string + " en un array de " + array.length);
+		//System.out.println("No se encontro: " + string + " en un array de " + array.length);
 		return -1;
 	}
 }
