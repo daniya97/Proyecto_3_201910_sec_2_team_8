@@ -79,7 +79,20 @@ public class Controller {
 					EstadisticasCargaInfracciones resultados1 = model.cargarSemestreAGrafo(numeroSemestre);
 					view.printResumenLoadMovingViolations(resultados1);
 					break;
+					
+				case 2:				
+					view.printMessage("Ingrese el nombre del XML a cargar (guardado en 'data') (e.g. map.xml): ");
+					String nombreXML = sc.next();
+					model.loadXML(nombreXML);
+					view.printMessage("Grafo creado satisfactoriamente");
+					break;
+				case 3:
+					view.printMessage("Nombre del JSON (sin el .json): ");
+					String nombreJsonC = sc.next();
 
+					esSatisfactorio = model.guardarEnJson(nombreJsonC);
+					view.printMessage("Archivo .json creado satisfactoriamente");
+					break;
 					
 				case 11:
 					fin=true;

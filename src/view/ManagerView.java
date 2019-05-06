@@ -21,6 +21,8 @@ public class ManagerView
 		System.out.println("---------------------Proyecto 2----------------------");
 		System.out.println("0. Cargar mapa (grafo) a partir del Json");
 		System.out.println("1. Cargar infracciones del semestre dado al mapa");
+		System.out.println("2. HACER PRIMERO (archivo grande que no puede guardarse en github):\n   Crear grafo a partir de .xml");
+		System.out.println("3. Guardar grafo actual en .json");
 		
 		System.out.println("11. Salir");
 		System.out.println("Digite el numero de opcion para ejecutar la tarea, luego presione enter: (Ej., 1):");

@@ -88,7 +88,9 @@ public class CargadorDeDatos {
 	/**
 	 * Tabla donde se recordara el vertice donde se guardan las coordenadas
 	 */
-	private static ITablaHash<LatLonCoords, BigInteger> idVCorresp;
+	private static ITablaHash<Integer[], BigInteger> idVCorresp;
+	
+	private static final int PRECISION_COORD = 100;
 	
 	public int[] cargarJsonMapa() throws IOException {
 		return cargarDeJson(NOMBRE_MAPA_JSON);
@@ -224,7 +226,7 @@ public class CargadorDeDatos {
 					coordsAct = new LatLonCoords(latAct, lonAct);
 					
 					// Hallar el vertice con el que la distancia de la infraccion actual es minima
-					idVMin = idVCorresp.get(coordsAct);
+					idVMin = idVCorresp.get(new Integer[] {(int) latAct*PRECISION_COORD, (int) lonAct*PRECISION_COORD});
 					
 					if (idVMin == null) { // Buscar si no esta en la tabla
 						for (BigInteger interseccionID : grafoIntersecciones) {
@@ -236,7 +238,7 @@ public class CargadorDeDatos {
 							}
 						}
 						
-						idVCorresp.put(coordsAct, idVMin);
+						idVCorresp.put(new Integer[] {(int) latAct*PRECISION_COORD, (int) lonAct*PRECISION_COORD}, idVMin);
 					}
 					
 					// Agregar infraccion al vertice seleccionado
@@ -244,7 +246,7 @@ public class CargadorDeDatos {
 					grafoIntersecciones.getInfoVertex(idVMin).aumentarNInfracciones(idInf);
 					
 					contadorInf += 1;
-					System.out.println("Infracciones cargadas: " + contadorInf);
+					if (contadorInf%100 == 0) System.out.println("Infracciones cargadas: " + contadorInf);
 					
 					// Inicializa las coordenadas extremas si no se ha hecho
 					if(latMin == null || lonMin == null){

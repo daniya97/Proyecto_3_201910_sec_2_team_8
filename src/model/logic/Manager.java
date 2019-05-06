@@ -97,15 +97,33 @@ public class Manager {
 	/*
 	 * Carga de datos
 	 */
-	
+	/**
+	 * Carga el grafo guardado en el archivo Json cuyo nombre se da por parametro
+	 * @param nombreJsonG
+	 * @return
+	 * @throws IOException
+	 */
 	public int[] cargarDeJson(String nombreJsonG) throws IOException {
 		return cargador.cargarDeJson(nombreJsonG);
 	}
 	
+	/**
+	 * Carga la informacion de un semestre dado a un grafo ya creado
+	 * @param n
+	 * @return
+	 */
 	public EstadisticasCargaInfracciones cargarSemestreAGrafo(int n) {
 		return cargador.loadMovingViolations(n);
 	}
 	
+	/**
+	 * Crea un grafo sin vertices desconectados de intersecciones y avenidas a partir de un archivo XML 
+	 * @param nombreXML Nombre del archivo a crear
+	 * @return Numero de Vertices y Numero de arcos del grafo creado
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 */
 	public Integer[] loadXML(String nombreXML) throws ParserConfigurationException, SAXException, IOException {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		spf.setNamespaceAware(true);
@@ -122,7 +140,11 @@ public class Manager {
 		return new Integer[] {grafoIntersecciones.V(), grafoIntersecciones.E()};
 	}
 
-
+	/**
+	 * Guarda la informacion basica del grafo actualmente creado en un Json
+	 * @param nombreJsonC Nombre del Json a crear
+	 * @return Si fue satisfactoria la carga
+	 */
 	public boolean guardarEnJson(String nombreJsonC) {
 		
 		
