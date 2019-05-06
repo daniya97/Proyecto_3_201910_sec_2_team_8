@@ -1,5 +1,7 @@
 package model.logic;
 
+import java.math.BigInteger;
+
 import model.data_structures.ArregloDinamico;
 
 public class InfoInterseccion {
@@ -78,4 +80,5 @@ public class InfoInterseccion {
 	public double haversineD(LatLonCoords coords2) {
 		return coords.haversineD(coords2);
 	}
+
 }

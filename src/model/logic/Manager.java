@@ -41,7 +41,7 @@ public class Manager {
 	/**
 	 * Nombre de Json con mapa a cargar 
 	 */
-	private final String NOMBRE_MAPA_JSON = "persistenciaJsonMap.json";
+	private final String NOMBRE_MAPA_JSON = "persistenciaJsonMapa.json";
 	
 	/**
 	 * Lista donde se van a cargar los datos de los archivos
@@ -144,7 +144,7 @@ public class Manager {
 	 * @param nombreJsonC Nombre del Json a crear
 	 * @return Si fue satisfactoria la carga
 	 */
-	public boolean guardarEnJson(String nombreJsonC) {
+	public static boolean guardarEnJson(String nombreJsonC) {
 		
 		
 		esquemaJSON<BigInteger> auxiliar;
@@ -288,4 +288,27 @@ public class Manager {
 	 * Metodos ayudantes 
 	 */
 	
+	public static void main(String[] args) throws IOException {
+		cargador = new CargadorDeDatos();
+		grafoIntersecciones = cargador.cargarDeJson("persistenciaGrafoWashington.json");
+		
+		String[] nombreMeses = new String[] {"January_wgs84.csv", 
+				//"February_wgs84.csv",
+				//"March_wgs84.csv",
+				//"April_wgs84.csv",
+				//"May_wgs84.csv",
+				//"June_wgs84.csv",
+				//"July_wgs84.csv",
+				//"August_wgs84.csv",
+				//					"September_wgs84.csv", 
+				//					"October_wgs84.csv",
+				//					"November_wgs84.csv",
+				//					"December_wgs84.csv"
+				};
+		
+		for (int i = 0; i < nombreMeses.length; i++) {
+			cargador.loadMovingViolations(new String[] {nombreMeses[i]}, grafoIntersecciones);
+			guardarEnJson("jsonHasta"+i);
+		}
+	}
 }
