@@ -18,7 +18,7 @@ public class LectorXML extends DefaultHandler {
 	/*
 	 * Atributos
 	 */
-	private IGraph<BigInteger, LatLonCoords, IdPesoArco> grafo;
+	private IGraph<BigInteger, InfoInterseccion, IdPesoArco> grafo;
 	
 	private ITablaHash<BigInteger, LatLonCoords> verticesPosibles;
 	public boolean insideWay = false;
@@ -33,7 +33,7 @@ public class LectorXML extends DefaultHandler {
 	 * Metodos de DefaultHandler
 	 */
 	public void startDocument() throws SAXException {
-		grafo = new GrafoNDPesos<BigInteger, LatLonCoords, IdPesoArco>();
+		grafo = new GrafoNDPesos<BigInteger, InfoInterseccion, IdPesoArco>();
 		verticesPosibles = new LinProbTH<BigInteger, LatLonCoords>(11);
 	}
 	
@@ -73,14 +73,14 @@ public class LectorXML extends DefaultHandler {
 					coordsPre = verticesPosibles.get(anteriorK);
 					
 					// Agregar el primer vertice si no está ya en el grafo
-					if (grafo.getInfoVertex(anteriorK) == null) grafo.addVertex(anteriorK, coordsPre);
+					if (grafo.getInfoVertex(anteriorK) == null) grafo.addVertex(anteriorK, new InfoInterseccion(coordsPre));
 					continue;
 				}
 				
 				coordsAct = verticesPosibles.get(vertexK);
 				
 				// Agregar vertice actual si no está ya en el grafo
-				if (grafo.getInfoVertex(vertexK) == null) grafo.addVertex(vertexK, coordsAct);
+				if (grafo.getInfoVertex(vertexK) == null) grafo.addVertex(vertexK, new InfoInterseccion(coordsAct));
 				
 				// Agregar arco entre ellos si no existe
 				if (grafo.getInfoArc(anteriorK, vertexK) == null) {
@@ -104,7 +104,7 @@ public class LectorXML extends DefaultHandler {
 	/*
 	 * Metodos para interaccion con el Manager
 	 */
-	public IGraph<BigInteger, LatLonCoords, IdPesoArco> darGrafo(){
+	public IGraph<BigInteger, InfoInterseccion, IdPesoArco> darGrafo(){
 		return grafo;
 	}
 }

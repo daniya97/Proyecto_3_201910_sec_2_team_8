@@ -7,6 +7,18 @@ public class InfoInterseccion {
 	private LatLonCoords coords;
 	private ArregloDinamico<Integer> arregloInfracciones;
 	
+	public InfoInterseccion(LatLonCoords pCoords) {
+		nInfracciones = 0;
+		coords = pCoords;
+		arregloInfracciones = new ArregloDinamico<>();
+	}
+	
+	public InfoInterseccion(LatLonCoords pCoords, int nInf) {
+		nInfracciones = nInf;
+		coords = pCoords;
+		arregloInfracciones = new ArregloDinamico<>();
+	}
+	
 	public InfoInterseccion(double plat, double plon) {
 		nInfracciones = 0;
 		coords = new LatLonCoords(plat, plon);

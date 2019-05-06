@@ -47,7 +47,7 @@ public class Manager {
 	/**
 	 * Lista donde se van a cargar los datos de los archivos
 	 */
-	private static IGraph<BigInteger, LatLonCoords, IdPesoArco> grafoIntersecciones;
+	private static IGraph<BigInteger, InfoInterseccion, IdPesoArco> grafoIntersecciones;
 
 	/**
 	 * Cargador de Json e Infracciones
@@ -257,9 +257,9 @@ public class Manager {
 				infoArcoAct = grafoIntersecciones.getInfoArc(id, verAdj);
 				
 				//id1 = arcoAct.darKEither();
-				coords1 = grafoIntersecciones.getInfoVertex(id);
+				coords1 = grafoIntersecciones.getInfoVertex(id).darCoords();
 				//id2 = arcoAct.darKOther(id1);
-				coords2 = grafoIntersecciones.getInfoVertex(verAdj);
+				coords2 = grafoIntersecciones.getInfoVertex(verAdj).darCoords();
 				
 				if (   edgesAgregados.get(new BigInteger[] {id, verAdj}) != null
 				    || edgesAgregados.get(new BigInteger[] {verAdj, id}) != null ) continue;
