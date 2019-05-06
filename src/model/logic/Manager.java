@@ -257,9 +257,9 @@ public class Manager {
 				infoArcoAct = grafoIntersecciones.getInfoArc(id, verAdj);
 				
 				//id1 = arcoAct.darKEither();
-				coords1 = grafoIntersecciones.getInfoVertex(id).darCoords();
+				coords1 = grafoIntersecciones.getInfoVertex(id).getCoords();
 				//id2 = arcoAct.darKOther(id1);
-				coords2 = grafoIntersecciones.getInfoVertex(verAdj).darCoords();
+				coords2 = grafoIntersecciones.getInfoVertex(verAdj).getCoords();
 				
 				if (   edgesAgregados.get(new BigInteger[] {id, verAdj}) != null
 				    || edgesAgregados.get(new BigInteger[] {verAdj, id}) != null ) continue;

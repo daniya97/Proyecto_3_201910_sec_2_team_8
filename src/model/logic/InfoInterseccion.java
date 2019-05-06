@@ -46,24 +46,24 @@ public class InfoInterseccion {
 	 * Getters
 	 */
 	
-	public int darNInfracciones() {
+	public int getNInfracciones() {
 		return nInfracciones;
 	}
 	
-	public LatLonCoords darCoords() {
+	public LatLonCoords getCoords() {
 		return coords;
 	}
 	
-	public double darLat() {
+	public double getLat() {
 		return coords.getLat();
 	}
 	
-	public double darLon() {
+	public double getLon() {
 		return coords.getLon();
 	}
 
 	public double haversineD(InfoInterseccion infoVertex) {
-		return coords.haversineD(infoVertex.darCoords());
+		return coords.haversineD(infoVertex.getCoords());
 	}
 	
 	public double haversineD(LatLonCoords coords2) {
