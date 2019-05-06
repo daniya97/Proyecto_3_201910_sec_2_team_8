@@ -88,7 +88,7 @@ public class CargadorDeDatos {
 	 */
 	private static ITablaHash<Integer[], BigInteger> idVCorresp;
 	
-	private static final int PRECISION_COORD = 1000;
+	private static final int PRECISION_COORD = 5000;
 	
 	public IGraph<BigInteger, InfoInterseccion, PesosDIVArco> cargarJsonMapa() throws IOException {
 		return cargarDeJson(NOMBRE_MAPA_JSON);

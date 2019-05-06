@@ -154,6 +154,7 @@ public class Manager {
 		BigInteger[] lista2;
 		double lat;
 		double lon;
+		int nInfr;
 		int contador = 0;
 
 
@@ -171,12 +172,9 @@ public class Manager {
 			
 			lat = grafoIntersecciones.getInfoVertex(id).getLat();
 			lon = grafoIntersecciones.getInfoVertex(id).getLon();
+			nInfr = grafoIntersecciones.getInfoVertex(id).getNInfracciones();
 			
-			grafoIntersecciones.getInfoVertex(id)
-			
-			auxiliar = new esquemaJSON<BigInteger>(id, pAdj, pLat, pLon, pNInfracciones)
-			
-			auxiliar = new esquemaJSON<BigInteger>(id, lista2, lat, lon);
+			auxiliar = new esquemaJSON<BigInteger>(id, lista2, lat, lon, nInfr);
 			lista[i] = auxiliar;
 		}
 		
