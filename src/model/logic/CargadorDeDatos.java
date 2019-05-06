@@ -142,12 +142,12 @@ public class CargadorDeDatos {
 		EstadisticasCargaInfracciones numeroDeCargas;
 		if(n == 1)
 		{
-			numeroDeCargas = loadMovingViolations(new String[] {"January_wgs84.csv", 
-					"February_wgs84.csv",
-										"March_wgs84.csv",
-										"April_wgs84.csv",
-										"May_wgs84.csv",
-										"June_wgs84.csv"
+			numeroDeCargas = loadMovingViolations(new String[] {"January_wgs84.csv"//, 
+					//"February_wgs84.csv",
+						//				"March_wgs84.csv",
+							//			"April_wgs84.csv",
+								//		"May_wgs84.csv",
+									//	"June_wgs84.csv"
 			}, grafoIntersecciones);
 			semestreCargado = 1;
 		}
@@ -244,7 +244,9 @@ public class CargadorDeDatos {
 					grafoIntersecciones.getInfoVertex(idVMin).aumentarNInfracciones(idInf);
 					
 					contadorInf += 1;
-					if (contadorInf%30 == 0) System.out.println("Infracciones cargadas: " + contadorInf);
+					if (contadorInf%100 == 0) {
+						System.out.println("Infracciones cargadas: " + contadorInf);
+					}
 					
 					// Inicializa las coordenadas extremas si no se ha hecho
 					if(latMin == null || lonMin == null){
