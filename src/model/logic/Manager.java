@@ -30,7 +30,6 @@ import model.data_structures.LinkedList;
 import model.data_structures.MaxHeapCP;
 import model.data_structures.Queue;
 import model.util.Sort;
-import model.vo.Coordenadas;
 import model.vo.EstadisticasCargaInfracciones;
 import model.vo.esquemaJSON;
 
