@@ -200,13 +200,13 @@ public class CargadorDeDatos {
 				contadorInf = 0;
 				// Deduce las posiciones de las columnas que se reconocen de acuerdo al header
 				String[] headers = reader.readNext();
-				for (String head : headers) System.out.print(head + ";");
-				System.out.println();
+				//for (String head : headers) System.out.print(head + ";");
+				//System.out.println();
 				int[] posiciones = new int[EXPECTEDHEADERS.length];
-				System.out.println(posiciones.length);
+				//System.out.println(posiciones.length);
 				for (int i = 0; i < EXPECTEDHEADERS.length; i++) {
 					posiciones[i] = buscarArray(headers, EXPECTEDHEADERS[i]);
-					System.out.println("Posiciones " + i + " " +posiciones[i]);
+					//System.out.println("Posiciones " + i + " " +posiciones[i]);
 				}
 				
 				// Lee linea a linea el archivo para crear las infracciones y cargarlas a la lista
@@ -246,7 +246,7 @@ public class CargadorDeDatos {
 					grafoIntersecciones.getInfoVertex(idVMin).aumentarNInfracciones(idInf);
 					
 					contadorInf += 1;
-					if (contadorInf%100 == 0) System.out.println("Infracciones cargadas: " + contadorInf);
+					if (contadorInf%30 == 0) System.out.println("Infracciones cargadas: " + contadorInf);
 					
 					// Inicializa las coordenadas extremas si no se ha hecho
 					if(latMin == null || lonMin == null){
