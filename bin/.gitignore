@@ -1,4 +1,5 @@
-/model/
-/view/
-/controller/
-/ejemplos/
+controller/
+main/
+model/
+view/
+ejemplos/
