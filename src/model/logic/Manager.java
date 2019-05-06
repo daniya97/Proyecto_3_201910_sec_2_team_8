@@ -41,7 +41,7 @@ public class Manager {
 	/**
 	 * Nombre de Json con mapa a cargar 
 	 */
-	private final String NOMBRE_MAPA_JSON = "persistenciaJsonMapa.json";
+	private final static String NOMBRE_MAPA_JSON = "persistenciaMap.json";
 	
 	/**
 	 * Lista donde se van a cargar los datos de los archivos
@@ -290,20 +290,21 @@ public class Manager {
 	
 	public static void main(String[] args) throws IOException {
 		cargador = new CargadorDeDatos();
-		grafoIntersecciones = cargador.cargarDeJson("persistenciaGrafoWashington.json");
+		grafoIntersecciones = cargador.cargarDeJson(NOMBRE_MAPA_JSON);
+		System.out.println("json sin infracciones cargado: " + grafoIntersecciones.V());
 		
 		String[] nombreMeses = new String[] {"January_wgs84.csv", 
-				//"February_wgs84.csv",
-				//"March_wgs84.csv",
-				//"April_wgs84.csv",
-				//"May_wgs84.csv",
-				//"June_wgs84.csv",
-				//"July_wgs84.csv",
-				//"August_wgs84.csv",
-				//					"September_wgs84.csv", 
-				//					"October_wgs84.csv",
-				//					"November_wgs84.csv",
-				//					"December_wgs84.csv"
+				"February_wgs84.csv",
+				"March_wgs84.csv",
+				"April_wgs84.csv",
+				"May_wgs84.csv",
+				"June_wgs84.csv",
+				"July_wgs84.csv",
+				"August_wgs84.csv",
+									"September_wgs84.csv", 
+									"October_wgs84.csv",
+									"November_wgs84.csv",
+									"December_wgs84.csv"
 				};
 		
 		for (int i = 0; i < nombreMeses.length; i++) {
