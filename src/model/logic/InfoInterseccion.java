@@ -1,23 +1,28 @@
 package model.logic;
 
+import model.data_structures.ArregloDinamico;
+
 public class InfoInterseccion {
 	private int nInfracciones;
 	private LatLonCoords coords;
+	private ArregloDinamico<Integer> arregloInfracciones;
 	
 	public InfoInterseccion(double plat, double plon) {
 		nInfracciones = 0;
 		coords = new LatLonCoords(plat, plon);
+		arregloInfracciones = new ArregloDinamico<>();
 	}
 	
-	public InfoInterseccion(int pnInfracciones, double plat, double plon) {
-		nInfracciones = pnInfracciones;
-		coords = new LatLonCoords(plat, plon);
-	}
+	//public InfoInterseccion(int pnInfracciones, double plat, double plon) {
+	//	nInfracciones = pnInfracciones;
+	//	coords = new LatLonCoords(plat, plon);
+	//}
 	
 	/*
 	 * Setters
 	 */
-	public int aumentarNInfracciones() {
+	public int aumentarNInfracciones(int idInf) {
+		arregloInfracciones.agregar(idInf);
 		return ++nInfracciones;
 	}
 	

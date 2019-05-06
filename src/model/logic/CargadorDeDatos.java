@@ -199,6 +199,7 @@ public class CargadorDeDatos {
 				double distMin;
 				double distAct;
 				LatLonCoords coordsAct; double latAct; double lonAct;
+				int idInf;
 				for (String[] row : reader) {
 					distMin = Double.MAX_VALUE; // Distancia minima inicial para esta infraccion
 					
@@ -219,7 +220,8 @@ public class CargadorDeDatos {
 					}
 					
 					// Agregar infraccion al vertice seleccionado
-					grafoIntersecciones.getInfoVertex(idVMin).aumentarNInfracciones();
+					idInf = Integer.parseInt(row[posiciones[OBJECTID_1]]);
+					grafoIntersecciones.getInfoVertex(idVMin).aumentarNInfracciones(idInf);
 					
 					contadorInf += 1; 
 					
