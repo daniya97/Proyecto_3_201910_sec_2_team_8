@@ -7,6 +7,9 @@ public class InfoInterseccion {
 	private LatLonCoords coords;
 	private ArregloDinamico<Integer> arregloInfracciones;
 	
+	/*
+	 * Constructores
+	 */
 	public InfoInterseccion(LatLonCoords pCoords) {
 		nInfracciones = 0;
 		coords = pCoords;
