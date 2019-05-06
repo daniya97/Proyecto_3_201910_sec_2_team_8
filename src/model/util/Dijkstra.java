@@ -43,7 +43,7 @@ public class Dijkstra<K,IV, IA extends InfoArco> {
 			// Relajar los vértices
 			pq = new IndexMinPQ<Double>(G.V());
 			pq.agregar(s, distTo[s]);
-			while (!pq.estaVacia()) {
+			while (!pq.esVacia()) {
 				int v = pq.delMin();
 				for(Arco<IA> e: G.darRepresentacion().get(v)){
 					relax(e, v);

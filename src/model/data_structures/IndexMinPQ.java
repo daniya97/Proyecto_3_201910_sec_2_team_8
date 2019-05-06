@@ -46,7 +46,7 @@ public class IndexMinPQ <K extends Comparable<K>> implements Iterable<Integer>{
 	/**
      * Retorna TRUE si la cola está vacía
      */
-    public boolean estaVacia() {
+    public boolean esVacia() {
         return n == 0;
     }
 
@@ -61,7 +61,7 @@ public class IndexMinPQ <K extends Comparable<K>> implements Iterable<Integer>{
 	/**
      * Retorna el tamano de la cola
      */
-    public int darTamaano() {
+    public int darNumElementos() {
         return n;
     }
 
@@ -95,6 +95,9 @@ public class IndexMinPQ <K extends Comparable<K>> implements Iterable<Integer>{
      * Retorna su Index
      */
     public int delMin() {
+    	
+    	if(esVacia())return -1;
+    	
         int min = pq[1];
         exch(1, n--);
         sink(1);
@@ -159,6 +162,12 @@ public class IndexMinPQ <K extends Comparable<K>> implements Iterable<Integer>{
     * Funciones de AYUDA - AUXILIARES
     ***************************************************************************/
     private boolean greater(int i, int j) {
+    	
+    	if(i<0 || i>prioridad.length) return false;
+    	if(j<0 || j>prioridad.length) return true;
+    	if(prioridad[pq[i]] == null)return false;
+    	if(prioridad[pq[j]] == null)return true;
+    	
         return prioridad[pq[i]].compareTo(prioridad[pq[j]]) > 0;
     }
 
@@ -210,7 +219,7 @@ public class IndexMinPQ <K extends Comparable<K>> implements Iterable<Integer>{
                 copy.agregar(pq[i], prioridad[pq[i]]);
         }
 
-        public boolean hasNext()  { return !copy.estaVacia();                     }
+        public boolean hasNext()  { return !copy.esVacia();                     }
 
         public Integer next() {
             if (!hasNext()) throw new NoSuchElementException();

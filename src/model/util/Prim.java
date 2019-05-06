@@ -60,7 +60,7 @@ public class Prim<K,V, IA extends InfoArco> {
 	private void prim(GrafoNDPesos<K, V, IA> G, int s) {
 		distTo[s] = 0.0;
 		pq.agregar(s, distTo[s]);
-		while (!pq.estaVacia()) {
+		while (!pq.esVacia()) {
 			int v = pq.delMin();
 			scan(G, v);
 		}

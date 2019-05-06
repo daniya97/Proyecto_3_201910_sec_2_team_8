@@ -22,7 +22,7 @@ public class ManagerView
 		System.out.println("-2. Crear grafo a partir de .xml");
 		System.out.println("-1. Guardar grafo actual en .json");
 		System.out.println("0. Cargar mapa (grafo) a partir del Json");
-		System.out.println("1. Cargar infracciones del semestre dado al mapa");
+		System.out.println("1. Cargar infracciones del semestre dado al mapa (HACERLO PARA LOS 2 SEMESTRES)");
 		
 		
 		System.out.println("11. Salir");
