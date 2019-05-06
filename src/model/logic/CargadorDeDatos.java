@@ -29,7 +29,7 @@ public class CargadorDeDatos {
 	/**
 	 * 
 	 */
-	public static final String[] EXPECTEDHEADERS = new String[] {"OBJECTID_1", "OBJECTID", "ROW_", "LOCATION", "ADDRESS_ID", "STREETSEGID", "XCOORD", "YCOORD", "TICKETTYPE", "FINEAMT", "TOTALPAID", "PENALTY1", "PENALTY2", "ACCIDENTINDICATOR", "AGENCYID", "TICKETISSUEDATE", "VIOLATIONCODE", "VIOLATIONDESC", "ROW_ID", "LAT", "LON"};
+	public static final String[] EXPECTEDHEADERS = new String[] {"OBJECTID_1", "OBJECTID", "ROW_", "LOCATION", "ADDRESS_ID", "STREETSEGI", "XCOORD", "YCOORD", "TICKETTYPE", "FINEAMT", "TOTALPAID", "PENALTY1", "PENALTY2", "ACCIDENTIN", "AGENCYID", "TICKETISSU", "VIOLATIONC", "VIOLATIOND", "ROW_ID", "LAT", "LONG"};
 	// Estos son los indice de los textos en EXPECTEDHEADERS
 		public static final int OBJECTID_1 = 0;
 		public static final int OBJECTID = 1;
@@ -51,7 +51,7 @@ public class CargadorDeDatos {
 		public static final int VIOLATIONDESC = 17;	
 		public static final int ROW_ID = 18;
 		public static final int LAT = 19;
-		public static final int LON = 20;
+		public static final int LONG = 20;
 	/**
 	 * Lista donde se van a cargar los datos de los archivos
 	 */
@@ -190,10 +190,13 @@ public class CargadorDeDatos {
 				contadorInf = 0;
 				// Deduce las posiciones de las columnas que se reconocen de acuerdo al header
 				String[] headers = reader.readNext();
+				for (String head : headers) System.out.print(head + ";");
+				System.out.println();
 				int[] posiciones = new int[EXPECTEDHEADERS.length];
 				System.out.println(posiciones.length);
 				for (int i = 0; i < EXPECTEDHEADERS.length; i++) {
 					posiciones[i] = buscarArray(headers, EXPECTEDHEADERS[i]);
+					System.out.println("Posiciones " + i + " " +posiciones[i]);
 				}
 				
 				// Lee linea a linea el archivo para crear las infracciones y cargarlas a la lista
@@ -208,7 +211,7 @@ public class CargadorDeDatos {
 					
 					// Extraer informacion relevante de la infraccion actual
 					latAct = Double.parseDouble(row[posiciones[LAT]].replaceAll(",","."));
-					lonAct = Double.parseDouble(row[posiciones[LON]].replaceAll(",","."));
+					lonAct = Double.parseDouble(row[posiciones[LONG]].replaceAll(",","."));
 				
 					coordsAct = new LatLonCoords(latAct, lonAct);
 					
@@ -223,7 +226,7 @@ public class CargadorDeDatos {
 					}
 					
 					// Agregar infraccion al vertice seleccionado
-					idInf = Integer.parseInt(row[posiciones[OBJECTID_1]]);
+					idInf = Integer.parseInt(row[posiciones[OBJECTID]]);
 					grafoIntersecciones.getInfoVertex(idVMin).aumentarNInfracciones(idInf);
 					
 					contadorInf += 1; 
@@ -272,12 +275,12 @@ public class CargadorDeDatos {
 	 */
 	private int buscarArray(String[] array, String string) {
 		int i = 0;
-		System.out.println(array);
-		System.out.println(string);
+		System.out.println(array.length);
 		while (i < array.length) {
 			if (array[i].equalsIgnoreCase(string)) return i;
 			i += 1;
 		}
+		System.out.println("No se encontro: " + string + " en un array de " + array.length);
 		return -1;
 	}
 }
