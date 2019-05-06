@@ -19,10 +19,11 @@ public class ManagerView
 	public void printMenu() {
 		System.out.println("---------ISIS 1206 - Estructuras de datos----------");
 		System.out.println("---------------------Proyecto 2----------------------");
+		System.out.println("-2. Crear grafo a partir de .xml");
+		System.out.println("-1. Guardar grafo actual en .json");
 		System.out.println("0. Cargar mapa (grafo) a partir del Json");
 		System.out.println("1. Cargar infracciones del semestre dado al mapa");
-		System.out.println("2. HACER PRIMERO (archivo grande que no puede guardarse en github):\n   Crear grafo a partir de .xml");
-		System.out.println("3. Guardar grafo actual en .json");
+		
 		
 		System.out.println("11. Salir");
 		System.out.println("Digite el numero de opcion para ejecutar la tarea, luego presione enter: (Ej., 1):");
@@ -49,6 +50,11 @@ public class ManagerView
 		}
 		double [] minimax = resultados.darMinimax();
 		System.out.println("Min y max: [" + minimax[0] + ", " + minimax[1] + "], [" + minimax[2] + ", " + minimax[3] + "]");
+	}
+
+	public void resumenXML(Integer[] resumenXML) {
+		System.out.println("Numero de Vertices: " + resumenXML[0]);
+		System.out.println("Numero de Arcos: " + resumenXML[1]);
 	}
 
 	

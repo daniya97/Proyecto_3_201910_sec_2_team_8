@@ -67,7 +67,7 @@ public class Controller {
 				switch(option)
 				{
 				case 0:
-					view.printMessage("Ingrese el nombre del archivo (guardado en 'data') (OJO: escribir .json):");
+					view.printMessage("Ingrese el nombre del archivo (guardado en 'data') (Mapa grande: persistenciaMap.json; Centro Washington: persistenciaGrafoWashington.json):");
 					String nombreJsonG = sc.next();
 					int[] resultados0 = model.cargarDeJson(nombreJsonG);
 					view.printResumenCargaJson(resultados0);
@@ -80,13 +80,13 @@ public class Controller {
 					view.printResumenLoadMovingViolations(resultados1);
 					break;
 					
-				case 2:				
+				case -2:				
 					view.printMessage("Ingrese el nombre del XML a cargar (guardado en 'data') (e.g. map.xml): ");
 					String nombreXML = sc.next();
-					model.loadXML(nombreXML);
-					view.printMessage("Grafo creado satisfactoriamente");
+					Integer[] resumenXML = model.loadXML("./data/" + nombreXML);
+					view.resumenXML(resumenXML);
 					break;
-				case 3:
+				case -1:
 					view.printMessage("Nombre del JSON (sin el .json): ");
 					String nombreJsonC = sc.next();
 
