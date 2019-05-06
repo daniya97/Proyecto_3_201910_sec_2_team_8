@@ -2,7 +2,7 @@ package model.data_structures;
 
 
 import junit.framework.TestCase;
-import model.vo.LocationVO;
+import model.vo.*;
 
 public class CPTest extends TestCase{
 
