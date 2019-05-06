@@ -9,8 +9,8 @@ public class esquemaJSON<K> {
 	private K id;
 	private double lat;
 	private double lon;
-	private  K[] adj;
 	private int nInfracciones;
+	private  K[] adj;
 	
 	
 	
