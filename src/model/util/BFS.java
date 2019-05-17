@@ -7,7 +7,7 @@ import model.data_structures.InfoArco;
 import model.data_structures.Queue;
 import model.data_structures.Stack;
 
-public class BFS<K, IV, IA> {
+public class BFS<K, IV, IA extends InfoArco> {
 	
 	
 	private static final int INFINITY = Integer.MAX_VALUE;
@@ -22,7 +22,7 @@ public class BFS<K, IV, IA> {
      * @param s the source vertex
      * @throws IllegalArgumentException unless {@code 0 <= s < V}
      */
-    public BFS(GrafoNDPesos<K, IV, InfoArco> G, int s) {
+    public BFS(GrafoNDPesos<K, IV, IA> G, int s) {
         marked = new boolean[G.V()];
         distTo = new int[G.V()];
         edgeTo = new int[G.V()];
@@ -31,7 +31,7 @@ public class BFS<K, IV, IA> {
 
 
     // breadth-first search from a single source
-    private void bfs(GrafoNDPesos<K, IV, InfoArco> G, int s) {
+    private void bfs(GrafoNDPesos<K, IV, IA> G, int s) {
         Queue<Integer> q = new Queue<Integer>();
         for (int v = 0; v < G.V(); v++)
             distTo[v] = INFINITY;

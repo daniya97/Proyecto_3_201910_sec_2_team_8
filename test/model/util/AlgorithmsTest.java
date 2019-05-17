@@ -174,6 +174,38 @@ public class AlgorithmsTest  extends TestCase{
 	private void setUpEscenario4(){
 		grafo = new GrafoNDPesos<>();
 	}
+	
+	private void setUpEscenario5(){
+		
+	grafo = new GrafoNDPesos<>();
+	
+	grafo.addVertex(0, 1);
+	grafo.addVertex(1, 1);
+	grafo.addVertex(2, 1);
+	grafo.addVertex(3, 1);
+	grafo.addVertex(4, 1);
+	grafo.addVertex(5, 1);
+	PesoArco nuevoArco = new PesoArco(5);
+	PesoArco nuevoArco1 = new PesoArco(9);
+	PesoArco nuevoArco2 = new PesoArco(8);
+	PesoArco nuevoArco3 = new PesoArco(12);
+	PesoArco nuevoArco4 = new PesoArco(15);
+	PesoArco nuevoArco5 = new PesoArco(4);
+	PesoArco nuevoArco6 = new PesoArco(3);
+	PesoArco nuevoArco7 = new PesoArco(11);
+	
+	
+	grafo.addEdge(0, 1, nuevoArco);
+	grafo.addEdge(0, 2, nuevoArco1);
+	grafo.addEdge(2, 1, nuevoArco2);
+	grafo.addEdge(2, 3, nuevoArco3);
+	grafo.addEdge(2, 4, nuevoArco4);
+	grafo.addEdge(4, 3, nuevoArco5);
+	grafo.addEdge(3, 5, nuevoArco6);
+	grafo.addEdge(0, 5, nuevoArco7);
+	
+		
+	}
 
 
 
@@ -286,6 +318,27 @@ public class AlgorithmsTest  extends TestCase{
 			
 		}
 		
+		
+	}
+	
+	
+	public void testBFS(){
+		
+		setUpEscenario5();
+		BFS<Integer, Integer, PesoArco> distMin = new BFS<Integer, Integer, PesoArco>(grafo, 0);
+
+		//Verificar
+		assertTrue("La distancia no corresponde" , distMin.distTo(1) == 1);
+		assertTrue("La distancia no corresponde" , distMin.distTo(2) == 1);
+		assertTrue("La distancia no corresponde" , distMin.distTo(5) == 1);
+		assertTrue("La distancia no corresponde" , distMin.distTo(3) == 2);
+		assertTrue("La distancia no corresponde" , distMin.distTo(4) == 2);
+	
+		
+		// Todos están conectados
+		for (int i = 0; i < 6; i++) {
+				assertTrue("Todos los vértices están conectados" , distMin.hasPathTo(i));
+		}
 		
 	}
 
