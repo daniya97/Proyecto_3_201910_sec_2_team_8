@@ -230,10 +230,18 @@ public class Manager {
 	    		"</div>\n");
 	    
 	    // Inicio del script
+	    Double centerLat = 38.9097115;
+	    Double centerLon = -77.0289048;
+	    
+	    Double leftLat = 38.9097115;
+	    Double leftLon = -77.0289048;
+	    Double rightLat = 38.9097843;
+	    Double rightLon =-77.0288552;
+	    
 	    writer.write("<script>\n" + 
 	    		"L.mapbox.accessToken = 'pk.eyJ1IjoianVhbnBhYmxvY29ycmVhcHVlcnRhIiwiYSI6ImNqb2FjcHNjcjFuemwzcXB1M3E0YnB4bHIifQ.oXuYfXtCqmXY52b8Ystuyw';\n" + 
-	    		"var map = L.mapbox.map('map', 'mapbox.streets').setView([38.9097115, -77.0289048], 17);\n" + 
-	    		"var extremos = [[38.9097115, -77.0289048],[38.9097843, -77.0288552]];\n" + 
+	    		"var map = L.mapbox.map('map', 'mapbox.streets').setView(["+ centerLat + ", "+ centerLon +"], 17);\n" + 
+	    		"var extremos = [["+ leftLat +", "+ leftLon + "],[" + rightLat + ", " + rightLon + "]];\n" + 
 	    		"map.fitBounds(extremos);\n");
 	    
 	    // Agregar edges del grafo como lineas en el mapa	    
@@ -270,11 +278,14 @@ public class Manager {
 			}
 	    }
 	    
-	    // Final
+	    // Markers
+	    
 	    writer.write(
-	    		"L.marker( [41.88949181977,-87.6882193648], { title: \"Nodo de salida\"} ).addTo(map);\n" + 
-	    		"L.marker( [41.768726,-87.664069], { title: \"Nodo de llegada\"} ).addTo(map);\n" + 
-	    		"</script>\n" + 
+	    		"L.marker( [" + 41.88949181977 + ", " + -87.6882193648 + "], { title: \"Nodo de salida\"} ).addTo(map);\n" + 
+	    		"L.marker( [" + 41.768726 + ", " + -87.664069 + "], { title: \"Nodo de llegada\"} ).addTo(map);\n");
+	     
+	    // Final
+	    writer.write("</script>\n" + 
 	    		"</body>\n" + 
 	    		"</html>");
 	    
@@ -294,17 +305,17 @@ public class Manager {
 		System.out.println("json sin infracciones cargado: " + grafoIntersecciones.V());
 		
 		String[] nombreMeses = new String[] {"January_wgs84.csv", 
-				"February_wgs84.csv",
-				"March_wgs84.csv",
-				"April_wgs84.csv",
-				"May_wgs84.csv",
-				"June_wgs84.csv",
-				"July_wgs84.csv",
-				"August_wgs84.csv",
-									"September_wgs84.csv", 
-									"October_wgs84.csv",
-									"November_wgs84.csv",
-									"December_wgs84.csv"
+											 "February_wgs84.csv",
+											 "March_wgs84.csv",
+											 "April_wgs84.csv",
+											 "May_wgs84.csv",
+											 "June_wgs84.csv",
+											 "July_wgs84.csv",
+											 "August_wgs84.csv",
+											 "September_wgs84.csv", 
+											 "October_wgs84.csv",
+											 "November_wgs84.csv",
+											 "December_wgs84.csv"
 				};
 		
 		for (int i = 0; i < nombreMeses.length; i++) {
