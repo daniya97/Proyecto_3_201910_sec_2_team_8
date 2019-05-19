@@ -338,22 +338,15 @@ public class Manager {
 	/*
 	 * Requerimiento2
 	 */
-	public void caminoCostoMinimoA1(int idVertice1, int idVertice2){
+	public Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> caminoCostoMinimoA1(int idVertice1, int idVertice2){
 
 
 		// Se utiliza Dijkstra - el 2 en el constructor hace referencia a que se usan como pesos el número de infracciones
 		Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> nuevo = new Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> (grafoIntersecciones, idVertice1,2);
 
 		// Caso de que no exista el camino hasta el vertice de destino
-		if(!nuevo.existeCaminoHasta(idVertice2)) return;
-		else{
-			//Respuesta
-			for (Arco<PesosDIVArco> s: nuevo.caminoA(idVertice2)) {
-				int primero = s.either();
-				int segundo = s.other(primero);
-				System.out.println("Arco desde: " + primero + "Hasta: "+ segundo);
-			}
-		}
+		if(!nuevo.existeCaminoHasta(idVertice2)) return null;
+		return nuevo;
 
 	}
 
@@ -424,7 +417,6 @@ public class Manager {
 		System.out.println("El camino se muestra a continuación: ");
 		for (int s: respuesta.pathTo(idVertice2)) {
 			InfoInterseccion info = grafo.getInfoVertex(grafo.encontrarNodo(s));
-			System.out.println(grafo.encontrarNodo(s) +" Latitud: " + info.getLat() + " Longitud: "+ info.getLon());
 		}
 
 	}
@@ -473,11 +465,7 @@ public class Manager {
 	 */
 	public void caminoMasCortoC4(int idVertice1, int idVertice2){
 
-
-
-
-
-
+	
 	}
 
 
