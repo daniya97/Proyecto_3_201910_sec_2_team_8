@@ -385,7 +385,7 @@ public class Manager {
 			for(InfoInterseccion s: resultadosVertices){
 				System.out.println("El vértice: "+ resultadosVerticesID.darObjeto(contador) + " Lon: "+s.getLon()+ " Lat: "+s.getLat());
 			}
-			System.out.println("La distancia estimada del camino es de: " + enocontrarDistancia(resultadosVerticesID));
+			System.out.println("La distancia estimada del camino es de: " + encontrarDistancia(resultadosVerticesID));
 		}
 	
 	}
@@ -476,15 +476,20 @@ public class Manager {
 	/*
 	 * Requerimiento4
 	 */
-	public void caminoLongitudMinimoB1(int idVertice1, int idVertice2, GrafoNDPesos<BigInteger, InfoInterseccion, PesosDIVArco> grafo){
+	public void caminoLongitudMinimoB1(BigInteger idVertice1, BigInteger idVertice2){
 
-		BFS<BigInteger,InfoInterseccion, PesosDIVArco> respuesta = new BFS<>(grafo, idVertice1);	
-		System.out.println("Total de Vértices: "+ respuesta.distTo(idVertice2));
+		int verticeInicio = grafoIntersecciones.encontrarNumNodo(idVertice1);
+		int verticeDestino = grafoIntersecciones.encontrarNumNodo(idVertice2);
+		
+		BFS<BigInteger,InfoInterseccion, PesosDIVArco> respuesta = new BFS<BigInteger,InfoInterseccion, PesosDIVArco>(grafoIntersecciones, verticeInicio);	
+		System.out.println("Total de Vértices: "+ respuesta.distTo(verticeDestino));
 		System.out.println("El camino se muestra a continuación: ");
-		for (int s: respuesta.pathTo(idVertice2)) {
-			InfoInterseccion info = grafo.getInfoVertex(grafo.encontrarNodo(s));
+		for (int s: respuesta.pathTo(verticeDestino)) {
+			InfoInterseccion info = grafoIntersecciones.getInfoVertex(grafoIntersecciones.encontrarNodo(s));
+			System.out.println("Vértice: "+grafoIntersecciones.encontrarNodo(s) +" Lon: "+info.getLon()+" Lat: " +info.getLat());
 		}
-
+		
+		System.out.println("El camino tiene una distancia de: " + encontrarDistanciaConInt(respuesta.pathTo(verticeDestino)));
 	}
 
 	/*
@@ -540,13 +545,30 @@ public class Manager {
 	 */
 
 	
-	public double enocontrarDistancia(ArregloDinamico<BigInteger> pNodos){
+	public double encontrarDistancia(ArregloDinamico<BigInteger> pNodos){
 		double respuesta = 0;
 		
 		// VERIFICAR PESO DIST!
 		
 		for (int i = 0; i < pNodos.darTamano()-1; i++) {
 			grafoIntersecciones.getInfoArc(pNodos.darObjeto(i), pNodos.darObjeto(i+1)).darPesoDist();
+		}
+		
+		return respuesta;
+	}
+	
+	public double encontrarDistanciaConInt(Iterable<Integer> pNodos){
+		double respuesta = 0;
+		
+		// VERIFICAR PESO DIST!
+		ArregloDinamico<BigInteger> nodos = new ArregloDinamico<>();
+		
+		for(Integer s: pNodos){
+			nodos.agregar(grafoIntersecciones.encontrarNodo(s));
+		}
+		
+		for (int i = 0; i < nodos.darTamano()-1; i++) {
+			grafoIntersecciones.getInfoArc(nodos.darObjeto(i), nodos.darObjeto(i+1)).darPesoDist();
 		}
 		
 		return respuesta;

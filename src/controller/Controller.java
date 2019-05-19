@@ -78,14 +78,14 @@ public class Controller {
 					int[] resultados0 = model.cargarDeJson(nombreJsonG);
 					view.printResumenCargaJson(resultados0);
 					break;
-					
+
 				case 1:				
 					view.printMessage("Ingrese el Semestre (1 -[Enero - Junio], 2[Julio - Diciembre])");
 					int numeroSemestre = sc.nextInt();
 					EstadisticasCargaInfracciones resultados1 = model.cargarSemestreAGrafo(numeroSemestre);
 					view.printResumenLoadMovingViolations(resultados1);
 					break;
-					
+
 				case -2:				
 					view.printMessage("Ingrese el nombre del XML a cargar (guardado en 'data') (e.g. map.xml): ");
 					String nombreXML = sc.next();
@@ -99,7 +99,7 @@ public class Controller {
 					esSatisfactorio = model.guardarEnJson(nombreJsonC);
 					view.printMessage("Archivo .json creado satisfactoriamente");
 					break;
-				
+
 
 				case -4:
 
@@ -108,11 +108,9 @@ public class Controller {
 					view.printMessage("Ingrese El id del segundo vertice (Ej. 901839): ");
 					BigInteger idDestino = new BigInteger(sc.next());
 
-					
+
 					startTime = System.currentTimeMillis();
-					Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> resultadoA1 = model.caminoCostoMinimoA1(idInicio, idDestino);
-					
-					
+					model.caminoCostoMinimoA1(idInicio, idDestino);
 					endTime = System.currentTimeMillis();
 					duration = endTime - startTime;
 					view.printMessage("Tiempo del requerimiento: " + duration + " milisegundos");
@@ -127,8 +125,6 @@ public class Controller {
 				case 2:
 					view.printMessage("2A. Consultar los N v�rtices con mayor n�mero de infracciones. Ingrese el valor de N: ");
 					int n = sc.nextInt();
-
-					
 					startTime = System.currentTimeMillis();
 					model.mayorNumeroVerticesA2(n);
 					endTime = System.currentTimeMillis();
@@ -147,13 +143,13 @@ public class Controller {
 				case 3:			
 
 					view.printMessage("Ingrese El id del primer vertice (Ej. 901839): ");
-					idVertice1 = sc.nextInt();
+					BigInteger idInicio1 = new BigInteger(sc.next());
 					view.printMessage("Ingrese El id del segundo vertice (Ej. 901839): ");
-					idVertice2 = sc.nextInt();
+					BigInteger idDestino1 = new BigInteger(sc.next());
 
-					
+
 					startTime = System.currentTimeMillis();
-					model.caminoLongitudMinimoB1(idVertice1, idVertice2);
+					model.caminoLongitudMinimoB1(idInicio1, idDestino1);
 					endTime = System.currentTimeMillis();
 					duration = endTime - startTime;
 					view.printMessage("Tiempo del requerimiento: " + duration + " milisegundos");
@@ -184,7 +180,7 @@ public class Controller {
 					view.printMessage("Ingrese el n�mero de filas");
 					int filas = sc.nextInt();
 
-					
+
 					startTime = System.currentTimeMillis();
 					model.definirCuadriculaB2(lonMin,lonMax,latMin,latMax,columnas,filas);
 					endTime = System.currentTimeMillis();
@@ -200,7 +196,7 @@ public class Controller {
 					break;
 
 				case 5:
-					
+
 					startTime = System.currentTimeMillis();
 					model.arbolMSTKruskalC1();
 					endTime = System.currentTimeMillis();
@@ -215,7 +211,7 @@ public class Controller {
 					break;
 
 				case 6:
-					
+
 					startTime = System.currentTimeMillis();
 					model.arbolMSTPrimC2();
 					endTime = System.currentTimeMillis();
@@ -229,7 +225,7 @@ public class Controller {
 					break;
 
 				case 7:
-					
+
 					startTime = System.currentTimeMillis();
 					model.caminoCostoMinimoDijkstraC3();
 					endTime = System.currentTimeMillis();
@@ -247,7 +243,7 @@ public class Controller {
 					idVertice1 = sc.nextInt();
 					view.printMessage("Ingrese El id del segundo vertice (Ej. 901839): ");
 					idVertice2 = sc.nextInt();
-					
+
 					startTime = System.currentTimeMillis();
 					model.caminoMasCortoC4(idVertice1, idVertice2);
 					endTime = System.currentTimeMillis();
@@ -258,9 +254,9 @@ public class Controller {
 					   el total de infracciones y la distancia calculada (en Km).
 					   TODO Google Maps: Mostrar  el camino resultante en Google Maps: sus vértices y sus arcos.	  */
 					break;	
-					
-				
-					
+
+
+
 				case 11:
 					fin=true;
 					sc.close();

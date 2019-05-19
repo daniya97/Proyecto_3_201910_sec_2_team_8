@@ -1,11 +1,15 @@
 package model.util;
 
+import java.math.BigInteger;
 import java.util.Iterator;
 
 import model.data_structures.GrafoNDPesos;
+import model.data_structures.IGraph;
 import model.data_structures.InfoArco;
 import model.data_structures.Queue;
 import model.data_structures.Stack;
+import model.logic.InfoInterseccion;
+import model.logic.PesosDIVArco;
 
 public class BFS<K, IV, IA extends InfoArco> {
 	
@@ -18,20 +22,20 @@ public class BFS<K, IV, IA extends InfoArco> {
     /**
      * Computes the shortest path between the source vertex {@code s}
      * and every other vertex in the graph {@code G}.
-     * @param G the graph
+     * @param grafo the graph
      * @param s the source vertex
      * @throws IllegalArgumentException unless {@code 0 <= s < V}
      */
-    public BFS(GrafoNDPesos<K, IV, IA> G, int s) {
-        marked = new boolean[G.V()];
-        distTo = new int[G.V()];
-        edgeTo = new int[G.V()];
-        bfs(G, s);
+    public BFS(IGraph<K, IV, IA> grafo, int s) {
+        marked = new boolean[grafo.V()];
+        distTo = new int[grafo.V()];
+        edgeTo = new int[grafo.V()];
+        bfs(grafo, s);
     }
 
 
     // breadth-first search from a single source
-    private void bfs(GrafoNDPesos<K, IV, IA> G, int s) {
+    private void bfs(IGraph<K, IV, IA> G, int s) {
         Queue<Integer> q = new Queue<Integer>();
         for (int v = 0; v < G.V(); v++)
             distTo[v] = INFINITY;
