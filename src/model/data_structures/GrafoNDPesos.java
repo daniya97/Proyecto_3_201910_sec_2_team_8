@@ -197,6 +197,8 @@ public class GrafoNDPesos<K, IV, IA extends InfoArco> implements IGraph<K, IV, I
 
 
 	public K encontrarNodo(int numNodo){
+		
+		if(tablaNumANodo.darObjeto(numNodo) == null) return null;
 		return tablaNumANodo.darObjeto(numNodo);
 	}
 

@@ -339,21 +339,21 @@ public class Manager {
 	 * Requerimiento2
 	 */
 	public void caminoCostoMinimoA1(int idVertice1, int idVertice2){
-		
 
-		Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> nuevo = new Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> (grafoIntersecciones, idVertice1);
+
+		// Se utiliza Dijkstra - el 2 en el constructor hace referencia a que se usan como pesos el número de infracciones
+		Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> nuevo = new Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> (grafoIntersecciones, idVertice1,2);
+
+		// Caso de que no exista el camino hasta el vertice de destino
 		if(!nuevo.existeCaminoHasta(idVertice2)) return;
 		else{
-			
+			//Respuesta
 			for (Arco<PesosDIVArco> s: nuevo.caminoA(idVertice2)) {
 				int primero = s.either();
 				int segundo = s.other(primero);
 				System.out.println("Arco desde: " + primero + "Hasta: "+ segundo);
 			}
-			
 		}
-
-
 
 	}
 
@@ -366,8 +366,11 @@ public class Manager {
 	 */
 	public void mayorNumeroVerticesA2(int n, IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafo){
 
+		// Guarda el nuevo grafo
 		IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafoNuevo = new GrafoNDPesos<>();
+		//Arreglo auxiliar que guarda la información sobre los vértices
 		IArregloDinamico<InfoInterseccion> auxiliar = new ArregloDinamico<>();
+		// Tabla para guardas los identificadores de los vertices
 		ITablaHash<InfoInterseccion, BigInteger> ayudaIdVertice = new LinProbTH<>(grafo.V());
 
 		int contador = 0;
@@ -377,37 +380,36 @@ public class Manager {
 			ayudaIdVertice.put(s, idVertice);
 			contador++;
 		}
+
+		// Se ordenan los vertices por número de infracciones
 		Sort.ordenarQuickSort(auxiliar, new InfoInterseccion.comparadorPorInfracciones().reversed());
-
-
+		// Se agregan los n vertices al nuevo grafo
 		int numVertices = 0;
 		while(numVertices<n){
 			InfoInterseccion actual = auxiliar.darObjeto(numVertices);
 			grafoNuevo.addVertex(ayudaIdVertice.get(actual), actual);
+			System.out.println("Agrego el Vértice: " + ayudaIdVertice.get(actual));
 			numVertices++;
 		}
 
+		BigInteger destino;
+		// Se agregan los arcos correspondientes
 		for (InfoInterseccion s: grafoNuevo.vertices()) {
 			BigInteger idVertice = ayudaIdVertice.get(s);
+			// Se recorren los arcos
 			for(Arco<PesosDIVArco> arco: grafo.darRepresentacion().get(grafo.encontrarNumNodo(idVertice))){
-				if(grafoNuevo.encontrarNodo(arco.other(grafo.encontrarNumNodo(idVertice)))!=null){
-					grafoNuevo.addEdge(idVertice, grafoNuevo.encontrarNodo(arco.other(grafo.encontrarNumNodo(idVertice))), arco.darInformacion());
+				destino = grafo.encontrarNodo(arco.other(grafo.encontrarNumNodo(idVertice)));
+				
+				// Se verifica que los dos vertices existan en el nuevo grafo
+				if(grafoNuevo.encontrarNumNodo(idVertice)!=-1 && grafoNuevo.encontrarNumNodo(destino)!=-1 ){
+					if(grafoNuevo.getInfoArc(idVertice, destino)==null){
+						grafoNuevo.addEdge(idVertice, destino, arco.darInformacion());
+					}
+
 				}
 			}
 		}
 
-
-		//HAY ERRORES
-		
-		//FALTA PENSANDO!!!
-		System.out.println(grafoNuevo.V());
-		System.out.println(grafoNuevo.E());
-		for(Arco<PesosDIVArco> nuevo:grafoNuevo.arcos()){
-			int primero = nuevo.either();
-			System.out.println("Primero" + primero);
-			System.out.println("hasta" + nuevo.other(primero));
-		}
-	
 	}
 
 
@@ -424,7 +426,7 @@ public class Manager {
 			InfoInterseccion info = grafo.getInfoVertex(grafo.encontrarNodo(s));
 			System.out.println(grafo.encontrarNodo(s) +" Latitud: " + info.getLat() + " Longitud: "+ info.getLon());
 		}
-		
+
 	}
 
 	/*
@@ -462,7 +464,7 @@ public class Manager {
 	 * Requerimiento8
 	 */
 	public void caminoCostoMinimoDijkstraC3(){
-		
+
 
 	}
 

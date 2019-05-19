@@ -100,7 +100,7 @@ public class RequerimientosTest extends TestCase  {
 	public void testRequerimiento3(){
 
 		setUpEscenario0();
-		model.mayorNumeroVerticesA2(1, grafo);
+		model.mayorNumeroVerticesA2(3, grafo);
 
 	}
 

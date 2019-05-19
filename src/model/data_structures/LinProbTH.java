@@ -131,6 +131,8 @@ public class LinProbTH<K, V> implements ITablaHash<K, V> {
 	 */
 	@Override
 	public V get(K key) {
+		
+		if( hash(key) == -1) return null;
 		//Se recorren las llaver buscando la llave en cuesti�n
 		for(int i = hash(key);keys[i]!=null; i = (i+1)%m){
 			if(key.equals(keys[i])){
@@ -187,7 +189,13 @@ public class LinProbTH<K, V> implements ITablaHash<K, V> {
 	 * Hash -> Devuelve un n�mero entre 0 y M-1
 	 */
 	private int hash(K key){
-		return (key.hashCode() & 0x7fffffff)%m;
+		
+		try {
+			return (key.hashCode() & 0x7fffffff)%m;
+		} catch (Exception e) {
+			return -1;
+		}
+	
 	}
 
 
