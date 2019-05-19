@@ -33,7 +33,7 @@ public class RequerimientosTest extends TestCase  {
 	/*
 	 * Atributos 
 	 */
-	private IGraph<Integer, InfoInterseccion, PesosDIVArco> grafo;
+	private GrafoNDPesos<Integer, InfoInterseccion, PesosDIVArco> grafo;
 	private Manager model;
 
 	/*
@@ -64,15 +64,21 @@ public class RequerimientosTest extends TestCase  {
 	}
 
 	
-	public void testRequerimiento3(){
-		
+	public void testRequerimiento2(){
 		
 		setUpEscenario0();
 		assertTrue(grafo.V()==3);
 		assertTrue(grafo.E()==1);
 		model.mayorNumeroVerticesA2(1, grafo);
 		
+	}
+	
+public void testRequerimiento3(){
 		
+		setUpEscenario0();
+		assertTrue(grafo.V()==3);
+		assertTrue(grafo.E()==1);
+		model.caminoLongitudMinimoB1(0, 1, grafo);	
 	}
 	
 	

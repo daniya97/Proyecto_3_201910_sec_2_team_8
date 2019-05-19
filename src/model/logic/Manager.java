@@ -29,6 +29,7 @@ import model.data_structures.LinProbTH;
 import model.data_structures.LinkedList;
 import model.data_structures.MaxHeapCP;
 import model.data_structures.Queue;
+import model.util.BFS;
 import model.util.Sort;
 import model.vo.EstadisticasCargaInfracciones;
 import model.vo.esquemaJSON;
@@ -350,33 +351,28 @@ public class Manager {
 	 * Requerimiento2
 	 */
 	public void mayorNumeroVerticesA2(int n, IGraph<Integer, InfoInterseccion, PesosDIVArco> grafo){
-
+		
+		IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafoNuevo = new GrafoNDPesos<>();
 		IArregloDinamico<InfoInterseccion> auxiliar = new ArregloDinamico<>();
+		IArregloDinamico<InfoInterseccion> verticesRespuesta = new ArregloDinamico<>();
+		
 		for(InfoInterseccion s: grafo.vertices()){
 			auxiliar.agregar(s);
 		}
 		Sort.ordenarQuickSort(auxiliar, new InfoInterseccion.comparadorPorInfracciones().reversed());
 
-		for(InfoInterseccion s: auxiliar){
-			System.out.println("Numero Infracciones" + s.getNInfracciones());
+		int contador = 0;
+		while(contador<n){
+			verticesRespuesta.agregar(auxiliar.darObjeto(contador));
+			BigInteger num = new BigInteger(Integer.toString(contador));
+			grafoNuevo.addVertex(num, auxiliar.darObjeto(contador));
+			contador++;
 		}
-
-
-	}
-
-	public void mayorNumeroVerticesA2(int n){
-
-		IArregloDinamico<InfoInterseccion> auxiliar = new ArregloDinamico<>();
 		
-		for(InfoInterseccion s: grafoIntersecciones.vertices()){
-			auxiliar.agregar(s);
-		}
-		Sort.ordenarQuickSort(auxiliar, new InfoInterseccion.comparadorPorInfracciones().reversed());
-
-		for(InfoInterseccion s: auxiliar){
-			System.out.println("Numero Infracciones" + s.getNInfracciones());
-		}
-
+	
+		//FALTA PENSANDO!!!
+		
+		
 	}
 
 
@@ -384,11 +380,12 @@ public class Manager {
 	/*
 	 * Requerimiento3
 	 */
-	public void caminoLongitudMinimoB1(int idVertice1, int idVertice2){
+	public void caminoLongitudMinimoB1(int idVertice1, int idVertice2, GrafoNDPesos<Integer, InfoInterseccion, PesosDIVArco> grafo){
 
-
-
-
+	BFS<Integer,InfoInterseccion, PesosDIVArco> respuesta = new BFS<>(grafo, idVertice1);	
+	System.out.println(respuesta.hasPathTo(idVertice2));
+	System.out.println(respuesta.distTo(idVertice2));
+	
 	}
 
 	/*
