@@ -1,6 +1,7 @@
 package model.logic;
 
 import java.math.BigInteger;
+import java.util.Comparator;
 
 import model.data_structures.ArregloDinamico;
 
@@ -79,6 +80,17 @@ public class InfoInterseccion {
 	
 	public double haversineD(LatLonCoords coords2) {
 		return coords.haversineD(coords2);
+	}
+	
+	public static class comparadorPorInfracciones implements Comparator<InfoInterseccion>{
+
+		@Override
+		public int compare(InfoInterseccion arg0, InfoInterseccion arg1) {
+			if(arg0.getNInfracciones()>arg1.getNInfracciones()) return 1;
+			else if(arg0.getNInfracciones()<arg1.getNInfracciones()) return -1;
+			return 0;
+		}
+		
 	}
 
 }

@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
 
+import javax.swing.text.StyledEditorKit.ForegroundAction;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -182,6 +184,12 @@ public class TestGrafoNDPeso extends TestCase {
 		
 		assertTrue("El nï¿½mero de nodos conectados con Daniel no es correcto", contador == 0);
 		
+	}
+	
+	public void testEscenario2(){
+		
+		setUpEscenario2();
+		assertTrue("No funciona el método vertices",grafo1.vertices().darTamano() == 3);
 	}
 	
 

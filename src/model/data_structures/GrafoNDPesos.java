@@ -24,8 +24,8 @@ public class GrafoNDPesos<K, IV, IA extends InfoArco> implements IGraph<K, IV, I
 
 		//REVISAR QUE TABLA Y EL TAMA�O INICIAL
 		tablaNodoANum = new LinProbTH<>(cte);
-		informacionNodos = new ArregloDinamico<>(cte);
-		tablaNumANodo = new ArregloDinamico<>(cte);
+		informacionNodos = new ArregloDinamico<>();
+		tablaNumANodo = new ArregloDinamico<>();
 		adj = new SepChainTH<>(cte);
 	}
 
@@ -49,7 +49,6 @@ public class GrafoNDPesos<K, IV, IA extends InfoArco> implements IGraph<K, IV, I
 		informacionNodos.agregar(infoVertex);
 		tablaNumANodo.agregar(idVertex);
 		V++;
-		//NO SE SI TOCA HACER ALGO CON LOS ARCOS
 	}
 
 	@Override
@@ -230,6 +229,10 @@ public class GrafoNDPesos<K, IV, IA extends InfoArco> implements IGraph<K, IV, I
 		}
 		return lista;
 
+	}
+	
+	public IArregloDinamico<IV> vertices(){
+		return informacionNodos;
 	}
 
 }

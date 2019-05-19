@@ -74,7 +74,16 @@ public interface IGraph<K, IV, IA extends InfoArco> extends Iterable<K> {
 	 */
 	public K encontrarNodo(int numNodo);
 	
+	
+	/**
+	 * Retorna la representación de matrix de adyacencia
+	 */
 	public ITablaHash<Integer, LinkedList<Arco<IA>>> darRepresentacion();
 	
+	
+	/**
+	 * Retorna la información de los nodos
+	 */
+	public  IArregloDinamico<IV> vertices();
 
 }
