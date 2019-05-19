@@ -49,6 +49,8 @@ public class Controller {
 		while(!fin)
 		{
 			view.printMenu();
+			int idVertice1 = 0;
+			int idVertice2 = 0;
 			// Para tener que reiniciar el programa si no se da una opcion valida
 			while (!numeroEncontrado){
 				try {
@@ -93,6 +95,165 @@ public class Controller {
 					esSatisfactorio = model.guardarEnJson(nombreJsonC);
 					view.printMessage("Archivo .json creado satisfactoriamente");
 					break;
+				
+
+				case -4:
+
+					view.printMessage("Ingrese El id del primer vertice (Ej. 901839): ");
+					idVertice1 = sc.nextInt();
+					view.printMessage("Ingrese El id del segundo vertice (Ej. 901839): ");
+					idVertice2 = sc.nextInt();
+
+					
+					startTime = System.currentTimeMillis();
+					model.caminoCostoMinimoA1(idVertice1, idVertice2);
+					endTime = System.currentTimeMillis();
+					duration = endTime - startTime;
+					view.printMessage("Tiempo del requerimiento: " + duration + " milisegundos");
+					/* 
+					TODO Consola: Mostrar el camino a seguir con sus vértices (Id, Ubicación Geográfica),
+					el costo mínimo (menor cantidad de infracciones), y la distancia estimada (en Km).
+					TODO Google Maps: Mostrar el camino resultante en Google Maps 
+					(incluyendo la ubicación de inicio y la ubicación de destino).
+					 */
+					break;
+
+				case 2:
+					view.printMessage("2A. Consultar los N v�rtices con mayor n�mero de infracciones. Ingrese el valor de N: ");
+					int n = sc.nextInt();
+
+					
+					startTime = System.currentTimeMillis();
+					model.mayorNumeroVerticesA2(n);
+					endTime = System.currentTimeMillis();
+					duration = endTime - startTime;
+					view.printMessage("Tiempo del requerimiento: " + duration + " milisegundos");
+					/* 
+					TODO Consola: Mostrar la informacion de los n vertices 
+					(su identificador, su ubicación (latitud, longitud), y el total de infracciones) 
+					Mostra el número de componentes conectadas (subgrafos) y los  identificadores de sus vertices 
+					TODO Google Maps: Marcar la localización de los vértices resultantes en un mapa en
+					Google Maps usando un color 1. Destacar la componente conectada más grande (con
+					más vértices) usando un color 2. 
+					 */
+					break;
+
+				case 3:			
+
+					view.printMessage("Ingrese El id del primer vertice (Ej. 901839): ");
+					idVertice1 = sc.nextInt();
+					view.printMessage("Ingrese El id del segundo vertice (Ej. 901839): ");
+					idVertice2 = sc.nextInt();
+
+					
+					startTime = System.currentTimeMillis();
+					model.caminoLongitudMinimoB1(idVertice1, idVertice2);
+					endTime = System.currentTimeMillis();
+					duration = endTime - startTime;
+					view.printMessage("Tiempo del requerimiento: " + duration + " milisegundos");
+
+					/*
+					   TODO Consola: Mostrar  el camino a seguir, informando
+						el total de vértices, sus vértices (Id, Ubicación Geográfica) y la distancia estimada (en Km).
+					   TODO Google Maps: Mostre el camino resultante en Google Maps (incluyendo la
+						ubicación de inicio y la ubicación de destino).
+					 */
+					break;
+
+				case 4:		
+					double lonMin;
+					double lonMax;
+					view.printMessage("Ingrese la longitud minima (Ej. -87,806): ");
+					lonMin = sc.nextDouble();
+					view.printMessage("Ingrese la longitud m�xima (Ej. -87,806): ");
+					lonMax = sc.nextDouble();
+
+					view.printMessage("Ingrese la latitud minima (Ej. 44,806): ");
+					double latMin = sc.nextDouble();
+					view.printMessage("Ingrese la latitud m�xima (Ej. 44,806): ");
+					double latMax = sc.nextDouble();
+
+					view.printMessage("Ingrese el n�mero de columnas");
+					int columnas = sc.nextInt();
+					view.printMessage("Ingrese el n�mero de filas");
+					int filas = sc.nextInt();
+
+					
+					startTime = System.currentTimeMillis();
+					model.definirCuadriculaB2(lonMin,lonMax,latMin,latMax,columnas,filas);
+					endTime = System.currentTimeMillis();
+					duration = endTime - startTime;
+					view.printMessage("Tiempo del requerimiento: " + duration + " milisegundos");
+					/*
+					   TODO Consola: Mostrar el número de vértices en el grafo
+						resultado de la aproximación. Mostar el identificador y la ubicación geográfica de cada
+						uno de estos vértices. 
+					   TODO Google Maps: Marcar las ubicaciones de los vértices resultantes de la
+						aproximación de la cuadrícula en Google Maps.
+					 */
+					break;
+
+				case 5:
+					
+					startTime = System.currentTimeMillis();
+					model.arbolMSTKruskalC1();
+					endTime = System.currentTimeMillis();
+					duration = endTime - startTime;
+					view.printMessage("Tiempo del requerimiento: " + duration + " milisegundos");
+					/*
+					   TODO Consola: Mostrar los vértices (identificadores), los arcos incluidos (Id vértice inicial e Id vértice
+						final), y el costo total (distancia en Km) del árbol.
+					   TODO Google Maps: Mostrar el árbol generado resultante en Google Maps: sus vértices y sus arcos.
+					 */
+
+					break;
+
+				case 6:
+					
+					startTime = System.currentTimeMillis();
+					model.arbolMSTPrimC2();
+					endTime = System.currentTimeMillis();
+					duration = endTime - startTime;
+					view.printMessage("Tiempo del requerimiento: " + duration + " milisegundos");
+					/*
+					   TODO Consola: Mostrar los vértices (identificadores), los arcos incluidos (Id vértice inicial e Id vértice
+					 	final), y el costo total (distancia en Km) del árbol.
+					   TODO Google Maps: Mostrar el árbol generado resultante en Google Maps: sus vértices y sus arcos.
+					 */
+					break;
+
+				case 7:
+					
+					startTime = System.currentTimeMillis();
+					model.caminoCostoMinimoDijkstraC3();
+					endTime = System.currentTimeMillis();
+					duration = endTime - startTime;
+					view.printMessage("Tiempo del requerimiento: " + duration + " milisegundos");
+					/*
+					   TODO Consola: Mostrar de cada camino resultante: su secuencia de vértices (identificadores) y su costo (distancia en Km).
+					   TODO Google Maps: Mostrar los caminos de costo mínimo en Google Maps: sus vértices
+						y sus arcos. Destaque el camino más largo (en distancia) usando un color diferente
+					 */
+					break;
+
+				case 8:
+					view.printMessage("Ingrese El id del primer vertice (Ej. 901839): ");
+					idVertice1 = sc.nextInt();
+					view.printMessage("Ingrese El id del segundo vertice (Ej. 901839): ");
+					idVertice2 = sc.nextInt();
+					
+					startTime = System.currentTimeMillis();
+					model.caminoMasCortoC4(idVertice1, idVertice2);
+					endTime = System.currentTimeMillis();
+					duration = endTime - startTime;
+					view.printMessage("Tiempo del requerimiento: " + duration + " milisegundos");
+					/*
+					   TODO Consola: Mostrar del camino resultante: su secuencia de vértices (identificadores), 
+					   el total de infracciones y la distancia calculada (en Km).
+					   TODO Google Maps: Mostrar  el camino resultante en Google Maps: sus vértices y sus arcos.	  */
+					break;	
+					
+				
 					
 				case 11:
 					fin=true;

@@ -323,4 +323,115 @@ public class Manager {
 			guardarEnJson("jsonHasta"+i);
 		}
 	}
+	
+	/*
+	 * Requerimientos
+	 */
+	
+	
+	
+	/*
+	 * Requerimiento1
+	 */
+	public void caminoCostoMinimoA1(int idVertice1, int idVertice2){
+		
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	/*
+	 * Requerimiento2
+	 */
+	public void mayorNumeroVerticesA2(int n){
+		
+		
+		
+		
+	}
+	
+	
+	
+	/*
+	 * Requerimiento3
+	 */
+	public void caminoLongitudMinimoB1(int idVertice1, int idVertice2){
+		
+		
+		
+		
+	}
+	
+	/*
+	 * Requerimiento4
+	 */
+	
+	public void definirCuadriculaB2(double lonMin, double lonMax, double latMin, double latMax, int columnas, int filas){
+		
+		
+		
+		
+		
+	}
+	
+	/*
+	 * Requerimiento5
+	 */
+	public void arbolMSTKruskalC1(){
+		
+		
+		
+	}
+	
+	
+	/*
+	 * Requerimiento6
+	 */
+	public void arbolMSTPrimC2(){
+		
+		
+		
+		
+		
+	}
+	
+	
+	
+	/*
+	 * Requerimiento7
+	 */
+	public void caminoCostoMinimoDijkstraC3(){
+		
+		
+		
+		
+		
+	}
+	
+	/*
+	 * Requerimiento8
+	 */
+	public void caminoMasCortoC4(int idVertice1, int idVertice2){
+		
+		
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
