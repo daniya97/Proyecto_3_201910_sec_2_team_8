@@ -2,12 +2,16 @@ package controller;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import java.io.File;
 
+import model.logic.InfoInterseccion;
 import model.logic.Manager;
+import model.logic.PesosDIVArco;
+import model.util.Dijkstra;
 import model.vo.EstadisticasCargaInfracciones;
 import view.ManagerView;
 
@@ -100,13 +104,15 @@ public class Controller {
 				case -4:
 
 					view.printMessage("Ingrese El id del primer vertice (Ej. 901839): ");
-					idVertice1 = sc.nextInt();
+					BigInteger idInicio = new BigInteger(sc.next());
 					view.printMessage("Ingrese El id del segundo vertice (Ej. 901839): ");
-					idVertice2 = sc.nextInt();
+					BigInteger idDestino = new BigInteger(sc.next());
 
 					
 					startTime = System.currentTimeMillis();
-					model.caminoCostoMinimoA1(idVertice1, idVertice2);
+					Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> resultadoA1 = model.caminoCostoMinimoA1(idInicio, idDestino);
+					
+					
 					endTime = System.currentTimeMillis();
 					duration = endTime - startTime;
 					view.printMessage("Tiempo del requerimiento: " + duration + " milisegundos");

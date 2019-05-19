@@ -1,7 +1,11 @@
 package view;
 
 import java.io.File;
+import java.math.BigInteger;
 
+import model.logic.InfoInterseccion;
+import model.logic.PesosDIVArco;
+import model.util.Dijkstra;
 import model.vo.EstadisticasCargaInfracciones;
 
 
@@ -56,6 +60,7 @@ public class ManagerView
 		System.out.println("Numero de Vertices: " + resumenXML[0]);
 		System.out.println("Numero de Arcos: " + resumenXML[1]);
 	}
+	
 
 	
 

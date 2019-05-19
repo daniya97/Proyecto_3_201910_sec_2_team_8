@@ -1,9 +1,14 @@
 package model.util;
 
+import java.math.BigInteger;
+
 import model.data_structures.Arco;
 import model.data_structures.GrafoNDPesos;
+import model.data_structures.IGraph;
 import model.data_structures.InfoArco;
 import model.data_structures.LinkedList;
+import model.logic.InfoInterseccion;
+import model.logic.PesosDIVArco;
 
 public class ComponentesConectadas<K, V> {
 
@@ -29,13 +34,13 @@ public class ComponentesConectadas<K, V> {
 	/**
 	 * Obtiene las componentes conectadas dado un grafo no dirigido
 	 */
-	public <IA extends InfoArco> ComponentesConectadas(GrafoNDPesos<K, V, IA> G) {
-		marcado = new boolean[G.V()];
-		id = new int[G.V()];
-		tamano = new int[G.V()];
-		for (int v = 0; v < G.V(); v++) {
+	public <IA extends InfoArco> ComponentesConectadas(IGraph<K, V, IA> grafo) {
+		marcado = new boolean[grafo.V()];
+		id = new int[grafo.V()];
+		tamano = new int[grafo.V()];
+		for (int v = 0; v < grafo.V(); v++) {
 			if (!marcado[v]) {
-				dfs(G, v);
+				dfs(grafo, v);
 				num++;
 			}
 		}
@@ -45,7 +50,7 @@ public class ComponentesConectadas<K, V> {
 	/**
 	 * DEPTH FIRST SEARCH  sobre el grafo 
 	 */
-	private <IA extends InfoArco> void dfs(GrafoNDPesos<K, V, IA> G, int v) {
+	private <IA extends InfoArco> void dfs(IGraph<K, V, IA> G, int v) {
 		marcado[v] = true;
 		id[v] = num;
 		tamano[num]++;
@@ -93,6 +98,19 @@ public class ComponentesConectadas<K, V> {
 		if(id == null|| id.length == 0) return false;
 		if(v>id.length || w >id.length) return false;
 		return id(v) == id(w);
+	}
+	
+	public int idComponenteMasGrande(){
+		
+		int maximo = 0;
+		int idMax = -1;
+		for (int i = 0; i < tamano.length; i++) {
+			if(tamano[i]>=maximo){
+				maximo = tamano[i];
+				idMax = i;
+			}
+		}
+		return idMax;
 	}
 
 

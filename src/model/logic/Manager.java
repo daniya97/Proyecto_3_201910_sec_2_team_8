@@ -30,6 +30,7 @@ import model.data_structures.LinkedList;
 import model.data_structures.MaxHeapCP;
 import model.data_structures.Queue;
 import model.util.BFS;
+import model.util.ComponentesConectadas;
 import model.util.Dijkstra;
 import model.util.KruskalMST;
 import model.util.Prim;
@@ -52,7 +53,8 @@ public class Manager {
 	 * Lista donde se van a cargar los datos de los archivos
 	 */
 	private static IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafoIntersecciones;
-
+	private static ArregloDinamico<BigInteger> ccMasGrande;
+	
 	/**
 	 * Cargador de Json e Infracciones
 	 */
@@ -338,16 +340,54 @@ public class Manager {
 	/*
 	 * Requerimiento2
 	 */
-	public Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> caminoCostoMinimoA1(int idVertice1, int idVertice2){
-
+	public void caminoCostoMinimoA1(BigInteger idVertice1, BigInteger idVertice2){
 
 		// Se utiliza Dijkstra - el 2 en el constructor hace referencia a que se usan como pesos el número de infracciones
-		Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> nuevo = new Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> (grafoIntersecciones, idVertice1,2);
-
-		// Caso de que no exista el camino hasta el vertice de destino
-		if(!nuevo.existeCaminoHasta(idVertice2)) return null;
-		return nuevo;
-
+		int verticeInicio = grafoIntersecciones.encontrarNumNodo(idVertice1);
+		int verticeDestino = grafoIntersecciones.encontrarNumNodo(idVertice2);
+		Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> nuevo = new Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> (grafoIntersecciones, verticeInicio,2);
+		// Se verifica que exista una camino
+		if(nuevo.existeCaminoHasta(verticeDestino)){
+			
+			//Resultados
+			ArregloDinamico<InfoInterseccion> resultadosVertices = new ArregloDinamico<>();
+			ArregloDinamico<BigInteger> resultadosVerticesID = new ArregloDinamico<>();
+			System.out.println("El número de arcos del camino es: " + nuevo.distTo(verticeDestino));
+			System.out.println("El camino sigue la siguiente secuencia: ");
+			
+			int ini = 0;
+			int fini = 0;
+			boolean primera = true;
+			
+			// Se obtiene un arreglo con los vértices
+			for(Arco<PesosDIVArco> s: nuevo.caminoA(verticeDestino)){
+				if(primera){
+				ini = s.either();
+				BigInteger inicial = grafoIntersecciones.encontrarNodo(ini);
+				fini = s.other(ini);
+				BigInteger destinoFinal = grafoIntersecciones.encontrarNodo(fini);
+				resultadosVertices.agregar(grafoIntersecciones.getInfoVertex(inicial));
+				resultadosVertices.agregar(grafoIntersecciones.getInfoVertex(destinoFinal));
+				resultadosVerticesID.agregar(inicial);
+				resultadosVerticesID.agregar(destinoFinal);
+				
+				primera = false;
+				}else{
+					BigInteger destinoFinal = grafoIntersecciones.encontrarNodo(s.other(ini));
+					ini = s.other(ini);
+					resultadosVertices.agregar(grafoIntersecciones.getInfoVertex(destinoFinal));
+					resultadosVerticesID.agregar(destinoFinal);
+				}
+			}
+			
+			// Impresión de resultados
+			int contador = 0;
+			for(InfoInterseccion s: resultadosVertices){
+				System.out.println("El vértice: "+ resultadosVerticesID.darObjeto(contador) + " Lon: "+s.getLon()+ " Lat: "+s.getLat());
+			}
+			System.out.println("La distancia estimada del camino es de: " + enocontrarDistancia(resultadosVerticesID));
+		}
+	
 	}
 
 
@@ -357,17 +397,17 @@ public class Manager {
 	/*
 	 * Requerimiento3
 	 */
-	public void mayorNumeroVerticesA2(int n, IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafo){
+	public void mayorNumeroVerticesA2(int n){
 
 		// Guarda el nuevo grafo
 		IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafoNuevo = new GrafoNDPesos<>();
 		//Arreglo auxiliar que guarda la información sobre los vértices
 		IArregloDinamico<InfoInterseccion> auxiliar = new ArregloDinamico<>();
 		// Tabla para guardas los identificadores de los vertices
-		ITablaHash<InfoInterseccion, BigInteger> ayudaIdVertice = new LinProbTH<>(grafo.V());
+		ITablaHash<InfoInterseccion, BigInteger> ayudaIdVertice = new LinProbTH<>(grafoIntersecciones.V());
 
 		int contador = 0;
-		for(InfoInterseccion s: grafo.vertices()){
+		for(InfoInterseccion s: grafoIntersecciones.vertices()){
 			auxiliar.agregar(s);
 			BigInteger idVertice = new BigInteger(Integer.toString(contador));
 			ayudaIdVertice.put(s, idVertice);
@@ -381,7 +421,6 @@ public class Manager {
 		while(numVertices<n){
 			InfoInterseccion actual = auxiliar.darObjeto(numVertices);
 			grafoNuevo.addVertex(ayudaIdVertice.get(actual), actual);
-			System.out.println("Agrego el Vértice: " + ayudaIdVertice.get(actual));
 			numVertices++;
 		}
 
@@ -390,8 +429,8 @@ public class Manager {
 		for (InfoInterseccion s: grafoNuevo.vertices()) {
 			BigInteger idVertice = ayudaIdVertice.get(s);
 			// Se recorren los arcos
-			for(Arco<PesosDIVArco> arco: grafo.darRepresentacion().get(grafo.encontrarNumNodo(idVertice))){
-				destino = grafo.encontrarNodo(arco.other(grafo.encontrarNumNodo(idVertice)));
+			for(Arco<PesosDIVArco> arco: grafoIntersecciones.darRepresentacion().get(grafoIntersecciones.encontrarNumNodo(idVertice))){
+				destino = grafoIntersecciones.encontrarNodo(arco.other(grafoIntersecciones.encontrarNumNodo(idVertice)));
 				
 				// Se verifica que los dos vertices existan en el nuevo grafo
 				if(grafoNuevo.encontrarNumNodo(idVertice)!=-1 && grafoNuevo.encontrarNumNodo(destino)!=-1 ){
@@ -402,9 +441,36 @@ public class Manager {
 				}
 			}
 		}
+		
+		
+		// Resultados - IMPRESIÓN
+		for(InfoInterseccion s: grafoNuevo.vertices()){
+			System.out.println("Lon: "+s.getLon()+ " Lat: "+s.getLat()+" #Infracciones: "+s.getNInfracciones());
+		}
+		
 
 	}
 
+	
+	private void componentesConectadasReqA2(IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafo){
+		
+		ComponentesConectadas<BigInteger, InfoInterseccion> cc = new ComponentesConectadas<BigInteger, InfoInterseccion>(grafo);
+		ccMasGrande = new ArregloDinamico<>();
+		System.out.println("El total de componentes conectadas es: "+cc.numComponentes());
+		for (int i = 0; i < cc.numComponentes(); i++) {
+			System.out.print("Componente número " + i);
+			for (int j = 0; j < grafo.V(); j++) {
+				if(cc.id(j) == i){
+					System.out.print(" " + grafo.encontrarNodo(j));
+				}
+				if(cc.id(j) == cc.idComponenteMasGrande()){
+					ccMasGrande.agregar(grafo.encontrarNodo(j));
+				}
+			}
+			System.out.println("");
+		}
+		
+	}
 
 
 	/*
@@ -469,8 +535,22 @@ public class Manager {
 	}
 
 
+	/*
+	 * Métodos Auxiliares
+	 */
 
-
+	
+	public double enocontrarDistancia(ArregloDinamico<BigInteger> pNodos){
+		double respuesta = 0;
+		
+		// VERIFICAR PESO DIST!
+		
+		for (int i = 0; i < pNodos.darTamano()-1; i++) {
+			grafoIntersecciones.getInfoArc(pNodos.darObjeto(i), pNodos.darObjeto(i+1)).darPesoDist();
+		}
+		
+		return respuesta;
+	}
 
 
 
