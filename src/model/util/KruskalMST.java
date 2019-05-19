@@ -42,7 +42,7 @@ public class KruskalMST<K, V,IA extends InfoArco> {
 				//EVITAR CICLOS
 				uf.union(v, w); 
 				mst.enqueue(e);  
-				weight += e.weight();
+				weight += e.weight(1);
 			}
 		}
 

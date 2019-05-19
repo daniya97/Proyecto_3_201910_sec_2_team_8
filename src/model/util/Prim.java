@@ -75,8 +75,8 @@ public class Prim<K,V, IA extends InfoArco> {
 		for (Arco<IA> e : aux) {
 			int w = e.other(v);
 			if (marcado[w]) continue;         
-			if (e.weight() < distTo[w]) {
-				distTo[w] = e.weight();
+			if (e.weight(1) < distTo[w]) {
+				distTo[w] = e.weight(1);
 				edgeTo.cambiarEnPos(w, e);
 				if (pq.contains(w)) pq.decreaseK(w, distTo[w]);
 				else                pq.agregar(w, distTo[w]);
@@ -104,7 +104,7 @@ public class Prim<K,V, IA extends InfoArco> {
 	public double weight() {
 		double weight = 0.0;
 		for (Arco<IA> e : arcos())
-			weight += e.weight();
+			weight += e.weight(1);
 		return weight;
 	}
 

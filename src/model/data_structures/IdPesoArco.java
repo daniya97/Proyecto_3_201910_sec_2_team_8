@@ -18,4 +18,13 @@ public class IdPesoArco implements InfoArco {
 		return pesoArco;
 	}
 
+	@Override
+	public double darPesoNInfr() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	
+	
 }

@@ -30,7 +30,9 @@ import model.data_structures.LinkedList;
 import model.data_structures.MaxHeapCP;
 import model.data_structures.Queue;
 import model.util.BFS;
+import model.util.Dijkstra;
 import model.util.KruskalMST;
+import model.util.Prim;
 import model.util.Sort;
 import model.vo.EstadisticasCargaInfracciones;
 import model.vo.esquemaJSON;
@@ -334,11 +336,22 @@ public class Manager {
 
 
 	/*
-	 * Requerimiento1
+	 * Requerimiento2
 	 */
 	public void caminoCostoMinimoA1(int idVertice1, int idVertice2){
+		
 
-
+		Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> nuevo = new Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> (grafoIntersecciones, idVertice1);
+		if(!nuevo.existeCaminoHasta(idVertice2)) return;
+		else{
+			
+			for (Arco<PesosDIVArco> s: nuevo.caminoA(idVertice2)) {
+				int primero = s.either();
+				int segundo = s.other(primero);
+				System.out.println("Arco desde: " + primero + "Hasta: "+ segundo);
+			}
+			
+		}
 
 
 
@@ -349,7 +362,7 @@ public class Manager {
 
 
 	/*
-	 * Requerimiento2
+	 * Requerimiento3
 	 */
 	public void mayorNumeroVerticesA2(int n, IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafo){
 
@@ -400,7 +413,7 @@ public class Manager {
 
 
 	/*
-	 * Requerimiento3
+	 * Requerimiento4
 	 */
 	public void caminoLongitudMinimoB1(int idVertice1, int idVertice2, GrafoNDPesos<BigInteger, InfoInterseccion, PesosDIVArco> grafo){
 
@@ -415,7 +428,7 @@ public class Manager {
 	}
 
 	/*
-	 * Requerimiento4
+	 * Requerimiento5
 	 */
 
 	public void definirCuadriculaB2(double lonMin, double lonMax, double latMin, double latMax, int columnas, int filas){
@@ -427,43 +440,34 @@ public class Manager {
 	}
 
 	/*
-	 * Requerimiento5
-	 */
-	public void arbolMSTKruskalC1(GrafoNDPesos<BigInteger, InfoInterseccion, PesosDIVArco> grafo){
-
-		KruskalMST<BigInteger, InfoInterseccion, PesosDIVArco> kruskal  = new KruskalMST<>(grafo);
-		System.out.println(kruskal.weight());
-
-
-	}
-
-
-	/*
 	 * Requerimiento6
 	 */
-	public void arbolMSTPrimC2(){
-
-
-
-
-
+	public void arbolMSTKruskalC1(GrafoNDPesos<BigInteger, InfoInterseccion, PesosDIVArco> grafo){
+		KruskalMST<BigInteger, InfoInterseccion, PesosDIVArco> kruskal  = new KruskalMST<>(grafo);
+		System.out.println(kruskal.weight());
 	}
-
 
 
 	/*
 	 * Requerimiento7
 	 */
+	public void arbolMSTPrimC2(GrafoNDPesos<BigInteger, InfoInterseccion, PesosDIVArco> grafo){
+		Prim<BigInteger, InfoInterseccion, PesosDIVArco> prim = new Prim<>(grafo);
+		System.out.println(prim.weight());
+	}
+
+
+
+	/*
+	 * Requerimiento8
+	 */
 	public void caminoCostoMinimoDijkstraC3(){
-
-
-
-
+		
 
 	}
 
 	/*
-	 * Requerimiento8
+	 * Requerimiento9
 	 */
 	public void caminoMasCortoC4(int idVertice1, int idVertice2){
 

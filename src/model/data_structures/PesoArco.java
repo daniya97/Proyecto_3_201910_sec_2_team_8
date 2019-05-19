@@ -11,4 +11,10 @@ public class PesoArco implements InfoArco {
 	public double darPesoArco() {
 		return peso;
 	}
+
+	@Override
+	public double darPesoNInfr() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

@@ -33,6 +33,12 @@ public class TestGrafoNDPeso extends TestCase {
 		public int darIdArco() {
 			return id;
 		}
+
+		@Override
+		public double darPesoNInfr() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
 		
 	}
 	
@@ -134,7 +140,7 @@ public class TestGrafoNDPeso extends TestCase {
 		//Iterador sobre arcos
 		for(Arco<IdPesoArco> s: grafo.arcos()){
 			contador++;
-			assertTrue("El iterador de arcos no funciona correctamete", s.weight() == 10 || s.weight() == 20);
+			assertTrue("El iterador de arcos no funciona correctamete", s.weight(1) == 10 || s.weight(1) == 20);
 		}
 		
 		assertTrue("Sólo hay 2 arcos", contador == 2);

@@ -276,7 +276,7 @@ public class AlgorithmsTest  extends TestCase{
 
 		setUpEscenario2();
 		//Dijsktra
-		Dijkstra<Integer, Integer, PesoArco> nuevo = new Dijkstra<>(grafo, 0);
+		Dijkstra<Integer, Integer, PesoArco> nuevo = new Dijkstra<>(grafo, 0,1);
 		assertTrue("Error en el SP",nuevo.distTo(6) == 25);
 		assertTrue("Error en el SP",nuevo.distTo(3) == 17);
 		assertTrue("Error en el SP",nuevo.distTo(5) == 13);
@@ -293,7 +293,7 @@ public class AlgorithmsTest  extends TestCase{
 		setUpEscenario4();
 		
 		// SE UTILIZO PARA MANEJAR EL NULL 
-		Dijkstra<Integer, Integer, PesoArco> nuevo = new Dijkstra<>(grafo, 0);
+		Dijkstra<Integer, Integer, PesoArco> nuevo = new Dijkstra<>(grafo, 0,1);
 		Prim<Integer, Integer, PesoArco> nuevo1 = new Prim<>(grafo);
 		KruskalMST<Integer, Integer, PesoArco> nuevo2 = new KruskalMST<>(grafo);
 		ComponentesConectadas<Integer,Integer> nuevo3 = new ComponentesConectadas<>(grafo);

@@ -1,15 +1,25 @@
 package model.util;
 
+import java.math.BigInteger;
+
 import model.data_structures.Arco;
 import model.data_structures.ArregloDinamico;
 import model.data_structures.GrafoNDPesos;
+import model.data_structures.IGraph;
 import model.data_structures.IndexMinPQ;
 import model.data_structures.InfoArco;
 import model.data_structures.LinkedList;
 import model.data_structures.Stack;
+import model.logic.InfoInterseccion;
+import model.logic.PesosDIVArco;
 
 public class Dijkstra<K,IV, IA extends InfoArco> {
 
+	
+	private static final int PESO_DISTANCIA = 1;
+	private static final int PESO_INFRACCIONES = 2;
+	
+	
 	/**
 	 * Guarda la Distancia mínima desde s hasta v
 	 */
@@ -23,29 +33,34 @@ public class Dijkstra<K,IV, IA extends InfoArco> {
 	 * Cola de prioridad con los vértices
 	 */
 	private IndexMinPQ<Double> pq;   
+	
+	
+	private int tipoPeso;
 
 	/**
 	 *Algoritmo de Dijkstra. Obtiene la ruta más corta desde el vértice s (SOURCE) hasta
 	 *todos los demás vértices del grafo
 	 */
-	public Dijkstra(GrafoNDPesos<K, IV, IA> G, int s) {
+	public Dijkstra(IGraph<K, IV, IA> grafoIntersecciones, int s, int pTipoPeso) {
 
-		if(G.V() == 0){}
+		tipoPeso = pTipoPeso;
+		if(grafoIntersecciones.V() == 0){}
 		else{
+		
+			distTo = new double[grafoIntersecciones.V()];
+			edgeTo = (Arco<IA>[]) new Arco[grafoIntersecciones.V()];
+			
 
-			distTo = new double[G.V()];
-			edgeTo = new Arco[G.V()];
-
-			for (int v = 0; v < G.V(); v++)
+			for (int v = 0; v < grafoIntersecciones.V(); v++)
 				distTo[v] = Double.POSITIVE_INFINITY;
 			distTo[s] = 0.0;
 
 			// Relajar los vértices
-			pq = new IndexMinPQ<Double>(G.V());
+			pq = new IndexMinPQ<Double>(grafoIntersecciones.V());
 			pq.agregar(s, distTo[s]);
 			while (!pq.esVacia()) {
 				int v = pq.delMin();
-				for(Arco<IA> e: G.darRepresentacion().get(v)){
+				for(Arco<IA> e: grafoIntersecciones.darRepresentacion().get(v)){
 					relax(e, v);
 				}
 			}
@@ -55,8 +70,8 @@ public class Dijkstra<K,IV, IA extends InfoArco> {
 	// Relajar el vértice y cambiar la PQ si cambia
 	private void relax(Arco<IA> e, int v) {
 		int w = e.other(v);
-		if (distTo[w] > distTo[v] + e.weight()) {
-			distTo[w] = distTo[v] + e.weight();
+		if (distTo[w] > distTo[v] + e.weight(tipoPeso)) {
+			distTo[w] = distTo[v] + e.weight(tipoPeso);
 			edgeTo[w] = e;
 			if (pq.contains(w)) pq.decreaseK(w, distTo[w]);
 			else                pq.agregar(w, distTo[w]);

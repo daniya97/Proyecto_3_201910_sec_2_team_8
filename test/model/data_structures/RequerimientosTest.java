@@ -28,6 +28,12 @@ public class RequerimientosTest extends TestCase  {
 			return id;
 		}
 
+		@Override
+		public double darPesoNInfr() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
 	}
 
 	/*
@@ -104,9 +110,10 @@ public class RequerimientosTest extends TestCase  {
 		model.caminoLongitudMinimoB1(0, 4, grafo);	
 	}
 	
-	public void testRequerimiento6(){
-		
-		
+	public void testRequerimiento6y7(){
+		setUpEscenario0();
+		model.arbolMSTKruskalC1(grafo);
+		model.arbolMSTPrimC2(grafo);
 		
 	}
 
