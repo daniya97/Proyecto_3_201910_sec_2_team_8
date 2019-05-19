@@ -80,7 +80,6 @@ public interface IGraph<K, IV, IA extends InfoArco> extends Iterable<K> {
 	 */
 	public ITablaHash<Integer, LinkedList<Arco<IA>>> darRepresentacion();
 	
-	
 	/**
 	 * Retorna la información de los nodos
 	 */

@@ -30,6 +30,7 @@ import model.data_structures.LinkedList;
 import model.data_structures.MaxHeapCP;
 import model.data_structures.Queue;
 import model.util.BFS;
+import model.util.KruskalMST;
 import model.util.Sort;
 import model.vo.EstadisticasCargaInfracciones;
 import model.vo.esquemaJSON;
@@ -350,29 +351,50 @@ public class Manager {
 	/*
 	 * Requerimiento2
 	 */
-	public void mayorNumeroVerticesA2(int n, IGraph<Integer, InfoInterseccion, PesosDIVArco> grafo){
-		
+	public void mayorNumeroVerticesA2(int n, IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafo){
+
 		IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafoNuevo = new GrafoNDPesos<>();
 		IArregloDinamico<InfoInterseccion> auxiliar = new ArregloDinamico<>();
-		IArregloDinamico<InfoInterseccion> verticesRespuesta = new ArregloDinamico<>();
-		
+		ITablaHash<InfoInterseccion, BigInteger> ayudaIdVertice = new LinProbTH<>(grafo.V());
+
+		int contador = 0;
 		for(InfoInterseccion s: grafo.vertices()){
 			auxiliar.agregar(s);
+			BigInteger idVertice = new BigInteger(Integer.toString(contador));
+			ayudaIdVertice.put(s, idVertice);
+			contador++;
 		}
 		Sort.ordenarQuickSort(auxiliar, new InfoInterseccion.comparadorPorInfracciones().reversed());
 
-		int contador = 0;
-		while(contador<n){
-			verticesRespuesta.agregar(auxiliar.darObjeto(contador));
-			BigInteger num = new BigInteger(Integer.toString(contador));
-			grafoNuevo.addVertex(num, auxiliar.darObjeto(contador));
-			contador++;
+
+		int numVertices = 0;
+		while(numVertices<n){
+			InfoInterseccion actual = auxiliar.darObjeto(numVertices);
+			grafoNuevo.addVertex(ayudaIdVertice.get(actual), actual);
+			numVertices++;
 		}
+
+		for (InfoInterseccion s: grafoNuevo.vertices()) {
+			BigInteger idVertice = ayudaIdVertice.get(s);
+			for(Arco<PesosDIVArco> arco: grafo.darRepresentacion().get(grafo.encontrarNumNodo(idVertice))){
+				if(grafoNuevo.encontrarNodo(arco.other(grafo.encontrarNumNodo(idVertice)))!=null){
+					grafoNuevo.addEdge(idVertice, grafoNuevo.encontrarNodo(arco.other(grafo.encontrarNumNodo(idVertice))), arco.darInformacion());
+				}
+			}
+		}
+
+
+		//HAY ERRORES
 		
-	
 		//FALTA PENSANDO!!!
-		
-		
+		System.out.println(grafoNuevo.V());
+		System.out.println(grafoNuevo.E());
+		for(Arco<PesosDIVArco> nuevo:grafoNuevo.arcos()){
+			int primero = nuevo.either();
+			System.out.println("Primero" + primero);
+			System.out.println("hasta" + nuevo.other(primero));
+		}
+	
 	}
 
 
@@ -382,10 +404,10 @@ public class Manager {
 	 */
 	public void caminoLongitudMinimoB1(int idVertice1, int idVertice2, GrafoNDPesos<Integer, InfoInterseccion, PesosDIVArco> grafo){
 
-	BFS<Integer,InfoInterseccion, PesosDIVArco> respuesta = new BFS<>(grafo, idVertice1);	
-	System.out.println(respuesta.hasPathTo(idVertice2));
-	System.out.println(respuesta.distTo(idVertice2));
-	
+		BFS<Integer,InfoInterseccion, PesosDIVArco> respuesta = new BFS<>(grafo, idVertice1);	
+		System.out.println(respuesta.hasPathTo(idVertice2));
+		System.out.println(respuesta.distTo(idVertice2));
+
 	}
 
 	/*
@@ -403,8 +425,10 @@ public class Manager {
 	/*
 	 * Requerimiento5
 	 */
-	public void arbolMSTKruskalC1(){
+	public void arbolMSTKruskalC1(GrafoNDPesos<BigInteger, InfoInterseccion, PesosDIVArco> grafo){
 
+		KruskalMST<BigInteger, InfoInterseccion, PesosDIVArco> kruskal  = new KruskalMST<>(grafo);
+		System.out.println(kruskal.weight());
 
 
 	}

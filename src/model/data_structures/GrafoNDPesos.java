@@ -103,6 +103,9 @@ public class GrafoNDPesos<K, IV, IA extends InfoArco> implements IGraph<K, IV, I
 	public IA getInfoArc(K idVertexIni, K idVertexFin) {
 		int nodoInicial = encontrarNumNodo(idVertexIni); 
 		int nodoFinal =  encontrarNumNodo(idVertexFin); 
+		
+		if(nodoInicial == -1 || nodoFinal == -1) return null;
+		
 		LinkedList<Arco<IA>> aux = adj.get(nodoInicial);
 
 		if(aux==null) return null;
