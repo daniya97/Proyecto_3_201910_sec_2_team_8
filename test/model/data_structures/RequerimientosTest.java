@@ -101,9 +101,7 @@ public class RequerimientosTest extends TestCase  {
 	public void testRequerimiento4(){
 
 		setUpEscenario0();
-		assertTrue(grafo.V()==3);
-		assertTrue(grafo.E()==1);
-		model.caminoLongitudMinimoB1(0, 1, grafo);	
+		model.caminoLongitudMinimoB1(0, 4, grafo);	
 	}
 	
 	public void testRequerimiento6(){

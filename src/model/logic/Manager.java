@@ -402,12 +402,16 @@ public class Manager {
 	/*
 	 * Requerimiento3
 	 */
-	public void caminoLongitudMinimoB1(int idVertice1, int idVertice2, GrafoNDPesos<Integer, InfoInterseccion, PesosDIVArco> grafo){
+	public void caminoLongitudMinimoB1(int idVertice1, int idVertice2, GrafoNDPesos<BigInteger, InfoInterseccion, PesosDIVArco> grafo){
 
-		BFS<Integer,InfoInterseccion, PesosDIVArco> respuesta = new BFS<>(grafo, idVertice1);	
-		System.out.println(respuesta.hasPathTo(idVertice2));
-		System.out.println(respuesta.distTo(idVertice2));
-
+		BFS<BigInteger,InfoInterseccion, PesosDIVArco> respuesta = new BFS<>(grafo, idVertice1);	
+		System.out.println("Total de Vértices: "+ respuesta.distTo(idVertice2));
+		System.out.println("El camino se muestra a continuación: ");
+		for (int s: respuesta.pathTo(idVertice2)) {
+			InfoInterseccion info = grafo.getInfoVertex(grafo.encontrarNodo(s));
+			System.out.println(grafo.encontrarNodo(s) +" Latitud: " + info.getLat() + " Longitud: "+ info.getLon());
+		}
+		
 	}
 
 	/*
