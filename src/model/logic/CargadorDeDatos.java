@@ -27,7 +27,7 @@ public class CargadorDeDatos {
 	/**
 	 * Nombre de Json con mapa a cargar 
 	 */
-	private final String NOMBRE_MAPA_JSON = "persistenciaGrafoMap.json";
+	private final String NOMBRE_MAPA_JSON = "finalMap.json";
 	/**
 	 * 
 	 */

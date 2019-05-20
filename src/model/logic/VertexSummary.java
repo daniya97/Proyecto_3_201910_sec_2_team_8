@@ -7,8 +7,7 @@ public class VertexSummary {
 	private double lat;
 	private double lon;
 	private BigInteger[] adj;
-	private int[] infraccionesIds;
-	private int nInfracciones;
+	private int[] infractions;
 	
 	public BigInteger getId() {
 		return id;
@@ -27,10 +26,10 @@ public class VertexSummary {
 	}
 	
 	public int[] getInfraccionesId () {
-		return infraccionesIds;
+		return infractions;
 	}
 	
 	public int getNInfracciones() {
-		return nInfracciones;
+		return infractions.length;
 	}
 }
