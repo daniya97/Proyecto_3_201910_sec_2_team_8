@@ -336,11 +336,10 @@ public class Manager {
 	 * Requerimientos
 	 */
 
-
-
 	/*
-	 * Requerimiento1
+	 * Requerimiento2
 	 */
+
 	public void caminoCostoMinimoA1(BigInteger idVertice1, BigInteger idVertice2) throws IOException{
 
 		
@@ -356,7 +355,6 @@ public class Manager {
 			//Resultados
 			ArregloDinamico<InfoInterseccion> resultadosVertices = new ArregloDinamico<>();
 			ArregloDinamico<BigInteger> resultadosVerticesID = new ArregloDinamico<>();
-			System.out.println("El n�mero de arcos del camino es: " + nuevo.distTo(verticeDestino));
 			System.out.println("El camino sigue la siguiente secuencia: ");
 			
 			int ini = 0;
@@ -393,8 +391,9 @@ public class Manager {
 				contador++;
 			}
 			System.out.println("La distancia estimada del camino es de: " + encontrarDistancia(resultadosVerticesID));
-			
+			System.out.println("El n�mero de infracciones del camino es: " + encontrarInfracciones(resultadosVerticesID));
 			// Generar mapa para Google Maps
+			
 			crearMapa("Requerimiento 1", nuevo.caminoA(verticeDestino), new LatLonCoords[] {grafoIntersecciones.getInfoVertex(idVertice1).getCoords(), grafoIntersecciones.getInfoVertex(idVertice2).getCoords()}, new String[] {"Inicio Recorrido", "Fin Recorrido"});
 			
 		}
@@ -403,9 +402,6 @@ public class Manager {
 		}
 	
 	}
-
-
-
 
 
 	/*
@@ -744,6 +740,17 @@ public class Manager {
 	/*
 	 * M�todos Auxiliares
 	 */
+	public int encontrarInfracciones(ArregloDinamico<BigInteger> pNodos){
+		int respuesta = 0;
+		
+		// VERIFICAR PESO DIST!
+		
+		for (int i = 0; i < pNodos.darTamano(); i++) {
+			respuesta +=grafoIntersecciones.getInfoVertex(pNodos.darObjeto(i)).getNInfracciones();
+		}
+		
+		return respuesta;
+	}
 
 	
 	public double encontrarDistancia(ArregloDinamico<BigInteger> pNodos){
@@ -752,7 +759,7 @@ public class Manager {
 		// VERIFICAR PESO DIST!
 		
 		for (int i = 0; i < pNodos.darTamano()-1; i++) {
-			grafoIntersecciones.getInfoArc(pNodos.darObjeto(i), pNodos.darObjeto(i+1)).darPesoDist();
+			respuesta+=grafoIntersecciones.getInfoArc(pNodos.darObjeto(i), pNodos.darObjeto(i+1)).darPesoDist();
 		}
 		
 		return respuesta;
@@ -769,7 +776,7 @@ public class Manager {
 		}
 		
 		for (int i = 0; i < nodos.darTamano()-1; i++) {
-			grafoIntersecciones.getInfoArc(nodos.darObjeto(i), nodos.darObjeto(i+1)).darPesoDist();
+			respuesta=+grafoIntersecciones.getInfoArc(nodos.darObjeto(i), nodos.darObjeto(i+1)).darPesoDist();
 		}
 		
 		return respuesta;
