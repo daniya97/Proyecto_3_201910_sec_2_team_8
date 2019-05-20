@@ -2,12 +2,11 @@ package model.data_structures;
 
 import static org.junit.Assert.*;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
 
+import junit.framework.TestCase;
 import model.util.Sort;
 
-public class BTSTest {
+public class BTSTest extends TestCase {
 	/*
 	 * Atributos 
 	 */
@@ -42,7 +41,6 @@ public class BTSTest {
 	 * Prueba el constructor. Asume que darTamano() funciona correctamente
 	 */
 
-	@Test
 	public void testBTS() {
 		for (int n = 0; n < numeroEscenarios; n++) {
 			setUpEscenario(n, true);
@@ -57,7 +55,6 @@ public class BTSTest {
 	/**
 	 * Prueba el metodo darTamano()
 	 */
-	@Test
 	public void testDarTamano() {
 		for (int n = 0; n <= numeroEscenarios; n++) {
 			setUpEscenario(n, true);
@@ -76,7 +73,6 @@ public class BTSTest {
 	/**
 	 * Prueba el metodo get(). Asume que darTamano() funciona correctamente
 	 */
-	@Test
 	public void testGet() {
 		for (int n = 0; n <= numeroEscenarios; n++) {	
 			for (boolean desordenado: new boolean[]{true, false}) {
@@ -104,7 +100,6 @@ public class BTSTest {
 	/**
 	 * Prueba el metodo put. Asume que el metodo get() funciona correctamente
 	 */
-	@Test
 	public void testPut() {
 		int nAgregar;
 		Integer valor;
@@ -154,7 +149,6 @@ public class BTSTest {
 	/**
 	 * Prueba el metodo delete()
 	 */
-	@Test
 	public void testDelete() {
 		int nEliminar;
 		Integer valor;
@@ -186,7 +180,6 @@ public class BTSTest {
 	/**
 	 * Prueba el metodo iterator().
 	 */
-	@Test
 	public void testIterator() {
 		int n = numeroEscenarios; // Realiza el test solo para un numero grande, con diferentes constructores
 		boolean[] elementosVistos; // Inicializado en false
@@ -220,7 +213,6 @@ public class BTSTest {
 	/**
 	 * Prueba el metodo isEmpty().
 	 */
-	@Test
 	public void testIsEmpty() {
 		setUpEscenario(0, true);
 		assertTrue("Escenario: " + 0 + " creado en desorden. El arbol deberia estar vacio."
@@ -249,7 +241,6 @@ public class BTSTest {
 	/**
 	 * Prueba el metodo contains().
 	 */
-	@Test
 	public void testcontains() {
 		int nRevisar;
 		
@@ -275,7 +266,6 @@ public class BTSTest {
 	/**
 	 * Prueba el metodo testMin().
 	 */
-	@Test
 	public void testmin() {
 		for (int n = 1; n <= numeroEscenarios; n++) {
 			setUpEscenario(n, true);
@@ -294,7 +284,6 @@ public class BTSTest {
 	/**
 	 * Prueba el metodo testMax().
 	 */
-	@Test
 	public void testmax() {
 		for (int n = 1; n <= numeroEscenarios; n++) {
 			setUpEscenario(n, true);
@@ -313,7 +302,6 @@ public class BTSTest {
 	/**
 	 * Prueba el metodo deleteMin().
 	 */
-	@Test
 	public void testdeleteMin() {
 		for (int n = 1; n <= numeroEscenarios; n++) {
 			setUpEscenario(n, true);
@@ -338,7 +326,6 @@ public class BTSTest {
 	/**
 	 * Prueba el metodo rank().
 	 */
-	@Test
 	public void testrank() {
 
 		int valor;
@@ -361,7 +348,6 @@ public class BTSTest {
 	/**
 	 * Prueba el metodo select().
 	 */
-	@Test
 	public void testselect() {
 		Integer valor;
 		for (int n = 1; n <= numeroEscenarios; n++) {
@@ -383,7 +369,6 @@ public class BTSTest {
 	/**
 	 * Prueba el metodo floor().
 	 */
-	@Test
 	public void testfloor() {
 		Integer valor;
 		for (int n = 0; n <= numeroEscenarios; n++) {
@@ -405,7 +390,6 @@ public class BTSTest {
 	/**
 	 * Prueba el metodo floor().
 	 */
-	@Test
 	public void testceiling() {
 		Integer valor;
 		for (int n = 0; n <= numeroEscenarios; n++) {
@@ -427,7 +411,6 @@ public class BTSTest {
 	/**
 	 * Prueba el metodo getHeight()
 	 */
-	@Test
 	public void testGetHeight() {
 		setUpEscenario(22, false); // Escenario hecho a mano que se conoce con detalle
 		
@@ -451,7 +434,6 @@ public class BTSTest {
 	/**
 	 * Prueba el metodo height()
 	 */
-	@Test
 	public void testHeight() {
 		setUpEscenario(22, false); // Escenario hecho a mano que se conoce con detalle
 		int alturaObtenida = tabla.height();
@@ -462,7 +444,6 @@ public class BTSTest {
 	/**
 	 * Prueba el metodo darNumeroParejas()
 	 */
-	@Test
 	public void testDarNumeroParejas() {
 		int numeroParejas;
 		
@@ -478,7 +459,6 @@ public class BTSTest {
 	/**
 	 * Prueba el metodo keysInRange()
 	 */
-	@Test
 	public void testKeysInRange() {
 		int nTests = 15; // Numero de intervalos con los que se probara el metodo para cada escenario
 		int minKey;
@@ -525,7 +505,6 @@ public class BTSTest {
 	/**
 	 * Prueba el metodo valuesInRange()
 	 */
-	@Test
 	public void testValuesInRange() {
 		int nTests = 15; // Numero de intervalos con los que se probara el metodo para cada escenario
 		int minvalue;

@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import java.util.Iterator;
 
-import org.junit.Test;
+import junit.framework.TestCase;
 
-public class QueueTest {
+public class QueueTest extends TestCase{
 
 	private Queue<String> cola;
 
@@ -34,7 +34,6 @@ public class QueueTest {
 	/**
 	 * Prueba el constructor
 	 */
-	@Test
 	public void testQueue() {
 		setUpEscenario0();
 		assertEquals("La cola deber�a estar vac�a", true,cola.isEmpty());
@@ -45,7 +44,6 @@ public class QueueTest {
 	/**
 	 * Prueba el metodo iterator()
 	 */
-	@Test
 	public void testIterator() {
 		setUpEscenario2();
 
@@ -64,7 +62,6 @@ public class QueueTest {
 	/**
 	 * Prueba el metodo isEmpty()
 	 */
-	@Test
 	public void testIsEmpty() {
 		for (int i = 0; i <= 2; i++) {
 			if 		(i == 0) {
@@ -86,7 +83,6 @@ public class QueueTest {
 	/**
 	 * Prueba el metodo size
 	 */
-	@Test
 	public void testSize() {
 		for (int i = 0; i <= 2; i++) {
 			if 		(i == 0) {
@@ -108,7 +104,6 @@ public class QueueTest {
 	/**
 	 * Prueba el metodo Enqueue
 	 */
-	@Test
 	public void testEnqueue() {
 		for (int i = 0; i <= 1; i++) {
 			if 		(i == 0) {
@@ -139,7 +134,6 @@ public class QueueTest {
 	/**
 	 * Prueba el metodo dequeue
 	 */
-	@Test
 	public void testDequeue() {
 		for (int i = 0; i < 2; i++) {
 			if 		(i == 0) {
