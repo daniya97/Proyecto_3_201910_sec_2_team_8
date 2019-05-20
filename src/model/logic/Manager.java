@@ -532,7 +532,7 @@ public class Manager {
 	 * Requerimiento5
 	 */
 
-	public void definirCuadriculaB2(double lonMin, double lonMax, double latMin, double latMax, int columnas, int filas){
+	public void definirCuadriculaB2(double lonMin, double lonMax, double latMin, double latMax, int columnas, int filas) throws IOException{
 
 		//Columnas = Y
 		// Filas = X
@@ -585,8 +585,9 @@ public class Manager {
 			BigInteger id = nodosCuadricula.darObjeto(i);
 			System.out.println("ID: "+ id + " Lat:" +grafoIntersecciones.getInfoVertex(id).getLat() + " Lon: " + grafoIntersecciones.getInfoVertex(id).getLon());
 		}
-
-
+		
+		// Generar mapa
+		crearMapaId("Requerimiento 2B", nodosCuadricula);
 	}
 
 	private BigInteger encontrarNodoMasCercano(LatLonCoords coordenadas){
@@ -717,12 +718,12 @@ public class Manager {
 
 
 		
-		System.out.println("A continuación se muestran los camino EXISTENTES: ");
-		// Impresión de Resultados:
+		System.out.println("A continuaciï¿½n se muestran los camino EXISTENTES: ");
+		// Impresiï¿½n de Resultados:
 		for (int i = 0; i < contador; i++) {
 			System.out.println("Ruta: "+ i + " Distancia: " + distancias.get(i)+" Tiene la secuencia: ");
 			for(BigInteger s: rutas.get(i)){
-				System.out.println("   " +"Vértice ID: "+s);
+				System.out.println("   " +"Vï¿½rtice ID: "+s);
 			}
 		}
 		
@@ -972,6 +973,73 @@ public class Manager {
 			nombreAct = nomMarc[i];
 			writer.write(
 					"L.marker( [" + coordenadaAct.getLat() + ", " + coordenadaAct.getLon() + "], { title: \"" + nombreAct + "\"} ).addTo(map);\n");
+		}
+			
+
+		// Final
+		writer.write("</script>\n" + 
+				"</body>\n" + 
+				"</html>");
+
+		writer.close();
+
+
+		//return archivo;
+	}
+	
+	private void crearMapaId(String nombreHTML, Iterable<BigInteger> marcadores) throws IOException {
+		File archivo = new File(nombreHTML + ".html");
+		if (!archivo.exists()) {
+			archivo.createNewFile();
+		}
+
+		BufferedWriter writer = new BufferedWriter(new FileWriter(archivo));
+
+		// Escribir Cabeza
+
+		writer.write("<!DOCTYPE html>\n" + 
+				"<html>\n" + 
+				"<head>\n" + 
+				"<meta charset=utf-8 />\n" + 
+				"<title>Grafo generado</title>\n" + 
+				"<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />\n" + 
+				"<script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>\n" + 
+				"<link href='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css' rel='stylesheet' /> \n" + 
+				"<style>\n" + 
+				" body { margin:0; padding:0; }\n" + 
+				"#map { position:absolute; top:0; bottom:0; width:100%; }\n" + 
+				"</style>\n" + 
+				"</head>\n" +
+				"<body>\n" + 
+				"<div id='map'>\n" + 
+				"</div>\n");
+
+		// Inicio del script
+		Double centerLat = 38.9097115;
+		Double centerLon = -77.0289048;
+
+		Double leftLat = 38.9097115;
+		Double leftLon = -77.0289048;
+		Double rightLat = 38.9097843;
+		Double rightLon =-77.0288552;
+
+		writer.write("<script>\n" + 
+				"L.mapbox.accessToken = 'pk.eyJ1IjoianVhbnBhYmxvY29ycmVhcHVlcnRhIiwiYSI6ImNqb2FjcHNjcjFuemwzcXB1M3E0YnB4bHIifQ.oXuYfXtCqmXY52b8Ystuyw';\n" + 
+				"var map = L.mapbox.map('map', 'mapbox.streets').setView(["+ centerLat + ", "+ centerLon +"], 17);\n" + 
+				"var extremos = [["+ leftLat +", "+ leftLon + "],[" + rightLat + ", " + rightLon + "]];\n" + 
+				"map.fitBounds(extremos);\n");	
+
+		// Markers
+		
+		LatLonCoords coordenadaAct;
+		String nombreAct;
+		int i = 0;
+		for (BigInteger idVertex : marcadores) {
+			coordenadaAct = grafoIntersecciones.getInfoVertex(idVertex).getCoords();//marcadores[i];
+			//nombreAct = nomMarc[i];
+			writer.write(
+					"L.marker( [" + coordenadaAct.getLat() + ", " + coordenadaAct.getLon() + "], { title: \"" + "" + "\"} ).addTo(map);\n");
+			i++;
 		}
 			
 
