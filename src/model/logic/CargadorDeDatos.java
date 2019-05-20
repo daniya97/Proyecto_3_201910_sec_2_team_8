@@ -121,7 +121,9 @@ public class CargadorDeDatos {
 			for (BigInteger verticeArcId : verticeAct.getAdj()) {
 				if (grafoIntersecciones.getInfoArc(verticeAct.getId(), verticeArcId) == null) {
 					grafoIntersecciones.addEdge(verticeAct.getId(), verticeArcId, 
-						new PesosDIVArco(grafoIntersecciones.getInfoVertex(verticeArcId).haversineD(grafoIntersecciones.getInfoVertex(verticeAct.getId()))));
+						new PesosDIVArco(grafoIntersecciones.getInfoVertex(verticeArcId).haversineD(grafoIntersecciones.getInfoVertex(verticeAct.getId())),
+										 grafoIntersecciones.getInfoVertex(verticeArcId).getNInfracciones(),
+										 2));
 					nArcos += 1;
 				}
 			}

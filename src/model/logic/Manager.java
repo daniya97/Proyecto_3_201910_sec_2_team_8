@@ -343,7 +343,7 @@ public class Manager {
 	public void caminoCostoMinimoA1(BigInteger idVertice1, BigInteger idVertice2){
 
 		
-		// Se utiliza Dijkstra - el 2 en el constructor hace referencia a que se usan como pesos el número de infracciones
+		// Se utiliza Dijkstra - el 2 en el constructor hace referencia a que se usan como pesos el nï¿½mero de infracciones
 		int verticeInicio = grafoIntersecciones.encontrarNumNodo(idVertice1);
 		int verticeDestino = grafoIntersecciones.encontrarNumNodo(idVertice2);
 		Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> nuevo = new Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> (grafoIntersecciones, verticeInicio,2);
@@ -355,14 +355,14 @@ public class Manager {
 			//Resultados
 			ArregloDinamico<InfoInterseccion> resultadosVertices = new ArregloDinamico<>();
 			ArregloDinamico<BigInteger> resultadosVerticesID = new ArregloDinamico<>();
-			System.out.println("El número de arcos del camino es: " + nuevo.distTo(verticeDestino));
+			System.out.println("El nï¿½mero de arcos del camino es: " + nuevo.distTo(verticeDestino));
 			System.out.println("El camino sigue la siguiente secuencia: ");
 			
 			int ini = 0;
 			int fini = 0;
 			boolean primera = true;
 			
-			// Se obtiene un arreglo con los vértices
+			// Se obtiene un arreglo con los vï¿½rtices
 			for(Arco<PesosDIVArco> s: nuevo.caminoA(verticeDestino)){
 				if(primera){
 				ini = s.either();
@@ -384,17 +384,17 @@ public class Manager {
 				}
 			}
 			
-			// Impresión de resultados
+			// Impresiï¿½n de resultados
 			int contador = 0;
 			for(InfoInterseccion s: resultadosVertices){
-				System.out.println("El vértice: "+ resultadosVerticesID.darObjeto(contador) + " Lon: "+s.getLon()+ " Lat: "+s.getLat());
+				System.out.println("El vï¿½rtice: "+ resultadosVerticesID.darObjeto(contador) + " Lon: "+s.getLon()+ " Lat: "+s.getLat());
 				//CAMBIOOOOOOOOOO
 				contador++;
 			}
 			System.out.println("La distancia estimada del camino es de: " + encontrarDistancia(resultadosVerticesID));
 		}
 		else{
-			System.out.println("No existe un camino entre los dos vértices");
+			System.out.println("No existe un camino entre los dos vï¿½rtices");
 		}
 	
 	}
@@ -411,7 +411,7 @@ public class Manager {
 	
 		// Guarda el nuevo grafo
 		IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafoNuevo = new GrafoNDPesos<>();
-		//Arreglo auxiliar que guarda la información sobre los vértices
+		//Arreglo auxiliar que guarda la informaciï¿½n sobre los vï¿½rtices
 		IArregloDinamico<InfoInterseccion> auxiliar = new ArregloDinamico<>();
 		// Tabla para guardas los identificadores de los vertices
 		ITablaHash<InfoInterseccion, BigInteger> ayudaIdVertice = new LinProbTH<>(grafoIntersecciones.V());
@@ -425,7 +425,7 @@ public class Manager {
 			contador++;
 		}
 
-		// Se ordenan los vertices por número de infracciones
+		// Se ordenan los vertices por nï¿½mero de infracciones
 		Sort.ordenarShellSort(auxiliar, new InfoInterseccion.comparadorPorInfracciones().reversed());
 		// Se agregan los n vertices al nuevo grafo
 		int numVertices = 0;
@@ -454,7 +454,7 @@ public class Manager {
 		}
 		
 		
-		// Resultados - IMPRESIÓN
+		// Resultados - IMPRESIï¿½N
 		for(InfoInterseccion s: grafoNuevo.vertices()){
 			//CAMBIOOOOOS
 			System.out.println("ID: " + ayudaIdVertice.get(s)+ " Lon: "+s.getLon()+ " Lat: "+s.getLat()+" #Infracciones: "+s.getNInfracciones());
@@ -475,7 +475,7 @@ public class Manager {
 		System.out.println("El total de componentes conectadas es: "+cc.numComponentes());
 		for (int i = 0; i < cc.numComponentes(); i++) {
 			//CAMBIOOOOOOO 
-			System.out.println("Componente número " + i + " Tamano: " + cc.tamano(i));
+			System.out.println("Componente nï¿½mero " + i + " Tamano: " + cc.tamano(i));
 			for (int j = 0; j < grafo.V(); j++) {
 				if(cc.id(j) == i){
 					System.out.println(" " + grafo.encontrarNodo(j));
@@ -484,7 +484,7 @@ public class Manager {
 			System.out.println("");
 		}
 		
-		// Creación del grafo con la componente conectada más grande
+		// Creaciï¿½n del grafo con la componente conectada mï¿½s grande
 		for (int i = 0; i < grafo.V(); i++) {
 			if(cc.id(i) == cc.idComponenteMasGrande()){
 				numComMasGrande++;
@@ -495,7 +495,7 @@ public class Manager {
 		grafoccMasGrande = new GrafoNDPesos<>();
 		grafoccMasGrande = obtenerGrafo(ccMasGrande);
 		
-		System.out.println("La componente más grande es la número: " + cc.idComponenteMasGrande()+" con: "+ numComMasGrande +" componentes");
+		System.out.println("La componente mï¿½s grande es la nï¿½mero: " + cc.idComponenteMasGrande()+" con: "+ numComMasGrande +" componentes");
 		
 	}
 
@@ -509,11 +509,11 @@ public class Manager {
 		int verticeDestino = grafoIntersecciones.encontrarNumNodo(idVertice2);
 		
 		BFS<BigInteger,InfoInterseccion, PesosDIVArco> respuesta = new BFS<BigInteger,InfoInterseccion, PesosDIVArco>(grafoIntersecciones, verticeInicio);	
-		System.out.println("Total de Vértices: "+ respuesta.distTo(verticeDestino));
-		System.out.println("El camino se muestra a continuación: ");
+		System.out.println("Total de Vï¿½rtices: "+ respuesta.distTo(verticeDestino));
+		System.out.println("El camino se muestra a continuaciï¿½n: ");
 		for (int s: respuesta.pathTo(verticeDestino)) {
 			InfoInterseccion info = grafoIntersecciones.getInfoVertex(grafoIntersecciones.encontrarNodo(s));
-			System.out.println("Vértice: "+grafoIntersecciones.encontrarNodo(s) +" Lon: "+info.getLon()+" Lat: " +info.getLat());
+			System.out.println("Vï¿½rtice: "+grafoIntersecciones.encontrarNodo(s) +" Lon: "+info.getLon()+" Lat: " +info.getLat());
 		}
 		
 		System.out.println("El camino tiene una distancia de: " + encontrarDistanciaConInt(respuesta.pathTo(verticeDestino)));
@@ -545,12 +545,12 @@ public class Manager {
 		KruskalMST<BigInteger, InfoInterseccion, PesosDIVArco> kruskal  = new KruskalMST<>(grafoArbol);
 
 		int contador = 0;
-		System.out.println("Los vértices del árbol generado son: ");
+		System.out.println("Los vï¿½rtices del ï¿½rbol generado son: ");
 		for(InfoInterseccion s: grafoArbol.vertices()){
 			System.out.println("ID: "+grafoArbol.encontrarNodo(contador));
 			contador++;
 		}
-		System.out.println("Los arcos del árbol generado son: ");
+		System.out.println("Los arcos del ï¿½rbol generado son: ");
 		for (Arco<PesosDIVArco> s:kruskal.arcos()) {
 			int primero = s.either();
 			int segundo = s.other(primero);
@@ -575,12 +575,12 @@ public class Manager {
 		System.out.println(prim.weight());
 		
 		int contador = 0;
-		System.out.println("Los vértices del árbol generado son: ");
+		System.out.println("Los vï¿½rtices del ï¿½rbol generado son: ");
 		for(InfoInterseccion s: grafoArbol.vertices()){
 			System.out.println("ID: "+grafoArbol.encontrarNodo(contador));
 			contador++;
 		}
-		System.out.println("Los arcos del árbol generado son: ");
+		System.out.println("Los arcos del ï¿½rbol generado son: ");
 		for (Arco<PesosDIVArco> s:prim.arcos()) {
 			int primero = s.either();
 			int segundo = s.other(primero);
@@ -610,7 +610,7 @@ public class Manager {
 
 
 	/*
-	 * Métodos Auxiliares
+	 * Mï¿½todos Auxiliares
 	 */
 
 	
@@ -667,4 +667,97 @@ public class Manager {
 		return respuesta;
 	}
 
+	private File crearMapa(String nombreHTML, Iterable grafo, LatLonCoords[] marcadores) throws IOException {
+		File archivo = new File(nombreHTML);
+		if (!archivo.exists()) {
+			archivo.createNewFile();
+		}
+
+		BufferedWriter writer = new BufferedWriter(new FileWriter(archivo));
+
+		// Escribir Cabeza
+
+		writer.write("<!DOCTYPE html>\n" + 
+				"<html>\n" + 
+				"<head>\n" + 
+				"<meta charset=utf-8 />\n" + 
+				"<title>Grafo generado</title>\n" + 
+				"<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />\n" + 
+				"<script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>\n" + 
+				"<link href='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css' rel='stylesheet' /> \n" + 
+				"<style>\n" + 
+				" body { margin:0; padding:0; }\n" + 
+				"#map { position:absolute; top:0; bottom:0; width:100%; }\n" + 
+				"</style>\n" + 
+				"</head>\n" +
+				"<body>\n" + 
+				"<div id='map'>\n" + 
+				"</div>\n");
+
+		// Inicio del script
+		Double centerLat = 38.9097115;
+		Double centerLon = -77.0289048;
+
+		Double leftLat = 38.9097115;
+		Double leftLon = -77.0289048;
+		Double rightLat = 38.9097843;
+		Double rightLon =-77.0288552;
+
+		writer.write("<script>\n" + 
+				"L.mapbox.accessToken = 'pk.eyJ1IjoianVhbnBhYmxvY29ycmVhcHVlcnRhIiwiYSI6ImNqb2FjcHNjcjFuemwzcXB1M3E0YnB4bHIifQ.oXuYfXtCqmXY52b8Ystuyw';\n" + 
+				"var map = L.mapbox.map('map', 'mapbox.streets').setView(["+ centerLat + ", "+ centerLon +"], 17);\n" + 
+				"var extremos = [["+ leftLat +", "+ leftLon + "],[" + rightLat + ", " + rightLon + "]];\n" + 
+				"map.fitBounds(extremos);\n");
+
+		// Agregar edges del grafo como lineas en el mapa	    
+		ITablaHash<BigInteger[], Boolean> edgesAgregados = new LinProbTH<>(11); // Para agregar solo una vez cada edge
+
+		Iterable<BigInteger> iterableAdj;
+		BigInteger id1; LatLonCoords coords1;
+		BigInteger id2; LatLonCoords coords2;
+		PesosDIVArco infoArcoAct;
+
+		//boolean primerEl = true;
+		for (BigInteger id : grafoIntersecciones) {
+
+			iterableAdj = new Iterable<BigInteger>() {		
+				@Override public Iterator<BigInteger> iterator() { 
+					return grafoIntersecciones.adj(id); } };
+
+					for (BigInteger verAdj : iterableAdj) {
+						infoArcoAct = grafoIntersecciones.getInfoArc(id, verAdj);
+
+						//id1 = arcoAct.darKEither();
+						coords1 = grafoIntersecciones.getInfoVertex(id).getCoords();
+						//id2 = arcoAct.darKOther(id1);
+						coords2 = grafoIntersecciones.getInfoVertex(verAdj).getCoords();
+
+						if (   edgesAgregados.get(new BigInteger[] {id, verAdj}) != null
+								|| edgesAgregados.get(new BigInteger[] {verAdj, id}) != null ) continue;
+						else edgesAgregados.put(new BigInteger[] {id, verAdj}, true);
+
+						writer.write("var line_points = [[" + coords1.getLat() + ", " + coords1.getLon() + "] "
+								+ ",[" + coords2.getLat() + ", " + coords2.getLon() + "]];\n");
+						writer.write("var polyline_options = {color: '#ff2fc6'};\n" + 
+								"L.polyline(line_points, polyline_options).addTo(map);\n\n");
+					}
+		}
+
+		// Markers
+
+		writer.write(
+				"L.marker( [" + 41.88949181977 + ", " + -87.6882193648 + "], { title: \"Nodo de salida\"} ).addTo(map);\n" + 
+						"L.marker( [" + 41.768726 + ", " + -87.664069 + "], { title: \"Nodo de llegada\"} ).addTo(map);\n");
+
+		// Final
+		writer.write("</script>\n" + 
+				"</body>\n" + 
+				"</html>");
+
+		writer.close();
+
+
+		return archivo;
+	}
+	
 }
