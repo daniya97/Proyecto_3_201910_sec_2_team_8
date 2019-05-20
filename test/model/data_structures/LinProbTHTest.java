@@ -2,10 +2,10 @@ package model.data_structures;
 
 import static org.junit.Assert.*;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
 
-public class LinProbTHTest {
+import junit.framework.TestCase;
+
+public class LinProbTHTest extends TestCase {
 	/*
 	 * Atributos 
 	 */
@@ -35,7 +35,6 @@ public class LinProbTHTest {
 	 * Prueba el constructor con diferentes tamanios iniciales para cada escenario. Asume que darTamano() funciona correctamente
 	 */
 
-	@Test
 	public void testLinProbTH() {
 		for (int n = 1; n < numeroEscenarios; n++) {
 			setUpEscenario(n, 1);
@@ -55,7 +54,6 @@ public class LinProbTHTest {
 	/**
 	 * Prueba el metodo darTamano()
 	 */
-	@Test
 	public void testDarTamano() {
 		for (int n = 1; n <= numeroEscenarios; n++) {
 			setUpEscenario(n, -1);
@@ -83,7 +81,6 @@ public class LinProbTHTest {
 	/**
 	 * Prueba el metodo get(). Asume que darTamano() funciona correctamente
 	 */
-	@Test
 	public void testGet() {
 		Integer[] tamanosInic = new Integer[] {-1, 1, 10, tamanoMax};// Arreglo con los tamanos iniciales de las tablas para cada escenario
 		for (int n = 1; n <= numeroEscenarios; n++) {	
@@ -112,7 +109,6 @@ public class LinProbTHTest {
 	/**
 	 * Prueba el metodo put. Asume que el metodo get() funciona correctamente
 	 */
-	@Test
 	public void testPut() {
 		int nAgregar;
 		Integer valor;
@@ -157,7 +153,6 @@ public class LinProbTHTest {
 	/**
 	 * Prueba el metodo delete()
 	 */
-	@Test
 	public void testDelete() {
 		int nEliminar;
 		Integer valor;
@@ -188,7 +183,6 @@ public class LinProbTHTest {
 	/**
 	 * Prueba el metodo iterator().
 	 */
-	@Test
 	public void testIterator() {
 		int n = numeroEscenarios; // Realiza el test solo para un numero grande, con diferentes constructores
 		boolean[] elementosVistos; // Inicializado en false
