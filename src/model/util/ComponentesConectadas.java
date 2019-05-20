@@ -56,10 +56,13 @@ public class ComponentesConectadas<K, V> {
 		tamano[num]++;
 
 		LinkedList<Arco<IA>> aux = G.darRepresentacion().get(v);
-		for (Arco<IA> e : aux) {
-			int w = e.other(v);
-			if (!marcado[w]) {
-				dfs(G, w);
+		//CAMBIOOOOOOO
+		if(aux!=null){
+			for (Arco<IA> e : aux) {
+				int w = e.other(v);
+				if (!marcado[w]) {
+					dfs(G, w);
+				}
 			}
 		}
 	}
@@ -94,14 +97,14 @@ public class ComponentesConectadas<K, V> {
 	 * Verifica si dos vértices están o no conectados
 	 */
 	public boolean connected(int v, int w) {
-		
+
 		if(id == null|| id.length == 0) return false;
 		if(v>id.length || w >id.length) return false;
 		return id(v) == id(w);
 	}
-	
+
 	public int idComponenteMasGrande(){
-		
+
 		int maximo = 0;
 		int idMax = -1;
 		for (int i = 0; i < tamano.length; i++) {
