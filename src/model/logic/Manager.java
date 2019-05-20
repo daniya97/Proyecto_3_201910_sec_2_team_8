@@ -54,7 +54,8 @@ public class Manager {
 	 */
 	private static IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafoIntersecciones;
 	private static GrafoNDPesos<BigInteger, InfoInterseccion,PesosDIVArco> grafoccMasGrande;
-	
+	private static ArregloDinamico<BigInteger> nodosCuadricula;
+
 	/**
 	 * Cargador de Json e Infracciones
 	 */
@@ -519,18 +520,89 @@ public class Manager {
 		System.out.println("El camino tiene una distancia de: " + encontrarDistanciaConInt(respuesta.pathTo(verticeDestino)));
 	}
 
+	
 	/*
 	 * Requerimiento5
 	 */
 
 	public void definirCuadriculaB2(double lonMin, double lonMax, double latMin, double latMax, int columnas, int filas){
 
+		//Columnas = Y
+		// Filas = X
+
+		// Lon = X
+		// Lat = Y
 
 
+		ArregloDinamico<LatLonCoords> ubicacionesGeograficas  = new ArregloDinamico<>();
+		double enX = Math.abs(lonMax - lonMin);
+		double enY = Math.abs(latMax-latMin);
+
+		
+		double deltaX = enX/(columnas-1);
+		double deltaY =  enY/(filas-1);
+
+		
+		double lonActual = lonMin;
+		double latActual = latMin;
+
+		
+		System.out.println("Ubicaciones Cuadricula: ");
+		for (int i = 0; i < columnas; i++) {
+			for (int j = 0; j < filas; j++) {
+
+				LatLonCoords nueva = new LatLonCoords(lonActual, latActual);
+				ubicacionesGeograficas.agregar(nueva);
+				System.out.print("Lon: " + lonActual);
+				System.out.println(" Lat: " + latActual);
+				latActual +=deltaY;
+			}
+			lonActual += deltaX;
+			latActual = latMin;
+		}
+
+		nodosCuadricula = new ArregloDinamico<>();
+		LinProbTH<BigInteger, Integer> verificacion = new LinProbTH<>((filas)*(columnas));
+		for (int i = 0; i < ubicacionesGeograficas.darTamano(); i++) {
+			BigInteger nodo = encontrarNodoMasCercano(ubicacionesGeograficas.darObjeto(i));
+			if(verificacion.get(nodo) == null){
+			verificacion.put(nodo, 1);
+			nodosCuadricula.agregar(nodo);
+			}
+		}
+		
+		System.out.println("En total se encontraron: "+ nodosCuadricula.darTamano()+ " vertices");
+		System.out.println("Los vertices son: ");
+		//Impresión de resultados
+		for (int i = 0; i < nodosCuadricula.darTamano(); i++) {
+			BigInteger id = nodosCuadricula.darObjeto(i);
+			System.out.println("ID: "+ id + " Lat:" +grafoIntersecciones.getInfoVertex(id).getLat() + " Lon: " + grafoIntersecciones.getInfoVertex(id).getLon());
+		}
 
 
 	}
 
+	private BigInteger encontrarNodoMasCercano(LatLonCoords coordenadas){
+
+		BigInteger resultado = new BigInteger("0");
+		double minimaDistancia = 0;
+		int contador = 0;
+		boolean primero = true;
+
+		for(InfoInterseccion s: grafoIntersecciones.vertices()){
+			if(primero){
+				minimaDistancia = Math.abs(s.haversineD(coordenadas));
+				resultado = grafoIntersecciones.encontrarNodo(contador);
+				primero = false;
+			}else if(Math.abs(s.haversineD(coordenadas))<minimaDistancia){
+				minimaDistancia =  Math.abs(s.haversineD(coordenadas));
+				resultado = grafoIntersecciones.encontrarNodo(contador);
+			}
+			contador++;
+		}
+		return resultado;
+	}
+	
 	/*
 	 * Requerimiento6
 	 */
