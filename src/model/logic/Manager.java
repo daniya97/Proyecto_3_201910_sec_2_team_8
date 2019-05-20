@@ -54,7 +54,7 @@ public class Manager {
 	 */
 	private static IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafoIntersecciones;
 	private static GrafoNDPesos<BigInteger, InfoInterseccion,PesosDIVArco> grafoccMasGrande;
-	private static ArregloDinamico<BigInteger> nodosCuadricula;
+	private ArregloDinamico<BigInteger> nodosCuadricula;
 
 	/**
 	 * Cargador de Json e Infracciones
@@ -673,7 +673,59 @@ public class Manager {
 	 * Requerimiento8
 	 */
 	public void caminoCostoMinimoDijkstraC3(){
+		if(nodosCuadricula == null){
+			System.out.println("Debe correr primero el requerimiento 2B");
+			return;
+		}
 
+		LinProbTH<Integer, ArregloDinamico<BigInteger>> rutas = new LinProbTH<>(nodosCuadricula.darTamano()*2);	
+		LinProbTH<Integer, Double> distancias = new LinProbTH<>(nodosCuadricula.darTamano()*2);	
+
+		int contador = 0;
+		for (int i = 0; i < nodosCuadricula.darTamano(); i++) {
+			Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> dijkstra = new Dijkstra<>(grafoIntersecciones, grafoIntersecciones.encontrarNumNodo(nodosCuadricula.darObjeto(i)), 1);
+			for (int j = 0; j < nodosCuadricula.darTamano(); j++) {
+
+				if(i!=j && dijkstra.existeCaminoHasta(grafoIntersecciones.encontrarNumNodo(nodosCuadricula.darObjeto(j)))){
+					ArregloDinamico<BigInteger> aux = new ArregloDinamico<>();
+					int primero = 0;
+					int segundo = 0;
+					boolean primera = true;
+
+					for(Arco<PesosDIVArco> s: dijkstra.caminoA(grafoIntersecciones.encontrarNumNodo(nodosCuadricula.darObjeto(j)))){
+						if(primera){
+							primero = grafoIntersecciones.encontrarNumNodo(nodosCuadricula.darObjeto(i));
+							segundo = s.other(primero);
+							primera = false;
+							aux.agregar(grafoIntersecciones.encontrarNodo(primero));
+							aux.agregar(grafoIntersecciones.encontrarNodo(segundo));
+						}else{
+							segundo = s.other(segundo);
+							aux.agregar(grafoIntersecciones.encontrarNodo(segundo));
+						}
+					}
+
+					rutas.put(contador,aux);
+					distancias.put(contador, dijkstra.distTo(j));
+					contador++;
+				}
+
+			}
+		}
+
+
+		
+		System.out.println("A continuación se muestran los camino EXISTENTES: ");
+		// Impresión de Resultados:
+		for (int i = 0; i < contador; i++) {
+			System.out.println("Ruta: "+ i + " Distancia: " + distancias.get(i)+" Tiene la secuencia: ");
+			for(BigInteger s: rutas.get(i)){
+				System.out.println("   " +"Vértice ID: "+s);
+			}
+		}
+		
+		System.out.println("Total de Rutas: " + contador);
+		
 
 	}
 
