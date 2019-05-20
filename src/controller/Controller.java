@@ -79,7 +79,7 @@ public class Controller {
 					view.printResumenCargaJson(resultados0);
 					break;
 
-				case 1:				
+				case -3:				
 					view.printMessage("Ingrese el Semestre (1 -[Enero - Junio], 2[Julio - Diciembre])");
 					int numeroSemestre = sc.nextInt();
 					EstadisticasCargaInfracciones resultados1 = model.cargarSemestreAGrafo(numeroSemestre);
@@ -101,7 +101,7 @@ public class Controller {
 					break;
 
 
-				case -4:
+				case 1:
 
 					view.printMessage("Ingrese El id del primer vertice (Ej. 901839): ");
 					BigInteger idInicio = new BigInteger(sc.next());
