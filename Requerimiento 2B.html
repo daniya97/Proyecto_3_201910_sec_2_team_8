@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Grafo generado</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css' rel='stylesheet' /> 
+<style>
+ body { margin:0; padding:0; }
+#map { position:absolute; top:0; bottom:0; width:100%; }
+</style>
+</head>
+<body>
+<div id='map'>
+</div>
+<script>
+L.mapbox.accessToken = 'pk.eyJ1IjoianVhbnBhYmxvY29ycmVhcHVlcnRhIiwiYSI6ImNqb2FjcHNjcjFuemwzcXB1M3E0YnB4bHIifQ.oXuYfXtCqmXY52b8Ystuyw';
+var map = L.mapbox.map('map', 'mapbox.streets').setView([38.9097115, -77.0289048], 17);
+var extremos = [[38.9097115, -77.0289048],[38.9097843, -77.0288552]];
+map.fitBounds(extremos);
+L.marker( [38.756698, -76.810383], { title: ""} ).addTo(map);
+</script>
+</body>
+</html>

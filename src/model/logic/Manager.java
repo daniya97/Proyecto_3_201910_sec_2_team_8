@@ -580,12 +580,12 @@ public class Manager {
 		
 		System.out.println("En total se encontraron: "+ nodosCuadricula.darTamano()+ " vertices");
 		System.out.println("Los vertices son: ");
-		//Impresi�n de resultados
+		//Impresiï¿½n de resultados
 		for (int i = 0; i < nodosCuadricula.darTamano(); i++) {
 			BigInteger id = nodosCuadricula.darObjeto(i);
 			System.out.println("ID: "+ id + " Lat:" +grafoIntersecciones.getInfoVertex(id).getLat() + " Lon: " + grafoIntersecciones.getInfoVertex(id).getLon());
 		}
-		
+
 		// Generar mapa
 		crearMapaId("Requerimiento 2B", nodosCuadricula);
 	}
