@@ -395,7 +395,6 @@ public class Manager {
 			System.out.println("La distancia estimada del camino es de: " + encontrarDistancia(resultadosVerticesID));
 			
 			// Generar mapa para Google Maps
-			
 			crearMapa("Requerimiento 1", nuevo.caminoA(verticeDestino), new LatLonCoords[] {grafoIntersecciones.getInfoVertex(idVertice1).getCoords(), grafoIntersecciones.getInfoVertex(idVertice2).getCoords()}, new String[] {"Inicio Recorrido", "Fin Recorrido"});
 			
 		}
@@ -509,7 +508,7 @@ public class Manager {
 	/*
 	 * Requerimiento4
 	 */
-	public void caminoLongitudMinimoB1(BigInteger idVertice1, BigInteger idVertice2){
+	public void caminoLongitudMinimoB1(BigInteger idVertice1, BigInteger idVertice2) throws IOException{
 
 		int verticeInicio = grafoIntersecciones.encontrarNumNodo(idVertice1);
 		int verticeDestino = grafoIntersecciones.encontrarNumNodo(idVertice2);
@@ -523,6 +522,9 @@ public class Manager {
 		}
 		
 		System.out.println("El camino tiene una distancia de: " + encontrarDistanciaConInt(respuesta.pathTo(verticeDestino)));
+		
+		// Generar mapa para Google Maps
+		crearMapaInt("Requerimiento 1B", respuesta.pathTo(verticeDestino), new LatLonCoords[] {grafoIntersecciones.getInfoVertex(idVertice1).getCoords(), grafoIntersecciones.getInfoVertex(idVertice2).getCoords()}, new String[] {"Inicio Recorrido", "Fin Recorrido"});
 	}
 
 	
@@ -834,4 +836,101 @@ public class Manager {
 		//return archivo;
 	}
 	
+	
+	
+	private void crearMapaInt(String nombreHTML, Iterable<Integer> secVert, LatLonCoords[] marcadores, String[] nomMarc) throws IOException {
+		File archivo = new File(nombreHTML + ".html");
+		if (!archivo.exists()) {
+			archivo.createNewFile();
+		}
+
+		BufferedWriter writer = new BufferedWriter(new FileWriter(archivo));
+
+		// Escribir Cabeza
+
+		writer.write("<!DOCTYPE html>\n" + 
+				"<html>\n" + 
+				"<head>\n" + 
+				"<meta charset=utf-8 />\n" + 
+				"<title>Grafo generado</title>\n" + 
+				"<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />\n" + 
+				"<script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>\n" + 
+				"<link href='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css' rel='stylesheet' /> \n" + 
+				"<style>\n" + 
+				" body { margin:0; padding:0; }\n" + 
+				"#map { position:absolute; top:0; bottom:0; width:100%; }\n" + 
+				"</style>\n" + 
+				"</head>\n" +
+				"<body>\n" + 
+				"<div id='map'>\n" + 
+				"</div>\n");
+
+		// Inicio del script
+		Double centerLat = 38.9097115;
+		Double centerLon = -77.0289048;
+
+		Double leftLat = 38.9097115;
+		Double leftLon = -77.0289048;
+		Double rightLat = 38.9097843;
+		Double rightLon =-77.0288552;
+
+		writer.write("<script>\n" + 
+				"L.mapbox.accessToken = 'pk.eyJ1IjoianVhbnBhYmxvY29ycmVhcHVlcnRhIiwiYSI6ImNqb2FjcHNjcjFuemwzcXB1M3E0YnB4bHIifQ.oXuYfXtCqmXY52b8Ystuyw';\n" + 
+				"var map = L.mapbox.map('map', 'mapbox.streets').setView(["+ centerLat + ", "+ centerLon +"], 17);\n" + 
+				"var extremos = [["+ leftLat +", "+ leftLon + "],[" + rightLat + ", " + rightLon + "]];\n" + 
+				"map.fitBounds(extremos);\n");
+
+		// Agregar edges del grafo como lineas en el mapa	    
+		ITablaHash<BigInteger[], Boolean> edgesAgregados = new LinProbTH<>(11); // Para agregar solo una vez cada edge
+
+		Iterable<BigInteger> iterableAdj;
+		int iden1; LatLonCoords coords1;
+		int iden2 = -1; LatLonCoords coords2;
+		PesosDIVArco infoArcoAct;
+
+		// Crear una linea por cada arco
+		boolean primera = true;
+		for (Integer idenAct : secVert) {
+			if (primera) {
+				iden2 = idenAct;
+				primera = false;
+				continue;
+			}
+			
+			iden1 = iden2; 
+			coords1 = grafoIntersecciones.getInfoVertex(grafoIntersecciones.encontrarNodo(iden1)).getCoords();
+			
+			iden2 = idenAct; 
+			coords2 = grafoIntersecciones.getInfoVertex(grafoIntersecciones.encontrarNodo(iden2)).getCoords();
+			
+
+			writer.write("var line_points = [[" + coords1.getLat() + ", " + coords1.getLon() + "] "
+								+ ",[" + coords2.getLat() + ", " + coords2.getLon() + "]];\n");
+			writer.write("var polyline_options = {color: '#ff2fc6'};\n" + 
+								"L.polyline(line_points, polyline_options).addTo(map);\n\n");
+		}
+		
+
+		// Markers
+		
+		LatLonCoords coordenadaAct;
+		String nombreAct;
+		for (int i = 0; i < marcadores.length; i++) {
+			coordenadaAct = marcadores[i];
+			nombreAct = nomMarc[i];
+			writer.write(
+					"L.marker( [" + coordenadaAct.getLat() + ", " + coordenadaAct.getLon() + "], { title: \"" + nombreAct + "\"} ).addTo(map);\n");
+		}
+			
+
+		// Final
+		writer.write("</script>\n" + 
+				"</body>\n" + 
+				"</html>");
+
+		writer.close();
+
+
+		//return archivo;
+	}
 }
