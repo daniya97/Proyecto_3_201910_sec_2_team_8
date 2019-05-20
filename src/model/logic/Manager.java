@@ -583,7 +583,7 @@ public class Manager {
 		}
 
 		// Generar mapa
-		crearMapaId("Requerimiento 2B", nodosCuadricula);
+		crearMapaId("Requerimiento 1B", nodosCuadricula);
 	}
 
 	private BigInteger encontrarNodoMasCercano(LatLonCoords coordenadas){
