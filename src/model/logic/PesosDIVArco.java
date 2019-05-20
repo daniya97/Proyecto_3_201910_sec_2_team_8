@@ -5,7 +5,7 @@ import model.data_structures.InfoArco;
 public class PesosDIVArco implements InfoArco {
 	
 	private double pesoPpalDistancia;
-	private double pesoNInfracciones;
+	private double pesoNInfracciones  = 9999999;
 	private double pesoNVertices;
 	
 	/*
