@@ -366,7 +366,7 @@ public class Manager {
 			// Se obtiene un arreglo con los v�rtices
 			for(Arco<PesosDIVArco> s: nuevo.caminoA(verticeDestino)){
 				if(primera){
-				ini = s.either();
+				ini = verticeInicio;
 				BigInteger inicial = grafoIntersecciones.encontrarNodo(ini);
 				fini = s.other(ini);
 				BigInteger destinoFinal = grafoIntersecciones.encontrarNodo(fini);
