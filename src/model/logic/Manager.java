@@ -341,7 +341,7 @@ public class Manager {
 	/*
 	 * Requerimiento1
 	 */
-	public void caminoCostoMinimoA1(BigInteger idVertice1, BigInteger idVertice2){
+	public void caminoCostoMinimoA1(BigInteger idVertice1, BigInteger idVertice2) throws IOException{
 
 		
 		// Se utiliza Dijkstra - el 2 en el constructor hace referencia a que se usan como pesos el n�mero de infracciones
@@ -393,6 +393,11 @@ public class Manager {
 				contador++;
 			}
 			System.out.println("La distancia estimada del camino es de: " + encontrarDistancia(resultadosVerticesID));
+			
+			// Generar mapa para Google Maps
+			
+			crearMapa("Requerimiento 1", nuevo.caminoA(verticeDestino), new LatLonCoords[] {grafoIntersecciones.getInfoVertex(idVertice1).getCoords(), grafoIntersecciones.getInfoVertex(idVertice2).getCoords()}, new String[] {"Inicio Recorrido", "Fin Recorrido"});
+			
 		}
 		else{
 			System.out.println("No existe un camino entre los dos v�rtices");
@@ -739,7 +744,7 @@ public class Manager {
 		return respuesta;
 	}
 
-	private File crearMapa(String nombreHTML, Iterable grafo, LatLonCoords[] marcadores) throws IOException {
+	private void crearMapa(String nombreHTML, Iterable<Arco<PesosDIVArco>> grafo, LatLonCoords[] marcadores, String[] nomMarc) throws IOException {
 		File archivo = new File(nombreHTML);
 		if (!archivo.exists()) {
 			archivo.createNewFile();
@@ -816,10 +821,16 @@ public class Manager {
 		}
 
 		// Markers
-
-		writer.write(
-				"L.marker( [" + 41.88949181977 + ", " + -87.6882193648 + "], { title: \"Nodo de salida\"} ).addTo(map);\n" + 
-						"L.marker( [" + 41.768726 + ", " + -87.664069 + "], { title: \"Nodo de llegada\"} ).addTo(map);\n");
+		
+		LatLonCoords coordenadaAct;
+		String nombreAct;
+		for (int i = 0; i < marcadores.length; i++) {
+			coordenadaAct = marcadores[i];
+			nombreAct = nomMarc[i];
+			writer.write(
+					"L.marker( [" + coordenadaAct.getLat() + ", " + coordenadaAct.getLon() + "], { title: \"" + nombreAct + "\"} ).addTo(map);\n");
+		}
+			
 
 		// Final
 		writer.write("</script>\n" + 
@@ -829,7 +840,7 @@ public class Manager {
 		writer.close();
 
 
-		return archivo;
+		//return archivo;
 	}
 	
 }
