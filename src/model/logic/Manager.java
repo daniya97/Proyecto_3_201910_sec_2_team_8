@@ -744,8 +744,8 @@ public class Manager {
 		return respuesta;
 	}
 
-	private void crearMapa(String nombreHTML, Iterable<Arco<PesosDIVArco>> grafo, LatLonCoords[] marcadores, String[] nomMarc) throws IOException {
-		File archivo = new File(nombreHTML);
+	private void crearMapa(String nombreHTML, Iterable<Arco<PesosDIVArco>> arcos, LatLonCoords[] marcadores, String[] nomMarc) throws IOException {
+		File archivo = new File(nombreHTML + ".html");
 		if (!archivo.exists()) {
 			archivo.createNewFile();
 		}
@@ -790,35 +790,26 @@ public class Manager {
 		ITablaHash<BigInteger[], Boolean> edgesAgregados = new LinProbTH<>(11); // Para agregar solo una vez cada edge
 
 		Iterable<BigInteger> iterableAdj;
-		BigInteger id1; LatLonCoords coords1;
-		BigInteger id2; LatLonCoords coords2;
+		int iden1; LatLonCoords coords1;
+		int iden2; LatLonCoords coords2;
 		PesosDIVArco infoArcoAct;
 
-		//boolean primerEl = true;
-		for (BigInteger id : grafoIntersecciones) {
+		// Crear una linea por cada arco
+		for (Arco<PesosDIVArco> arcoAct : arcos) {
 
-			iterableAdj = new Iterable<BigInteger>() {		
-				@Override public Iterator<BigInteger> iterator() { 
-					return grafoIntersecciones.adj(id); } };
+			iden1 = arcoAct.either(); 
+			coords1 = grafoIntersecciones.getInfoVertex(grafoIntersecciones.encontrarNodo(iden1)).getCoords();
+			
+			iden2 = arcoAct.other(iden1); 
+			coords2 = grafoIntersecciones.getInfoVertex(grafoIntersecciones.encontrarNodo(iden2)).getCoords();
+			
 
-					for (BigInteger verAdj : iterableAdj) {
-						infoArcoAct = grafoIntersecciones.getInfoArc(id, verAdj);
-
-						//id1 = arcoAct.darKEither();
-						coords1 = grafoIntersecciones.getInfoVertex(id).getCoords();
-						//id2 = arcoAct.darKOther(id1);
-						coords2 = grafoIntersecciones.getInfoVertex(verAdj).getCoords();
-
-						if (   edgesAgregados.get(new BigInteger[] {id, verAdj}) != null
-								|| edgesAgregados.get(new BigInteger[] {verAdj, id}) != null ) continue;
-						else edgesAgregados.put(new BigInteger[] {id, verAdj}, true);
-
-						writer.write("var line_points = [[" + coords1.getLat() + ", " + coords1.getLon() + "] "
+			writer.write("var line_points = [[" + coords1.getLat() + ", " + coords1.getLon() + "] "
 								+ ",[" + coords2.getLat() + ", " + coords2.getLon() + "]];\n");
-						writer.write("var polyline_options = {color: '#ff2fc6'};\n" + 
+			writer.write("var polyline_options = {color: '#ff2fc6'};\n" + 
 								"L.polyline(line_points, polyline_options).addTo(map);\n\n");
-					}
 		}
+		
 
 		// Markers
 		
