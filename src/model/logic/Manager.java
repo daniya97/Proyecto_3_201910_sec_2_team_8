@@ -510,7 +510,6 @@ public class Manager {
 		int verticeDestino = grafoIntersecciones.encontrarNumNodo(idVertice2);
 		
 		BFS<BigInteger,InfoInterseccion, PesosDIVArco> respuesta = new BFS<BigInteger,InfoInterseccion, PesosDIVArco>(grafoIntersecciones, verticeInicio);	
-		System.out.println("Total de V�rtices: "+ respuesta.distTo(verticeDestino));
 		System.out.println("El camino se muestra a continuaci�n: ");
 		for (int s: respuesta.pathTo(verticeDestino)) {
 			InfoInterseccion info = grafoIntersecciones.getInfoVertex(grafoIntersecciones.encontrarNodo(s));
@@ -518,7 +517,7 @@ public class Manager {
 		}
 		
 		System.out.println("El camino tiene una distancia de: " + encontrarDistanciaConInt(respuesta.pathTo(verticeDestino)));
-		
+		System.out.println("Total de V�rtices: "+ respuesta.distTo(verticeDestino));
 		// Generar mapa para Google Maps
 		crearMapaInt("Requerimiento 1B", respuesta.pathTo(verticeDestino), new LatLonCoords[] {grafoIntersecciones.getInfoVertex(idVertice1).getCoords(), grafoIntersecciones.getInfoVertex(idVertice2).getCoords()}, new String[] {"Inicio Recorrido", "Fin Recorrido"});
 	}
@@ -648,7 +647,6 @@ public class Manager {
 		
 		GrafoNDPesos<BigInteger, InfoInterseccion, PesosDIVArco> grafoArbol = grafoccMasGrande;
 		Prim<BigInteger, InfoInterseccion, PesosDIVArco> prim = new Prim<>(grafoArbol);
-		System.out.println(prim.weight());
 		
 		int contador = 0;
 		System.out.println("Los v�rtices del �rbol generado son: ");

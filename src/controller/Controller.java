@@ -103,9 +103,9 @@ public class Controller {
 
 				case 1:
 
-					view.printMessage("Ingrese El id del primer vertice (Ej. 901839): ");
+					view.printMessage("Ingrese El id del primer vertice (Ej. 6366542919): ");
 					BigInteger idInicio = new BigInteger(sc.next());
-					view.printMessage("Ingrese El id del segundo vertice (Ej. 901839): ");
+					view.printMessage("Ingrese El id del segundo vertice (Ej. 6356688243): ");
 					BigInteger idDestino = new BigInteger(sc.next());
 
 
@@ -142,9 +142,9 @@ public class Controller {
 
 				case 3:			
 
-					view.printMessage("Ingrese El id del primer vertice (Ej. 901839): ");
+					view.printMessage("Ingrese El id del primer vertice (Ej. 234661): ");
 					BigInteger idInicio1 = new BigInteger(sc.next());
-					view.printMessage("Ingrese El id del segundo vertice (Ej. 901839): ");
+					view.printMessage("Ingrese El id del segundo vertice (Ej. 49130361): ");
 					BigInteger idDestino1 = new BigInteger(sc.next());
 
 
