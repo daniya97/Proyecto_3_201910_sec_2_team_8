@@ -61,6 +61,8 @@ public class Manager {
 	 * Guarda los nodos encontrados a partir de la cuadricula
 	 */
 	private ArregloDinamico<BigInteger> nodosCuadricula;
+	
+	private ArregloDinamico<BigInteger> nodosMasInfracciones;
 
 	/**
 	 * Cargador de Json e Infracciones
@@ -420,7 +422,7 @@ public class Manager {
 
 	
 		// Guarda el nuevo grafo
-		IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafoNuevo = new GrafoNDPesos<>();
+		nodosMasInfracciones = new ArregloDinamico<>();
 		//Arreglo auxiliar que guarda la informaciï¿½n sobre los vï¿½rtices
 		IArregloDinamico<InfoInterseccion> auxiliar = new ArregloDinamico<>();
 		// Tabla para guardas los identificadores de los vertices
@@ -441,35 +443,17 @@ public class Manager {
 		int numVertices = 0;
 		while(numVertices<n){
 			InfoInterseccion actual = auxiliar.darObjeto(numVertices);
-			grafoNuevo.addVertex(ayudaIdVertice.get(actual), actual);
+			nodosMasInfracciones.agregar(ayudaIdVertice.get(actual));
 			numVertices++;
 		}
 
-		BigInteger destino;
-		// Se agregan los arcos correspondientes
-		for (InfoInterseccion s: grafoNuevo.vertices()) {
-			BigInteger idVertice = ayudaIdVertice.get(s);
-			// Se recorren los arcos
-			for(Arco<PesosDIVArco> arco: grafoIntersecciones.darRepresentacion().get(grafoIntersecciones.encontrarNumNodo(idVertice))){
-				destino = grafoIntersecciones.encontrarNodo(arco.other(grafoIntersecciones.encontrarNumNodo(idVertice)));
-				
-				// Se verifica que los dos vertices existan en el nuevo grafo
-				if(grafoNuevo.encontrarNumNodo(idVertice)!=-1 && grafoNuevo.encontrarNumNodo(destino)!=-1 ){
-					if(grafoNuevo.getInfoArc(idVertice, destino)==null){
-						grafoNuevo.addEdge(idVertice, destino, arco.darInformacion());
-					}
-
-				}
-			}
-		}
-		
 		
 		// Resultados - IMPRESIï¿½N
-		for(InfoInterseccion s: grafoNuevo.vertices()){
+		for(BigInteger s: nodosMasInfracciones){
 			//CAMBIOOOOOS
-			System.out.println("ID: " + ayudaIdVertice.get(s)+ " Lon: "+s.getLon()+ " Lat: "+s.getLat()+" #Infracciones: "+s.getNInfracciones());
+			System.out.println("ID: " + s+ " Lon: "+grafoIntersecciones.getInfoVertex(s).getLon()+ " Lat: "+grafoIntersecciones.getInfoVertex(s).getLat()+" #Infracciones: "+grafoIntersecciones.getInfoVertex(s).getNInfracciones());
 		}
-		componentesConectadasReqA2(grafoNuevo);
+		componentesConectadasReqA2();
 		
 
 	}
@@ -477,36 +461,49 @@ public class Manager {
 	/**
 	 * Encuentras las componentes conectadas dado un grafo
 	 */
-	private void componentesConectadasReqA2(IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafo){
+	private void componentesConectadasReqA2(){
 		
+		LinProbTH<Integer, Integer> aux = new LinProbTH<Integer, Integer>(nodosMasInfracciones.darTamano());
+		LinProbTH<Integer, ArregloDinamico<BigInteger>> aux2 = new LinProbTH<>(nodosMasInfracciones.darTamano());
 		int numComMasGrande = 0;
-		//CAMBIOOOOOOO en Clase COMPONENTE CONECTADAS
-		ComponentesConectadas<BigInteger, InfoInterseccion> cc = new ComponentesConectadas<BigInteger, InfoInterseccion>(grafo);
-		ArregloDinamico<BigInteger> ccMasGrande = new ArregloDinamico<>();
-		System.out.println("El total de componentes conectadas es: "+cc.numComponentes());
-		for (int i = 0; i < cc.numComponentes(); i++) {
-			//CAMBIOOOOOOO 
-			System.out.println("Componente nï¿½mero " + i + " Tamano: " + cc.tamano(i));
-			for (int j = 0; j < grafo.V(); j++) {
-				if(cc.id(j) == i){
-					System.out.println(" " + grafo.encontrarNodo(j));
+		int numComponentes = 0;
+		int maxTamano = 0;
+		ComponentesConectadas<BigInteger, InfoInterseccion> cc = new ComponentesConectadas<BigInteger, InfoInterseccion>(grafoIntersecciones);
+		
+			
+		for (int i = 0; i < nodosMasInfracciones.darTamano(); i++) {
+			BigInteger nodoAct = nodosMasInfracciones.darObjeto(i);
+			int idActual = cc.id(grafoIntersecciones.encontrarNumNodo(nodoAct));
+			if(aux.get(idActual) == null){
+				aux.put(idActual, cc.tamano(grafoIntersecciones.encontrarNumNodo(nodoAct)));
+				numComponentes++;
+				if(cc.tamano(grafoIntersecciones.encontrarNumNodo(nodoAct))>maxTamano){
+					numComMasGrande = idActual;
+					maxTamano = cc.tamano(grafoIntersecciones.encontrarNumNodo(nodoAct));
 				}
-			}
-			System.out.println("");
-		}
-		
-		// Creaciï¿½n del grafo con la componente conectada mï¿½s grande
-		for (int i = 0; i < grafo.V(); i++) {
-			if(cc.id(i) == cc.idComponenteMasGrande()){
-				numComMasGrande++;
-				ccMasGrande.agregar(grafo.encontrarNodo(i));
+				
 			}
 		}
-		// Se crea el grafo
-		grafoccMasGrande = new GrafoNDPesos<>();
-		grafoccMasGrande = obtenerGrafo(ccMasGrande);
 		
-		System.out.println("La componente mï¿½s grande es la nï¿½mero: " + cc.idComponenteMasGrande()+" con: "+ numComMasGrande +" componentes");
+		//Se obtienen los vértices
+		for(BigInteger s: grafoIntersecciones){
+			if(aux.get(cc.id(grafoIntersecciones.encontrarNumNodo(s)))!=null){
+				aux2.get(cc.id(grafoIntersecciones.encontrarNumNodo(s))).agregar(s);
+			}
+		}
+		
+		
+		System.out.println("El número de componentes conectadas es: " + numComponentes);
+		System.out.println("La componente más grande es: "+ numComMasGrande);
+		for(Integer s: aux){
+			System.out.println("La componente id: "+ s +" con tamaño de: "+aux.get(s));
+			for(BigInteger g:aux2.get(s)){
+				System.out.println("Vértice ID: "+g);
+			}
+		}
+		
+		//Se crea el grafo de la componente más graande
+		grafoccMasGrande = obtenerGrafo(aux2.get(numComMasGrande));
 		
 	}
 
