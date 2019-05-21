@@ -62,4 +62,10 @@ public class PesosDIVArco implements InfoArco {
 		return pesoNVertices;
 	}
 
+	@Override
+	public double darPesoCombinado() {
+		// TODO Auto-generated method stub
+		return darPesoNInfr() +0.1;
+	}
+
 }

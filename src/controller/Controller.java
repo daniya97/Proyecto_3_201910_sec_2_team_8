@@ -240,12 +240,12 @@ public class Controller {
 
 				case 8:
 					view.printMessage("Ingrese El id del primer vertice (Ej. 901839): ");
-					idVertice1 = sc.nextInt();
+					BigInteger idInicio3 = new BigInteger(sc.next());
 					view.printMessage("Ingrese El id del segundo vertice (Ej. 901839): ");
-					idVertice2 = sc.nextInt();
+					BigInteger idDestino3 = new BigInteger(sc.next());
 
 					startTime = System.currentTimeMillis();
-					model.caminoMasCortoC4(idVertice1, idVertice2);
+					model.caminoMasCortoC4(idInicio3, idDestino3);
 					endTime = System.currentTimeMillis();
 					duration = endTime - startTime;
 					view.printMessage("Tiempo del requerimiento: " + duration + " milisegundos");

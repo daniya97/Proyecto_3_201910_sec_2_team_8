@@ -45,7 +45,10 @@ public class Arco<IA extends InfoArco> implements Comparable<Arco<IA>> {
 	  */
 	 public double weight(int tipoPeso) { 
 		 if(tipoPeso == 1) return informacion.darPesoArco();
-		 else return informacion.darPesoNInfr(); 
+		 else if(tipoPeso == 2) return informacion.darPesoNInfr(); 
+		 else{
+			 return informacion.darPesoCombinado();
+		 }
 	}
 
 	/**
