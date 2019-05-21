@@ -53,7 +53,13 @@ public class Manager {
 	 * Lista donde se van a cargar los datos de los archivos
 	 */
 	private static IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafoIntersecciones;
+	/**
+	 * Grafo de la componente conectada más grande
+	 */
 	private static GrafoNDPesos<BigInteger, InfoInterseccion,PesosDIVArco> grafoccMasGrande;
+	/**
+	 * Guarda los nodos encontrados a partir de la cuadricula
+	 */
 	private ArregloDinamico<BigInteger> nodosCuadricula;
 
 	/**
@@ -339,7 +345,9 @@ public class Manager {
 	/*
 	 * Requerimiento2
 	 */
-
+	/**
+	 * Encuentra el camino más corto (en infracciones) entre idVertice1 y idVertice 2
+	 */
 	public void caminoCostoMinimoA1(BigInteger idVertice1, BigInteger idVertice2) throws IOException{
 
 		
@@ -372,7 +380,6 @@ public class Manager {
 				resultadosVertices.agregar(grafoIntersecciones.getInfoVertex(destinoFinal));
 				resultadosVerticesID.agregar(inicial);
 				resultadosVerticesID.agregar(destinoFinal);
-				//CAMBIOOOOOOOOOO
 				ini = fini;
 				primera = false;
 				}else{
@@ -387,7 +394,6 @@ public class Manager {
 			int contador = 0;
 			for(InfoInterseccion s: resultadosVertices){
 				System.out.println("El vï¿½rtice: "+ resultadosVerticesID.darObjeto(contador) + " Lon: "+s.getLon()+ " Lat: "+s.getLat());
-				//CAMBIOOOOOOOOOO
 				contador++;
 			}
 			System.out.println("La distancia estimada del camino es de: " + encontrarDistancia(resultadosVerticesID));
@@ -406,6 +412,9 @@ public class Manager {
 
 	/*
 	 * Requerimiento3
+	 */
+	/**
+	 * Encuentra los n nodos con mayor cantidad de infracciones
 	 */
 	public void mayorNumeroVerticesA2(int n){
 
@@ -460,13 +469,14 @@ public class Manager {
 			//CAMBIOOOOOS
 			System.out.println("ID: " + ayudaIdVertice.get(s)+ " Lon: "+s.getLon()+ " Lat: "+s.getLat()+" #Infracciones: "+s.getNInfracciones());
 		}
-		//CAMBIOOOOOS
 		componentesConectadasReqA2(grafoNuevo);
 		
 
 	}
 
-	
+	/**
+	 * Encuentras las componentes conectadas dado un grafo
+	 */
 	private void componentesConectadasReqA2(IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafo){
 		
 		int numComMasGrande = 0;
