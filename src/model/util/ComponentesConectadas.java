@@ -7,25 +7,26 @@ import model.data_structures.GrafoNDPesos;
 import model.data_structures.IGraph;
 import model.data_structures.InfoArco;
 import model.data_structures.LinkedList;
+import model.data_structures.Queue;
 import model.logic.InfoInterseccion;
 import model.logic.PesosDIVArco;
 
 public class ComponentesConectadas<K, V> {
 
 	/**
-	 * Si el vértice ya fue marcado o no
+	 * Si el vï¿½rtice ya fue marcado o no
 	 */
 	private boolean[] marcado;   
 	/**
-	 *ID de la componente asociada al vértice
+	 *ID de la componente asociada al vï¿½rtice
 	 */
 	private int[] id;          
 	/**
-	 * Número de vértices en la componente
+	 * Nï¿½mero de vï¿½rtices en la componente
 	 */
 	private int[] tamano;        
 	/**
-	 * Número de componentes conectadas en el grafo
+	 * Nï¿½mero de componentes conectadas en el grafo
 	 */
 	private int num;         
 
@@ -50,26 +51,29 @@ public class ComponentesConectadas<K, V> {
 	/**
 	 * DEPTH FIRST SEARCH  sobre el grafo 
 	 */
-	private <IA extends InfoArco> void dfs(IGraph<K, V, IA> G, int v) {
-		marcado[v] = true;
-		id[v] = num;
-		tamano[num]++;
+	private <IA extends InfoArco> void dfs(IGraph<K, V, IA> G, int s) {
+		Queue<Integer> q = new Queue<Integer>();
+        marcado[s] = true;
+        id[s] = num;
+     
+        q.enqueue(s);
 
-		LinkedList<Arco<IA>> aux = G.darRepresentacion().get(v);
-		//CAMBIOOOOOOO
-		if(aux!=null){
-			for (Arco<IA> e : aux) {
-				int w = e.other(v);
-				if (!marcado[w]) {
-					dfs(G, w);
-				}
-			}
-		}
+        while (!q.isEmpty()) {
+            int v = q.dequeue();
+            LinkedList<Arco<IA>> aux = G.darRepresentacion().get(s);
+            for (Arco<IA> e : aux) {
+            	int w = e.other(s);
+                if (!marcado[w]) {
+                    marcado[w] = true;
+                    q.enqueue(w);
+                }
+            }
+        }
 	}
 
 
 	/**
-	 * Retorna el id de la componente que contiene al vértice v
+	 * Retorna el id de la componente que contiene al vï¿½rtice v
 	 */
 	public int id(int v) {
 		if(id == null) return 0;
@@ -77,7 +81,7 @@ public class ComponentesConectadas<K, V> {
 	}
 
 	/**
-	 * Retorna el número de vértices en la componente que contiene al vértice dado por parámetro
+	 * Retorna el nï¿½mero de vï¿½rtices en la componente que contiene al vï¿½rtice dado por parï¿½metro
 	 */
 	public int tamano(int v) {
 		if(tamano.length == 0) return 0;
@@ -85,7 +89,7 @@ public class ComponentesConectadas<K, V> {
 	}
 
 	/**
-	 * Retorna el número de componentes conectadas en el grafo
+	 * Retorna el nï¿½mero de componentes conectadas en el grafo
 	 */
 	public int numComponentes() {
 		if(id == null) return 0;
@@ -93,8 +97,8 @@ public class ComponentesConectadas<K, V> {
 	}
 
 	/**
-	 * Retorna TRUE si los vértices v y w están en la misma componente conectada
-	 * Verifica si dos vértices están o no conectados
+	 * Retorna TRUE si los vï¿½rtices v y w estï¿½n en la misma componente conectada
+	 * Verifica si dos vï¿½rtices estï¿½n o no conectados
 	 */
 	public boolean connected(int v, int w) {
 
