@@ -485,7 +485,7 @@ public class Manager {
 			}
 		}
 		
-		//Se obtienen los vértices
+		//Se obtienen los vï¿½rtices
 		for(BigInteger s: grafoIntersecciones){
 			if(aux.get(cc.id(grafoIntersecciones.encontrarNumNodo(s)))!=null){
 				aux2.get(cc.id(grafoIntersecciones.encontrarNumNodo(s))).agregar(s);
@@ -493,16 +493,16 @@ public class Manager {
 		}
 		
 		
-		System.out.println("El número de componentes conectadas es: " + numComponentes);
-		System.out.println("La componente más grande es: "+ numComMasGrande);
+		System.out.println("El nï¿½mero de componentes conectadas es: " + numComponentes);
+		System.out.println("La componente mï¿½s grande es: "+ numComMasGrande);
 		for(Integer s: aux){
-			System.out.println("La componente id: "+ s +" con tamaño de: "+aux.get(s));
+			System.out.println("La componente id: "+ s +" con tamaï¿½o de: "+aux.get(s));
 			for(BigInteger g:aux2.get(s)){
-				System.out.println("Vértice ID: "+g);
+				System.out.println("Vï¿½rtice ID: "+g);
 			}
 		}
 		
-		//Se crea el grafo de la componente más graande
+		//Se crea el grafo de la componente mï¿½s graande
 		grafoccMasGrande = obtenerGrafo(aux2.get(numComMasGrande));
 		
 	}
@@ -687,20 +687,22 @@ public class Manager {
 	 */
 	/**
 	 * Encuentra los caminos mï¿½s cortos a partir del requerimiento 2B 
+	 * @throws IOException 
 	 */
-	public void caminoCostoMinimoDijkstraC3(){
+	public void caminoCostoMinimoDijkstraC3() throws IOException{
 		if(nodosCuadricula == null){
 			System.out.println("Debe correr primero el requerimiento 2B (4)");
 			return;
 		}
 
 		LinProbTH<Integer, ArregloDinamico<BigInteger>> rutas = new LinProbTH<>(nodosCuadricula.darTamano()*2);
-			ArregloDinamico<Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco>> iterablesCaminos = new ArregloDinamico<>();
+			ArregloDinamico<Iterable<Arco<PesosDIVArco>>> iterablesCaminos = new ArregloDinamico<>();
 		LinProbTH<Integer, Double> distancias = new LinProbTH<>(nodosCuadricula.darTamano()*2);	
 		
 			// Para el mapa: para conocer el camino mas largo
 			Iterable<Arco<PesosDIVArco>> caminoMasLargo;
 			double distanciaMasLarga = -1;
+			int contadorMasLargo = 0;
 			boolean inicializarExtremos = true;
 		
 			int numNodoAct;
@@ -708,12 +710,13 @@ public class Manager {
 		int contador = 0;
 		for (int i = 0; i < nodosCuadricula.darTamano(); i++) {
 			Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> dijkstra = new Dijkstra<>(grafoIntersecciones, grafoIntersecciones.encontrarNumNodo(nodosCuadricula.darObjeto(i)), 1);
-			iterablesCaminos.agregar(dijkstra);
 			
 			for (int j = 0; j < nodosCuadricula.darTamano(); j++) {
 				
 				numNodoAct = grafoIntersecciones.encontrarNumNodo(nodosCuadricula.darObjeto(j));
 				distAct = dijkstra.distTo(numNodoAct);
+				
+				iterablesCaminos.agregar(dijkstra.caminoA(numNodoAct));
 				
 				if(i!=j && dijkstra.existeCaminoHasta(numNodoAct)){
 					ArregloDinamico<BigInteger> aux = new ArregloDinamico<>();
@@ -724,11 +727,13 @@ public class Manager {
 					if (inicializarExtremos) { // Para el mapa: actualizar camino mas largo
 						caminoMasLargo = dijkstra.caminoA(numNodoAct);
 						distanciaMasLarga = distAct;
+						contadorMasLargo = 0;
 						inicializarExtremos = false;
 					} else {
 						if (distanciaMasLarga < distAct) {
 							caminoMasLargo = dijkstra.caminoA(numNodoAct);
 							distanciaMasLarga = distAct;
+							contadorMasLargo = contador;
 						}
 					}
 					
@@ -749,7 +754,6 @@ public class Manager {
 					distancias.put(contador, dijkstra.distTo(j));
 					contador++;
 				}
-
 			}
 		}
 
@@ -768,8 +772,24 @@ public class Manager {
 		
 		// Generar mapa
 		
+		// Asignar colores
+		String colorNormal = "#ff2fc6";
+		String colorMasLargo = "#f12fc6";
 		
-
+		ArregloDinamico<String> colores = new ArregloDinamico<>();
+		Iterable<Arco<PesosDIVArco>> camino;
+		for (int i = 0; i < iterablesCaminos.darTamano(); i++) {
+			camino = iterablesCaminos.darObjeto(i);
+			if (i == contadorMasLargo) {
+				colores.agregar(colorMasLargo);
+			}
+			else {
+				colores.agregar(colorNormal);
+			}
+		}
+		
+		// Llamar metodo generador
+		crearMapaCaminosCol("Requerimiento 3C", iterablesCaminos, colores, nodosCuadricula);
 	}
 
 	/*
@@ -1168,7 +1188,7 @@ public class Manager {
 		//return archivo;
 	}
 	
-	private void crearMapaCaminosCol(String nombreHTML, ArregloDinamico<Iterable<Arco<PesosDIVArco>>> listaArcos, ArregloDinamico<String> colores, LatLonCoords[] marcadores) throws IOException {
+	private void crearMapaCaminosCol(String nombreHTML, ArregloDinamico<Iterable<Arco<PesosDIVArco>>> listaArcos, ArregloDinamico<String> colores, Iterable<BigInteger> marcadores) throws IOException {
 		File archivo = new File(nombreHTML + ".html");
 		if (!archivo.exists()) {
 			archivo.createNewFile();
@@ -1218,8 +1238,12 @@ public class Manager {
 		int iden2; LatLonCoords coords2;
 		PesosDIVArco infoArcoAct;
 
-		// Crear una linea por cada arco
+		// Generar mapa de cada camino
+		int i = 0;
 		for (Iterable<Arco<PesosDIVArco>> arcos : listaArcos) {
+			String colorAct = colores.darObjeto(i);
+			
+			// Crear una linea por cada arco
 			for (Arco<PesosDIVArco> arcoAct : arcos) {
 	
 				iden1 = arcoAct.either(); 
@@ -1231,21 +1255,22 @@ public class Manager {
 	
 				writer.write("var line_points = [[" + coords1.getLat() + ", " + coords1.getLon() + "] "
 									+ ",[" + coords2.getLat() + ", " + coords2.getLon() + "]];\n");
-				writer.write("var polyline_options = {color: '#ff2fc6'};\n" + 
+				writer.write("var polyline_options = {color: '"+ colorAct +"'};\n" + 
 									"L.polyline(line_points, polyline_options).addTo(map);\n\n");
 			}
+			i++;
 		}
 
 		// Markers
-		if (marcadores != null) {
-			LatLonCoords coordenadaAct;
-			String nombreAct;
-			
-			for (int i = 0; i < marcadores.length; i++) {
-				coordenadaAct = marcadores[i];
-				writer.write(
-						"L.marker( [" + coordenadaAct.getLat() + ", " + coordenadaAct.getLon() + "], { title: \"" + "" + "\"} ).addTo(map);\n");
-			}
+		LatLonCoords coordenadaAct;
+		String nombreAct;
+		int j = 0;
+		for (BigInteger idVertex : marcadores) {
+			coordenadaAct = grafoIntersecciones.getInfoVertex(idVertex).getCoords();//marcadores[i];
+			//nombreAct = nomMarc[i];
+			writer.write(
+					"L.marker( [" + coordenadaAct.getLat() + ", " + coordenadaAct.getLon() + "], { title: \"" + "" + "\"} ).addTo(map);\n");
+			j++;
 		}
 		
 			
