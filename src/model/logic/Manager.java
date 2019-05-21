@@ -402,7 +402,7 @@ public class Manager {
 			System.out.println("El n�mero de infracciones del camino es: " + encontrarInfracciones(resultadosVerticesID));
 			// Generar mapa para Google Maps
 			
-			crearMapa("Requerimiento 1", nuevo.caminoA(verticeDestino), new LatLonCoords[] {grafoIntersecciones.getInfoVertex(idVertice1).getCoords(), grafoIntersecciones.getInfoVertex(idVertice2).getCoords()}, new String[] {"Inicio Recorrido", "Fin Recorrido"});
+			crearMapa("Requerimiento 1A", nuevo.caminoA(verticeDestino), new LatLonCoords[] {grafoIntersecciones.getInfoVertex(idVertice1).getCoords(), grafoIntersecciones.getInfoVertex(idVertice2).getCoords()}, new String[] {"Inicio Recorrido", "Fin Recorrido"});
 			
 		}
 		else{
@@ -463,21 +463,20 @@ public class Manager {
 	}
 
 	/**
-	 /**
 	 * Encuentras las componentes conectadas dado un grafo
 	 */
 	private void componentesConectadasReqA2(){
-		
+
 		LinProbTH<Integer, Integer> aux = new LinProbTH<Integer, Integer>(nodosMasInfracciones.darTamano());
 		LinProbTH<Integer, ArregloDinamico<BigInteger>> aux2 = new LinProbTH<>(nodosMasInfracciones.darTamano());
 		int numComMasGrande = 0;
 		int numComponentes = 0;
 		int maxTamano = 0;
 		ComponentesConectadas<BigInteger, InfoInterseccion> cc = new ComponentesConectadas<BigInteger, InfoInterseccion>(grafoIntersecciones);
-		
-		
+
+
 		for (int i = 0; i < nodosMasInfracciones.darTamano(); i++) {
-			
+
 			BigInteger nodoAct = nodosMasInfracciones.darObjeto(i);
 			int idActual = cc.id(grafoIntersecciones.encontrarNumNodo(nodoAct));
 			if(aux.get(idActual) == null){
@@ -489,39 +488,41 @@ public class Manager {
 				}
 			}
 		}
-		
-		//Se obtienen los vértices
+
+		//Se obtienen los vÃ©rtices
 		for(BigInteger s: grafoIntersecciones){
 			if(aux.get(cc.id(grafoIntersecciones.encontrarNumNodo(s)))!=null){
 				if(aux2.get(cc.id(grafoIntersecciones.encontrarNumNodo(s))) == null){
 					ArregloDinamico<BigInteger> nuevo = new ArregloDinamico<>();
 					nuevo.agregar(s);
 					aux2.put(cc.id(grafoIntersecciones.encontrarNumNodo(s)), nuevo);
-				}
+				}else{
 				aux2.get(cc.id(grafoIntersecciones.encontrarNumNodo(s))).agregar(s);
+				}
 			}
 		}
-		
-		
-	
+
+
+
 		for(Integer s: aux){
 			aux.put(s, aux2.get(s).darTamano());
 			if(aux.get(s)>maxTamano){
 				maxTamano = aux.get(s);
 				numComMasGrande = s;
 			}
-			System.out.println("La componente id: "+ s +" con tamaño de: "+aux.get(s));
+			System.out.println("La componente id: "+ s +" con tamaÃ±o de: "+aux.get(s));
 			for(BigInteger g:aux2.get(s)){
-				System.out.println("Vértice ID: "+g);
+				System.out.println("VÃ©rtice ID: "+g);
 			}
 		}
-		
-		System.out.println("El número de componentes conectadas es: " + numComponentes);
-		System.out.println("La componente más grande es: "+ numComMasGrande);
+
+		System.out.println("El nÃºmero de componentes conectadas es: " + numComponentes);
+		System.out.println("La componente mÃ¡s grande es: "+ numComMasGrande);
 		System.out.println("CANTIDAD CC: "+ cc.numComponentes());
-		//Se crea el grafo de la componente más graande
+		//Se crea el grafo de la componente mÃ¡s graande
+		grafoccMasGrande = new GrafoNDPesos<>(); 
 		grafoccMasGrande = obtenerGrafo(aux2.get(numComMasGrande));
-	
+
 	}
 
 	/*
@@ -790,7 +791,7 @@ public class Manager {
 		
 		// Asignar colores
 		String colorNormal = "#ff2fc6";
-		String colorMasLargo = "#f12fc6";
+		String colorMasLargo = "#ffffff";
 		
 		ArregloDinamico<String> colores = new ArregloDinamico<>();
 		Iterable<Arco<PesosDIVArco>> camino;
@@ -814,8 +815,9 @@ public class Manager {
 	/**
 	 * Camino m�s corto entre dos v�rtices
 	 * Tiene en cuenta dos criterios: n�mero infracciones y cantidad de v�rtices
+	 * @throws IOException 
 	 */
-	public void caminoMasCortoC4(BigInteger idVertice1, BigInteger idVertice2){
+	public void caminoMasCortoC4(BigInteger idVertice1, BigInteger idVertice2) throws IOException{
 
 		
 		// Se utiliza Dijkstra - el 2 en el constructor hace referencia a que se usan como pesos el n�mero de infracciones
@@ -866,7 +868,9 @@ public class Manager {
 			System.out.println("La distancia estimada del camino es de: " + encontrarDistancia(resultadosVerticesID));
 			System.out.println("El n�mero de infracciones del camino es: " + encontrarInfracciones(resultadosVerticesID));
 			
+			// Generar mapa para Google Maps
 			
+			crearMapa("Requerimiento 4C", nuevo.caminoA(verticeDestino), new LatLonCoords[] {grafoIntersecciones.getInfoVertex(idVertice1).getCoords(), grafoIntersecciones.getInfoVertex(idVertice2).getCoords()}, new String[] {"Inicio Recorrido", "Fin Recorrido"});
 		}
 		else{
 			System.out.println("No existe un camino entre los dos v�rtices");
@@ -929,20 +933,32 @@ public class Manager {
 		for (int i = 0; i < vertices.darTamano(); i++) {
 			respuesta.addVertex(vertices.darObjeto(i), grafoIntersecciones.getInfoVertex(vertices.darObjeto(i)));
 		}
-			
 
-		for (int i = 0; i < respuesta.V(); i++) {
-			BigInteger inicio = respuesta.encontrarNodo(i);
-			for(Arco<PesosDIVArco> arco: grafoIntersecciones.darRepresentacion().get(grafoIntersecciones.encontrarNumNodo(inicio))){
-				BigInteger destino = grafoIntersecciones.encontrarNodo(arco.other(grafoIntersecciones.encontrarNumNodo(inicio)));	
-				// Se verifica que los dos vertices existan en el nuevo grafo
-				if(respuesta.encontrarNumNodo(inicio)!=-1 && respuesta.encontrarNumNodo(destino)!=-1 ){
-					if(respuesta.getInfoArc(inicio, destino)==null){
-						respuesta.addEdge(inicio, destino, arco.darInformacion());
-					}
+
+		for(BigInteger s: vertices){
+
+			//for(Arco<PesosDIVArco> arco: grafoIntersecciones.darRepresentacion().get(grafoIntersecciones.encontrarNumNodo(s))){
+			//	BigInteger destino = grafoIntersecciones.encontrarNodo(arco.other(grafoIntersecciones.encontrarNumNodo(s)));
+			//	// Se verifica que los dos vertices existan en el nuevo grafo
+			//	if(respuesta.encontrarNumNodo(s)!=-1 && respuesta.encontrarNumNodo(destino)!=-1 ){
+			//		if(respuesta.getInfoArc(s, destino)==null){
+			//			respuesta.addEdge(s, destino, arco.darInformacion());
+			//		}
+			//	}
+
+			//}
+			
+			Iterator<BigInteger> iteradorAdj = grafoIntersecciones.adj(s);
+			BigInteger idAdj;
+			while (iteradorAdj.hasNext()) {
+				idAdj = iteradorAdj.next();
+				if (respuesta.getInfoVertex(idAdj) != null && respuesta.getInfoArc(s, idAdj) == null) {
+					respuesta.addEdge(s, idAdj, grafoIntersecciones.getInfoArc(s, idAdj));
 				}
 			}
+
 		}
+
 		return respuesta;
 	}
 

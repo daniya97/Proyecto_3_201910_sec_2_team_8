@@ -15,7 +15,7 @@ public class Prim<K,V, IA extends InfoArco> {
 
 
 	/**
-	 * Guarda el arco con mínimo peso desde un vértice del árbol a uno fuera de el
+	 * Guarda el arco con mï¿½nimo peso desde un vï¿½rtice del ï¿½rbol a uno fuera de el
 	 */
 	private ArregloDinamico<Arco<IA>> edgeTo;      
 	
@@ -36,7 +36,7 @@ public class Prim<K,V, IA extends InfoArco> {
 	private IndexMinPQ<Double> pq;
 
 	/**
-	 * MST a través del algoritmo de PRIM
+	 * MST a travï¿½s del algoritmo de PRIM
 	 */
 	public Prim(GrafoNDPesos<K, V, IA> G) {
 		edgeTo = new ArregloDinamico<>(G.V());
@@ -49,13 +49,13 @@ public class Prim<K,V, IA extends InfoArco> {
 		}
 
 		
-		//Se recorrer los vértices  
+		//Se recorrer los vï¿½rtices  
 		for (int v = 0; v < G.V(); v++)     
 			if (!marcado[v]) prim(G, v);     
 	}
 
 	/**
-     * Método que realiza el procedimiento básico del algoritmo
+     * Mï¿½todo que realiza el procedimiento bï¿½sico del algoritmo
      */
 	private void prim(GrafoNDPesos<K, V, IA> G, int s) {
 		distTo[s] = 0.0;
@@ -67,21 +67,24 @@ public class Prim<K,V, IA extends InfoArco> {
 	}
 
 	/**
-     * Escanear el vértice v
-     */
+	 * Escanear el vÃ©rtice v
+	 */
 	private void scan(GrafoNDPesos<K, V, IA> G, int v) {
 		marcado[v] = true;
 		LinkedList<Arco<IA>> aux = G.darRepresentacion().get(v);
-		for (Arco<IA> e : aux) {
-			int w = e.other(v);
-			if (marcado[w]) continue;         
-			if (e.weight(1) < distTo[w]) {
-				distTo[w] = e.weight(1);
-				edgeTo.cambiarEnPos(w, e);
-				if (pq.contains(w)) pq.decreaseK(w, distTo[w]);
-				else                pq.agregar(w, distTo[w]);
+		if(aux != null){
+			for (Arco<IA> e : aux) {
+				int w = e.other(v);
+				if (marcado[w]) continue;         
+				if (e.weight(1) < distTo[w]) {
+					distTo[w] = e.weight(1);
+					edgeTo.cambiarEnPos(w, e);
+					if (pq.contains(w)) pq.decreaseK(w, distTo[w]);
+					else                pq.agregar(w, distTo[w]);
+				}
 			}
 		}
+
 	}
 
 	/**
