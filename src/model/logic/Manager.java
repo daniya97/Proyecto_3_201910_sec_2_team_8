@@ -794,7 +794,7 @@ public class Manager {
 				}
 			}
 			
-			// Impresi�n de resultados
+			// Impresi�n d resultados
 			int contador = 0;
 			for(InfoInterseccion s: resultadosVertices){
 				System.out.println("El v�rtice: "+ resultadosVerticesID.darObjeto(contador) + " Lon: "+s.getLon()+ " Lat: "+s.getLat());
