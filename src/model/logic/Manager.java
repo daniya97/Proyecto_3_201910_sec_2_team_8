@@ -554,10 +554,10 @@ public class Manager {
 		for (int i = 0; i < columnas; i++) {
 			for (int j = 0; j < filas; j++) {
 
-				LatLonCoords nueva = new LatLonCoords(lonActual, latActual);
+				LatLonCoords nueva = new LatLonCoords(latActual, lonActual);
 				ubicacionesGeograficas.agregar(nueva);
-				System.out.print("Lon: " + lonActual);
 				System.out.println(" Lat: " + latActual);
+				System.out.print("Lon: " + lonActual);
 				latActual +=deltaY;
 			}
 			lonActual += deltaX;
