@@ -19,11 +19,10 @@ L.mapbox.accessToken = 'pk.eyJ1IjoianVhbnBhYmxvY29ycmVhcHVlcnRhIiwiYSI6ImNqb2Fjc
 var map = L.mapbox.map('map', 'mapbox.streets').setView([38.9097115, -77.0289048], 17);
 var extremos = [[38.9097115, -77.0289048],[38.9097843, -77.0288552]];
 map.fitBounds(extremos);
-L.marker( [38.9097115, -77.0289048], { title: ""} ).addTo(map);
-L.marker( [38.9097458, -77.0289151], { title: ""} ).addTo(map);
-L.marker( [38.9097742, -77.0289233], { title: ""} ).addTo(map);
-L.marker( [38.9097457, -77.0288767], { title: ""} ).addTo(map);
-L.marker( [38.9097843, -77.0288552], { title: ""} ).addTo(map);
+var line_points = [[38.8400914, -77.0506354] ,[38.8379647, -77.050371]];
+var polyline_options = {color: '#ff2fc6'};
+L.polyline(line_points, polyline_options).addTo(map);
+
 </script>
 </body>
 </html>

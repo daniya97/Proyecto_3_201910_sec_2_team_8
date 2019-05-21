@@ -609,7 +609,7 @@ public class Manager {
 	/*
 	 * Requerimiento6
 	 */
-	public void arbolMSTKruskalC1(){
+	public void arbolMSTKruskalC1() throws IOException{
 		
 		if(grafoccMasGrande == null){
 			System.out.println("Debe primer correr el requerimeinto 2A");
@@ -633,13 +633,15 @@ public class Manager {
 		}
 		System.out.println("Con una distancia total de: "  + kruskal.weight());
 		
+		// Generar mapa
+		crearMapa("Requerimiento1C", kruskal.arcos(), null, null);
 	}
 
 
 	/*
 	 * Requerimiento7
 	 */
-	public void arbolMSTPrimC2(){
+	public void arbolMSTPrimC2() throws IOException{
 		if(grafoccMasGrande == null){
 			System.out.println("Debe primer correr el requerimeinto 2A");
 			return;
@@ -662,6 +664,8 @@ public class Manager {
 		}
 		
 		System.out.println("Con una distancia total de: "  + prim.weight());
+		// Generar mapa
+		crearMapa("Requerimiento2C", prim.arcos(), null, null);
 	}
 
 
@@ -872,15 +876,18 @@ public class Manager {
 		
 
 		// Markers
-		
-		LatLonCoords coordenadaAct;
-		String nombreAct;
-		for (int i = 0; i < marcadores.length; i++) {
-			coordenadaAct = marcadores[i];
-			nombreAct = nomMarc[i];
-			writer.write(
-					"L.marker( [" + coordenadaAct.getLat() + ", " + coordenadaAct.getLon() + "], { title: \"" + nombreAct + "\"} ).addTo(map);\n");
+		if (marcadores != null) {
+			LatLonCoords coordenadaAct;
+			String nombreAct;
+			
+			for (int i = 0; i < marcadores.length; i++) {
+				coordenadaAct = marcadores[i];
+				nombreAct = nomMarc[i];
+				writer.write(
+						"L.marker( [" + coordenadaAct.getLat() + ", " + coordenadaAct.getLon() + "], { title: \"" + nombreAct + "\"} ).addTo(map);\n");
+			}
 		}
+		
 			
 
 		// Final
