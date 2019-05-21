@@ -725,34 +725,21 @@ public class Manager {
 			int numNodoAct;
 			double distAct;
 		int contador = 0;
-		for (int i = 0; i < nodosCuadricula.darTamano(); i++) {
+		for (int i = 0; i < nodosCuadricula.darTamano()-1; i++) {
 			Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> dijkstra = new Dijkstra<>(grafoIntersecciones, grafoIntersecciones.encontrarNumNodo(nodosCuadricula.darObjeto(i)), 1);
 			
-			for (int j = 0; j < nodosCuadricula.darTamano(); j++) {
+			for (int j = i+1; j < nodosCuadricula.darTamano(); j++) {
 				
 				numNodoAct = grafoIntersecciones.encontrarNumNodo(nodosCuadricula.darObjeto(j));
-				distAct = dijkstra.distTo(numNodoAct);
-				
-				iterablesCaminos.agregar(dijkstra.caminoA(numNodoAct));
-				
+								
 				if(i!=j && dijkstra.existeCaminoHasta(numNodoAct)){
+					distAct = dijkstra.distTo(numNodoAct);
+					iterablesCaminos.agregar(dijkstra.caminoA(numNodoAct));
+					
 					ArregloDinamico<BigInteger> aux = new ArregloDinamico<>();
 					int primero = 0;
 					int segundo = 0;
 					boolean primera = true;
-					
-					if (inicializarExtremos) { // Para el mapa: actualizar camino mas largo
-						caminoMasLargo = dijkstra.caminoA(numNodoAct);
-						distanciaMasLarga = distAct;
-						contadorMasLargo = 0;
-						inicializarExtremos = false;
-					} else {
-						if (distanciaMasLarga < distAct) {
-							caminoMasLargo = dijkstra.caminoA(numNodoAct);
-							distanciaMasLarga = distAct;
-							contadorMasLargo = contador;
-						}
-					}
 					
 					for(Arco<PesosDIVArco> s: dijkstra.caminoA(grafoIntersecciones.encontrarNumNodo(nodosCuadricula.darObjeto(j)))){
 						if(primera){
@@ -770,6 +757,19 @@ public class Manager {
 					rutas.put(contador,aux);
 					distancias.put(contador, dijkstra.distTo(j));
 					contador++;
+					
+					if (inicializarExtremos) { // Para el mapa: actualizar camino mas largo
+						caminoMasLargo = dijkstra.caminoA(numNodoAct);
+						distanciaMasLarga = distAct;
+						contadorMasLargo = contador;
+						inicializarExtremos = false;
+					} else {
+						if (distanciaMasLarga < distAct) {
+							caminoMasLargo = dijkstra.caminoA(numNodoAct);
+							distanciaMasLarga = distAct;
+							contadorMasLargo = contador;
+						}
+					}
 				}
 			}
 		}
@@ -791,7 +791,7 @@ public class Manager {
 		
 		// Asignar colores
 		String colorNormal = "#ff2fc6";
-		String colorMasLargo = "#ffffff";
+		String colorMasLargo = "#000000";
 		
 		ArregloDinamico<String> colores = new ArregloDinamico<>();
 		Iterable<Arco<PesosDIVArco>> camino;
