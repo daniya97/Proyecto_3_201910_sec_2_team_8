@@ -514,6 +514,9 @@ public class Manager {
 	/*
 	 * Requerimiento4
 	 */
+	/**
+	 * Encuentra el camino más corto en cuanto a mínima cantidad de arcos
+	 */
 	public void caminoLongitudMinimoB1(BigInteger idVertice1, BigInteger idVertice2) throws IOException{
 
 		int verticeInicio = grafoIntersecciones.encontrarNumNodo(idVertice1);
@@ -536,7 +539,9 @@ public class Manager {
 	/*
 	 * Requerimiento5
 	 */
-
+	/**
+	 * Método que define la cuadrícula dado los parámetros dado por el usuario
+	 */
 	public void definirCuadriculaB2(double lonMin, double lonMax, double latMin, double latMax, int columnas, int filas) throws IOException{
 
 		//Columnas = Y
@@ -619,6 +624,9 @@ public class Manager {
 	/*
 	 * Requerimiento6
 	 */
+	/**
+	 * MST por el método Kruskal
+	 */
 	public void arbolMSTKruskalC1(){
 		
 		if(grafoccMasGrande == null){
@@ -649,6 +657,9 @@ public class Manager {
 	/*
 	 * Requerimiento7
 	 */
+	/**
+	 * MST por el método Prim
+	 */
 	public void arbolMSTPrimC2(){
 		if(grafoccMasGrande == null){
 			System.out.println("Debe primer correr el requerimeinto 2A");
@@ -678,6 +689,9 @@ public class Manager {
 
 	/*
 	 * Requerimiento8
+	 */
+	/**
+	 * Encuentra los caminos más cortos a partir del requerimiento 2B
 	 */
 	public void caminoCostoMinimoDijkstraC3(){
 		if(nodosCuadricula == null){
@@ -738,6 +752,10 @@ public class Manager {
 
 	/*
 	 * Requerimiento9
+	 */
+	/**
+	 * Camino más corto entre dos vértices
+	 * Tiene en cuenta dos criterios: número infracciones y cantidad de vértices
 	 */
 	public void caminoMasCortoC4(int idVertice1, int idVertice2){
 
