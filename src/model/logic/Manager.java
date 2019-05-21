@@ -570,7 +570,7 @@ public class Manager {
 
 				LatLonCoords nueva = new LatLonCoords(latActual, lonActual);
 				ubicacionesGeograficas.agregar(nueva);
-				System.out.println(" Lat: " + latActual +"Lon: " + lonActual);
+				System.out.println(" Lat: " + latActual +" Lon: " + lonActual);
 				
 				latActual +=deltaY;
 			}
@@ -597,7 +597,7 @@ public class Manager {
 		}
 
 		// Generar mapa
-		crearMapaId("Requerimiento 1B", nodosCuadricula);
+		crearMapaId("Requerimiento 2B", nodosCuadricula);
 	}
 
 	private BigInteger encontrarNodoMasCercano(LatLonCoords coordenadas){
@@ -689,28 +689,52 @@ public class Manager {
 	 * Requerimiento8
 	 */
 	/**
-	 * Encuentra los caminos m�s cortos a partir del requerimiento 2B
+	 * Encuentra los caminos m�s cortos a partir del requerimiento 2B 
 	 */
 	public void caminoCostoMinimoDijkstraC3(){
 		if(nodosCuadricula == null){
-			System.out.println("Debe correr primero el requerimiento 2B");
+			System.out.println("Debe correr primero el requerimiento 2B (4)");
 			return;
 		}
 
-		LinProbTH<Integer, ArregloDinamico<BigInteger>> rutas = new LinProbTH<>(nodosCuadricula.darTamano()*2);	
+		LinProbTH<Integer, ArregloDinamico<BigInteger>> rutas = new LinProbTH<>(nodosCuadricula.darTamano()*2);
+			ArregloDinamico<Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco>> iterablesCaminos = new ArregloDinamico<>();
 		LinProbTH<Integer, Double> distancias = new LinProbTH<>(nodosCuadricula.darTamano()*2);	
-
+		
+			// Para el mapa: para conocer el camino mas largo
+			Iterable<Arco<PesosDIVArco>> caminoMasLargo;
+			double distanciaMasLarga = -1;
+			boolean inicializarExtremos = true;
+		
+			int numNodoAct;
+			double distAct;
 		int contador = 0;
 		for (int i = 0; i < nodosCuadricula.darTamano(); i++) {
 			Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> dijkstra = new Dijkstra<>(grafoIntersecciones, grafoIntersecciones.encontrarNumNodo(nodosCuadricula.darObjeto(i)), 1);
+			iterablesCaminos.agregar(dijkstra);
+			
 			for (int j = 0; j < nodosCuadricula.darTamano(); j++) {
-
-				if(i!=j && dijkstra.existeCaminoHasta(grafoIntersecciones.encontrarNumNodo(nodosCuadricula.darObjeto(j)))){
+				
+				numNodoAct = grafoIntersecciones.encontrarNumNodo(nodosCuadricula.darObjeto(j));
+				distAct = dijkstra.distTo(numNodoAct);
+				
+				if(i!=j && dijkstra.existeCaminoHasta(numNodoAct)){
 					ArregloDinamico<BigInteger> aux = new ArregloDinamico<>();
 					int primero = 0;
 					int segundo = 0;
 					boolean primera = true;
-
+					
+					if (inicializarExtremos) { // Para el mapa: actualizar camino mas largo
+						caminoMasLargo = dijkstra.caminoA(numNodoAct);
+						distanciaMasLarga = distAct;
+						inicializarExtremos = false;
+					} else {
+						if (distanciaMasLarga < distAct) {
+							caminoMasLargo = dijkstra.caminoA(numNodoAct);
+							distanciaMasLarga = distAct;
+						}
+					}
+					
 					for(Arco<PesosDIVArco> s: dijkstra.caminoA(grafoIntersecciones.encontrarNumNodo(nodosCuadricula.darObjeto(j)))){
 						if(primera){
 							primero = grafoIntersecciones.encontrarNumNodo(nodosCuadricula.darObjeto(i));
@@ -744,6 +768,9 @@ public class Manager {
 		}
 		
 		System.out.println("Total de Rutas: " + contador);
+		
+		// Generar mapa
+		
 		
 
 	}
@@ -1075,6 +1102,99 @@ public class Manager {
 					"L.marker( [" + coordenadaAct.getLat() + ", " + coordenadaAct.getLon() + "], { title: \"" + "" + "\"} ).addTo(map);\n");
 			i++;
 		}
+			
+
+		// Final
+		writer.write("</script>\n" + 
+				"</body>\n" + 
+				"</html>");
+
+		writer.close();
+
+
+		//return archivo;
+	}
+	
+	private void crearMapaCaminosCol(String nombreHTML, ArregloDinamico<Iterable<Arco<PesosDIVArco>>> listaArcos, ArregloDinamico<String> colores, LatLonCoords[] marcadores) throws IOException {
+		File archivo = new File(nombreHTML + ".html");
+		if (!archivo.exists()) {
+			archivo.createNewFile();
+		}
+
+		BufferedWriter writer = new BufferedWriter(new FileWriter(archivo));
+
+		// Escribir Cabeza
+
+		writer.write("<!DOCTYPE html>\n" + 
+				"<html>\n" + 
+				"<head>\n" + 
+				"<meta charset=utf-8 />\n" + 
+				"<title>Grafo generado</title>\n" + 
+				"<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />\n" + 
+				"<script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>\n" + 
+				"<link href='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css' rel='stylesheet' /> \n" + 
+				"<style>\n" + 
+				" body { margin:0; padding:0; }\n" + 
+				"#map { position:absolute; top:0; bottom:0; width:100%; }\n" + 
+				"</style>\n" + 
+				"</head>\n" +
+				"<body>\n" + 
+				"<div id='map'>\n" + 
+				"</div>\n");
+
+		// Inicio del script
+		Double centerLat = 38.9097115;
+		Double centerLon = -77.0289048;
+
+		Double leftLat = 38.9097115;
+		Double leftLon = -77.0289048;
+		Double rightLat = 38.9097843;
+		Double rightLon =-77.0288552;
+
+		writer.write("<script>\n" + 
+				"L.mapbox.accessToken = 'pk.eyJ1IjoianVhbnBhYmxvY29ycmVhcHVlcnRhIiwiYSI6ImNqb2FjcHNjcjFuemwzcXB1M3E0YnB4bHIifQ.oXuYfXtCqmXY52b8Ystuyw';\n" + 
+				"var map = L.mapbox.map('map', 'mapbox.streets').setView(["+ centerLat + ", "+ centerLon +"], 17);\n" + 
+				"var extremos = [["+ leftLat +", "+ leftLon + "],[" + rightLat + ", " + rightLon + "]];\n" + 
+				"map.fitBounds(extremos);\n");
+
+		// Agregar edges del grafo como lineas en el mapa	    
+		ITablaHash<BigInteger[], Boolean> edgesAgregados = new LinProbTH<>(11); // Para agregar solo una vez cada edge
+
+		Iterable<BigInteger> iterableAdj;
+		int iden1; LatLonCoords coords1;
+		int iden2; LatLonCoords coords2;
+		PesosDIVArco infoArcoAct;
+
+		// Crear una linea por cada arco
+		for (Iterable<Arco<PesosDIVArco>> arcos : listaArcos) {
+			for (Arco<PesosDIVArco> arcoAct : arcos) {
+	
+				iden1 = arcoAct.either(); 
+				coords1 = grafoIntersecciones.getInfoVertex(grafoIntersecciones.encontrarNodo(iden1)).getCoords();
+				
+				iden2 = arcoAct.other(iden1); 
+				coords2 = grafoIntersecciones.getInfoVertex(grafoIntersecciones.encontrarNodo(iden2)).getCoords();
+				
+	
+				writer.write("var line_points = [[" + coords1.getLat() + ", " + coords1.getLon() + "] "
+									+ ",[" + coords2.getLat() + ", " + coords2.getLon() + "]];\n");
+				writer.write("var polyline_options = {color: '#ff2fc6'};\n" + 
+									"L.polyline(line_points, polyline_options).addTo(map);\n\n");
+			}
+		}
+
+		// Markers
+		if (marcadores != null) {
+			LatLonCoords coordenadaAct;
+			String nombreAct;
+			
+			for (int i = 0; i < marcadores.length; i++) {
+				coordenadaAct = marcadores[i];
+				writer.write(
+						"L.marker( [" + coordenadaAct.getLat() + ", " + coordenadaAct.getLon() + "], { title: \"" + "" + "\"} ).addTo(map);\n");
+			}
+		}
+		
 			
 
 		// Final
