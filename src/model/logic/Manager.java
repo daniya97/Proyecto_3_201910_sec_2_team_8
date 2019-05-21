@@ -570,8 +570,8 @@ public class Manager {
 
 				LatLonCoords nueva = new LatLonCoords(latActual, lonActual);
 				ubicacionesGeograficas.agregar(nueva);
-				System.out.println(" Lat: " + latActual);
-				System.out.print("Lon: " + lonActual);
+				System.out.println(" Lat: " + latActual +"Lon: " + lonActual);
+				
 				latActual +=deltaY;
 			}
 			lonActual += deltaX;
