@@ -73,7 +73,7 @@ public class Controller {
 				switch(option)
 				{
 				case 0:
-					view.printMessage("Ingrese el nombre del archivo (guardado en 'data') (Mapa grande: persistenciaMap.json; Centro Washington: persistenciaGrafoWashington.json):");
+					view.printMessage("Ingrese el nombre del archivo (guardado en 'data') (Mapa grande: finalGraph.json):");
 					String nombreJsonG = sc.next();
 					int[] resultados0 = model.cargarDeJson(nombreJsonG);
 					view.printResumenCargaJson(resultados0);

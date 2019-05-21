@@ -53,7 +53,13 @@ public class Manager {
 	 * Lista donde se van a cargar los datos de los archivos
 	 */
 	private static IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafoIntersecciones;
+	/**
+	 * Grafo de la componente conectada m�s grande
+	 */
 	private static GrafoNDPesos<BigInteger, InfoInterseccion,PesosDIVArco> grafoccMasGrande;
+	/**
+	 * Guarda los nodos encontrados a partir de la cuadricula
+	 */
 	private ArregloDinamico<BigInteger> nodosCuadricula;
 
 	/**
@@ -339,7 +345,9 @@ public class Manager {
 	/*
 	 * Requerimiento2
 	 */
-
+	/**
+	 * Encuentra el camino m�s corto (en infracciones) entre idVertice1 y idVertice 2
+	 */
 	public void caminoCostoMinimoA1(BigInteger idVertice1, BigInteger idVertice2) throws IOException{
 
 		
@@ -372,7 +380,6 @@ public class Manager {
 				resultadosVertices.agregar(grafoIntersecciones.getInfoVertex(destinoFinal));
 				resultadosVerticesID.agregar(inicial);
 				resultadosVerticesID.agregar(destinoFinal);
-				//CAMBIOOOOOOOOOO
 				ini = fini;
 				primera = false;
 				}else{
@@ -387,7 +394,6 @@ public class Manager {
 			int contador = 0;
 			for(InfoInterseccion s: resultadosVertices){
 				System.out.println("El v�rtice: "+ resultadosVerticesID.darObjeto(contador) + " Lon: "+s.getLon()+ " Lat: "+s.getLat());
-				//CAMBIOOOOOOOOOO
 				contador++;
 			}
 			System.out.println("La distancia estimada del camino es de: " + encontrarDistancia(resultadosVerticesID));
@@ -406,6 +412,9 @@ public class Manager {
 
 	/*
 	 * Requerimiento3
+	 */
+	/**
+	 * Encuentra los n nodos con mayor cantidad de infracciones
 	 */
 	public void mayorNumeroVerticesA2(int n){
 
@@ -460,13 +469,14 @@ public class Manager {
 			//CAMBIOOOOOS
 			System.out.println("ID: " + ayudaIdVertice.get(s)+ " Lon: "+s.getLon()+ " Lat: "+s.getLat()+" #Infracciones: "+s.getNInfracciones());
 		}
-		//CAMBIOOOOOS
 		componentesConectadasReqA2(grafoNuevo);
 		
 
 	}
 
-	
+	/**
+	 * Encuentras las componentes conectadas dado un grafo
+	 */
 	private void componentesConectadasReqA2(IGraph<BigInteger, InfoInterseccion, PesosDIVArco> grafo){
 		
 		int numComMasGrande = 0;
@@ -504,6 +514,9 @@ public class Manager {
 	/*
 	 * Requerimiento4
 	 */
+	/**
+	 * Encuentra el camino m�s corto en cuanto a m�nima cantidad de arcos
+	 */
 	public void caminoLongitudMinimoB1(BigInteger idVertice1, BigInteger idVertice2) throws IOException{
 
 		int verticeInicio = grafoIntersecciones.encontrarNumNodo(idVertice1);
@@ -526,7 +539,9 @@ public class Manager {
 	/*
 	 * Requerimiento5
 	 */
-
+	/**
+	 * M�todo que define la cuadr�cula dado los par�metros dado por el usuario
+	 */
 	public void definirCuadriculaB2(double lonMin, double lonMax, double latMin, double latMax, int columnas, int filas) throws IOException{
 
 		//Columnas = Y
@@ -555,8 +570,8 @@ public class Manager {
 
 				LatLonCoords nueva = new LatLonCoords(latActual, lonActual);
 				ubicacionesGeograficas.agregar(nueva);
-				System.out.println(" Lat: " + latActual);
-				System.out.print("Lon: " + lonActual);
+				System.out.println(" Lat: " + latActual +"Lon: " + lonActual);
+				
 				latActual +=deltaY;
 			}
 			lonActual += deltaX;
@@ -609,8 +624,8 @@ public class Manager {
 	/*
 	 * Requerimiento6
 	 */
+
 	public void arbolMSTKruskalC1() throws IOException{
-		
 		if(grafoccMasGrande == null){
 			System.out.println("Debe primer correr el requerimeinto 2A");
 			return;
@@ -673,6 +688,9 @@ public class Manager {
 	/*
 	 * Requerimiento8
 	 */
+	/**
+	 * Encuentra los caminos m�s cortos a partir del requerimiento 2B
+	 */
 	public void caminoCostoMinimoDijkstraC3(){
 		if(nodosCuadricula == null){
 			System.out.println("Debe correr primero el requerimiento 2B");
@@ -732,6 +750,10 @@ public class Manager {
 
 	/*
 	 * Requerimiento9
+	 */
+	/**
+	 * Camino m�s corto entre dos v�rtices
+	 * Tiene en cuenta dos criterios: n�mero infracciones y cantidad de v�rtices
 	 */
 	public void caminoMasCortoC4(int idVertice1, int idVertice2){
 
