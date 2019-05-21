@@ -752,8 +752,64 @@ public class Manager {
 	 * Camino m�s corto entre dos v�rtices
 	 * Tiene en cuenta dos criterios: n�mero infracciones y cantidad de v�rtices
 	 */
-	public void caminoMasCortoC4(int idVertice1, int idVertice2){
+	public void caminoMasCortoC4(BigInteger idVertice1, BigInteger idVertice2){
 
+		
+		// Se utiliza Dijkstra - el 2 en el constructor hace referencia a que se usan como pesos el n�mero de infracciones
+		int verticeInicio = grafoIntersecciones.encontrarNumNodo(idVertice1);
+		int verticeDestino = grafoIntersecciones.encontrarNumNodo(idVertice2);
+		Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> nuevo = new Dijkstra<BigInteger, InfoInterseccion, PesosDIVArco> (grafoIntersecciones, verticeInicio,3);
+		// Se verifica que exista una camino
+		
+		
+		if(nuevo.existeCaminoHasta(verticeDestino)){
+			
+			//Resultados
+			ArregloDinamico<InfoInterseccion> resultadosVertices = new ArregloDinamico<>();
+			ArregloDinamico<BigInteger> resultadosVerticesID = new ArregloDinamico<>();
+			System.out.println("El camino sigue la siguiente secuencia: ");
+			
+			int ini = 0;
+			int fini = 0;
+			boolean primera = true;
+			
+			// Se obtiene un arreglo con los v�rtices
+			for(Arco<PesosDIVArco> s: nuevo.caminoA(verticeDestino)){
+				if(primera){
+				ini = verticeInicio;
+				BigInteger inicial = grafoIntersecciones.encontrarNodo(ini);
+				fini = s.other(ini);
+				BigInteger destinoFinal = grafoIntersecciones.encontrarNodo(fini);
+				resultadosVertices.agregar(grafoIntersecciones.getInfoVertex(inicial));
+				resultadosVertices.agregar(grafoIntersecciones.getInfoVertex(destinoFinal));
+				resultadosVerticesID.agregar(inicial);
+				resultadosVerticesID.agregar(destinoFinal);
+				ini = fini;
+				primera = false;
+				}else{
+					BigInteger destinoFinal = grafoIntersecciones.encontrarNodo(s.other(ini));
+					ini = s.other(ini);
+					resultadosVertices.agregar(grafoIntersecciones.getInfoVertex(destinoFinal));
+					resultadosVerticesID.agregar(destinoFinal);
+				}
+			}
+			
+			// Impresi�n de resultados
+			int contador = 0;
+			for(InfoInterseccion s: resultadosVertices){
+				System.out.println("El v�rtice: "+ resultadosVerticesID.darObjeto(contador) + " Lon: "+s.getLon()+ " Lat: "+s.getLat());
+				contador++;
+			}
+			System.out.println("La distancia estimada del camino es de: " + encontrarDistancia(resultadosVerticesID));
+			System.out.println("El n�mero de infracciones del camino es: " + encontrarInfracciones(resultadosVerticesID));
+			
+			
+		}
+		else{
+			System.out.println("No existe un camino entre los dos v�rtices");
+		}
+	
+		
 	
 	}
 

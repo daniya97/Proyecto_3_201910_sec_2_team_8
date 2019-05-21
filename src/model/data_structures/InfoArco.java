@@ -4,5 +4,5 @@ public interface InfoArco {
 
 	double darPesoArco();
 	double darPesoNInfr();
-	
+	double darPesoCombinado();
 }

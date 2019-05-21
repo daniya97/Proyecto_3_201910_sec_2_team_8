@@ -17,4 +17,11 @@ public class PesoArco implements InfoArco {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public double darPesoCombinado() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 }
